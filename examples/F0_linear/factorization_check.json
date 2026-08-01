@@ -1,0 +1,220 @@
+{
+  "example_id": "F0_linear",
+  "artifact_type": "factorization_check",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+
+  "purpose": {
+    "description": "Verify whether target functions factor through candidate observation interfaces in the canonical linear system.",
+    "criterion": "An interface is sufficient if observational equivalence implies target equivalence."
+  },
+
+  "formal_definition": {
+    "observation_operator": "O(x)=Cx",
+
+    "target": "L(x_0)=x_T^{(1)}",
+
+    "factorization_condition": {
+      "statement": "exists L_hat such that L = L_hat o O",
+
+      "equivalent_test": "O(x_a)=O(x_b) => L(x_a)=L(x_b)"
+    }
+  },
+
+  "system": {
+    "state_dimension": 2,
+
+    "transition_matrix": [
+      [
+        1.0,
+        0.2
+      ],
+      [
+        0.0,
+        0.9
+      ]
+    ],
+
+    "prediction_horizon": 5,
+
+    "target_definition": {
+      "symbol": "L_T",
+
+      "value": "first coordinate of x_5"
+    }
+  },
+
+  "interfaces": [
+    {
+      "interface_id": "I_full_state",
+
+      "C": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+
+      "rank": 2,
+
+      "observational_equivalence_classes": "singleton",
+
+      "factorization": {
+        "status": "verified",
+
+        "proof": "Equal observations imply identical state, therefore identical future trajectory and target."
+      },
+
+      "result": "sufficient"
+    },
+
+    {
+      "interface_id": "I_position_only",
+
+      "C": [
+        [
+          1.0,
+          0.0
+        ]
+      ],
+
+      "rank": 1,
+
+      "observational_equivalence_classes": "non-singleton",
+
+      "counterexample": {
+        "state_A": [
+          1.0,
+          0.0
+        ],
+
+        "state_B": [
+          1.0,
+          1.0
+        ],
+
+        "observations": {
+          "O_A": [
+            1.0
+          ],
+
+          "O_B": [
+            1.0
+          ]
+        },
+
+        "future_targets": {
+          "L_A": 1.0,
+
+          "L_B": 1.81902
+        }
+      },
+
+      "factorization": {
+        "status": "rejected",
+
+        "failure": "Observation-equivalent states have different targets."
+      },
+
+      "result": "insufficient"
+    },
+
+    {
+      "interface_id": "I_hidden_dimension",
+
+      "C": [
+        [
+          0.0,
+          1.0
+        ]
+      ],
+
+      "rank": 1,
+
+      "observational_equivalence_classes": "non-singleton",
+
+      "counterexample": {
+        "state_A": [
+          0.0,
+          1.0
+        ],
+
+        "state_B": [
+          1.0,
+          1.0
+        ],
+
+        "observations": {
+          "O_A": [
+            1.0
+          ],
+
+          "O_B": [
+            1.0
+          ]
+        },
+
+        "future_targets": {
+          "L_A": 0.65536,
+
+          "L_B": 1.65536
+        }
+      },
+
+      "factorization": {
+        "status": "rejected",
+
+        "failure": "Unobserved state component influences target trajectory."
+      },
+
+      "result": "insufficient"
+    }
+  ],
+
+  "rank_analysis": {
+    "finding": "Rank alone is not sufficient; target alignment determines sufficiency.",
+
+    "full_state": {
+      "rank": 2,
+      "sufficient": true
+    },
+
+    "partial_state": {
+      "rank": 1,
+      "sufficient": false
+    }
+  },
+
+  "minimality_check": {
+    "question": "Can any lower-dimensional interface preserve the target?",
+
+    "tested_interfaces": 16,
+
+    "result": {
+      "minimum_dimension_found": 2,
+
+      "minimum_interface": "I_full_state"
+    },
+
+    "note": "For this chosen target and dynamics, both state dimensions influence future target value."
+  },
+
+  "validation": {
+    "symbolic_check_complete": true,
+
+    "counterexample_search_complete": true,
+
+    "trajectory_rollout_verified": true,
+
+    "factorization_boundary_confirmed": true
+  },
+
+  "decision": {
+    "status": "PASSED",
+
+    "interpretation": "F0_linear validates the core factorization criterion: interfaces succeed or fail based on whether they preserve target-relevant distinctions."
+  }
+}
