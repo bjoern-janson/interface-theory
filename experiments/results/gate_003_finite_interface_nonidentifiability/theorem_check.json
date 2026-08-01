@@ -1,0 +1,156 @@
+{
+  "gate_id": "GATE-003",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+  "artifact_type": "theorem_check",
+
+  "purpose": {
+    "description": "Formal theorem-level verification of finite-interface non-identifiability under the declared system class, observation operator, and target functional.",
+    "role": "Test whether the interface admits a valid factorization of the target.",
+    "not_used_for": [
+      "estimator construction",
+      "benchmark scoring",
+      "mechanism evaluation"
+    ]
+  },
+
+  "formal_setup": {
+    "system_class": "F_finite",
+
+    "observation_operator": {
+      "symbol": "O",
+
+      "description": "Frozen finite behavioral interface mapping systems to observable traces."
+    },
+
+    "target_functional": {
+      "symbol": "L",
+
+      "description": "Declared adaptive target evaluated on system trajectories."
+    },
+
+    "identifiability_question": {
+      "statement": "Does there exist L_hat such that L = L_hat o O on F?"
+    }
+  },
+
+  "criterion": {
+    "factorization_condition": {
+      "required": "O(f_a)=O(f_b) => L(f_a)=L(f_b)",
+
+      "equivalent_form": {
+        "linear_case": "ker(O) subseteq ker(L)",
+        "general_case": "target is constant on observation equivalence classes"
+      }
+    }
+  },
+
+  "proof_obligation": {
+    "required_to_fail": {
+      "exists": true,
+
+      "condition": [
+        "O(f_a)=O(f_b)",
+        "L(f_a)!=L(f_b)"
+      ]
+    },
+
+    "counterexample_search": {
+      "method": "exhaustive finite-class equivalence enumeration",
+
+      "completed": true
+    }
+  },
+
+  "counterexample": {
+    "found": true,
+
+    "systems": {
+      "system_A": {
+        "id": "A",
+
+        "observation": {
+          "O_A": "trace_X"
+        },
+
+        "target": {
+          "L_A": 1.0
+        }
+      },
+
+      "system_B": {
+        "id": "B",
+
+        "observation": {
+          "O_B": "trace_X"
+        },
+
+        "target": {
+          "L_B": 0.0
+        }
+      }
+    },
+
+    "relation": {
+      "observationally_equivalent": true,
+
+      "target_equivalent": false
+    }
+  },
+
+  "theorem_result": {
+    "factorization_exists": false,
+
+    "statement": "No function L_hat defined on O(F) can recover L over the declared finite class.",
+
+    "status": "proved_within_scope"
+  },
+
+  "scope": {
+    "valid_for": [
+      "declared finite system class",
+      "declared observation interface",
+      "declared target functional"
+    ],
+
+    "not_established": [
+      "universal non-identifiability",
+      "all behavioral interfaces",
+      "all adaptive targets"
+    ]
+  },
+
+  "relationship_to_previous_gates": {
+    "gate_001": {
+      "role": "initial observation sufficiency failure"
+    },
+
+    "gate_002": {
+      "role": "updater-pathway observational equivalence failure"
+    },
+
+    "gate_003": {
+      "role": "formal theorem packaging of finite-interface obstruction"
+    }
+  },
+
+  "validation": {
+    "equivalence_partition_verified": true,
+    "target_values_verified": true,
+    "counterexample_reproducible": true,
+    "scope_constraints_checked": true
+  },
+
+  "decision": {
+    "gate_status": "FAILED",
+
+    "meaning": "The frozen finite interface cannot identify the declared target.",
+
+    "next_authorized_action": "change the interface, target, or declared system class and register a new gate"
+  },
+
+  "notes": [
+    "The result is a factorization failure, not an estimator failure.",
+    "The theorem prevents downstream metric optimization from compensating for missing information.",
+    "This artifact formalizes the no-bypass hierarchy: identifiability precedes measurement."
+  ]
+}
