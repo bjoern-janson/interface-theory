@@ -9,6 +9,8 @@ from __future__ import annotations
 
 import json
 import re
+import subprocess
+import sys
 from pathlib import Path
 
 
@@ -108,6 +110,7 @@ def main() -> None:
         "fs-stochastic-readout-noise",
         "fhd-hidden-state--delay",
         "fn-known-linear-drift",
+        "frs-reversible-network-selection",
     }
     referenced_evidence_anchors = set(
         re.findall(r"EVIDENCE_INDEX\.md#([a-z0-9-]+)", ledger_text)
@@ -122,12 +125,38 @@ def main() -> None:
             f"Missing evidence anchor: {anchor}",
         )
 
+    gate_013 = load(
+        "experiments/results/gate_013_reversible_network_selection/factorization_audit.json"
+    )
+    require(gate_013["gate_id"] == "GATE-013", "Missing Gate 013 audit.")
+    require(
+        gate_013["identifiability_result"] == "IDENTIFIABLE_IN_DECLARED_FINITE_CLASS",
+        "Gate 013 identifiability result changed.",
+    )
+    require(
+        gate_013["minimum_scalar_readout_cost"] == 3
+        and gate_013["all_lower_cost_interfaces_failed"],
+        "Gate 013 minimum-interface certificate changed.",
+    )
+    audit_script = ROOT / "experiments/gate_013_reversible_network_selection/run_gate_013.py"
+    generated = subprocess.run(
+        [sys.executable, str(audit_script)],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    require(
+        json.loads(generated.stdout) == gate_013,
+        "Gate 013 committed audit does not match its deterministic generator.",
+    )
+
     for relative, text in {
         "README.md": "L=\\widehat L\\circ O",
         "docs/CANONICAL_RECORD.md": "target-relevant experimental information",
         "docs/RESULT_LEDGER.md": "EVIDENCE_INDEX.md",
         "docs/EVIDENCE_INDEX.md": "FROZEN_SUMMARY_RECORD",
         "experiments/gate_registry.md": "Historical pruning gates",
+        "experiments/gate_registry.md": "Gate 013",
     }.items():
         require(text in (ROOT / relative).read_text(encoding="utf-8"), relative)
 
