@@ -1,0 +1,288 @@
+{
+  "example_id": "F0_linear",
+  "artifact_type": "trajectory_trace",
+  "trace_id": "system_B",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+
+  "purpose": {
+    "description": "Record a trajectory that is observationally equivalent to System A under restricted interfaces but diverges in target-relevant future behavior.",
+    "role": "Provide canonical counterexample trace for interface insufficiency.",
+    "usage": [
+      "factorization failure verification",
+      "observation collision tests",
+      "target divergence analysis"
+    ]
+  },
+
+  "system": {
+    "system_id": "B",
+
+    "initial_state": {
+      "x_0": [
+        1.0,
+        1.0
+      ]
+    },
+
+    "transition_matrix": [
+      [
+        1.0,
+        0.2
+      ],
+      [
+        0.0,
+        0.9
+      ]
+    ],
+
+    "dynamics": "x_{t+1}=Ax_t",
+
+    "horizon": 5
+  },
+
+  "trajectory": [
+    {
+      "t": 0,
+
+      "state": [
+        1.0,
+        1.0
+      ],
+
+      "observation_interfaces": {
+        "I_full_state": [
+          1.0,
+          1.0
+        ],
+
+        "I_position_only": [
+          1.0
+        ],
+
+        "I_hidden_dimension": [
+          1.0
+        ],
+
+        "I_scalar_projection": [
+          2.0
+        ]
+      }
+    },
+
+    {
+      "t": 1,
+
+      "state": [
+        1.2,
+        0.9
+      ],
+
+      "observation_interfaces": {
+        "I_full_state": [
+          1.2,
+          0.9
+        ],
+
+        "I_position_only": [
+          1.2
+        ],
+
+        "I_hidden_dimension": [
+          0.9
+        ],
+
+        "I_scalar_projection": [
+          2.1
+        ]
+      }
+    },
+
+    {
+      "t": 2,
+
+      "state": [
+        1.38,
+        0.81
+      ],
+
+      "observation_interfaces": {
+        "I_full_state": [
+          1.38,
+          0.81
+        ],
+
+        "I_position_only": [
+          1.38
+        ],
+
+        "I_hidden_dimension": [
+          0.81
+        ],
+
+        "I_scalar_projection": [
+          2.19
+        ]
+      }
+    },
+
+    {
+      "t": 3,
+
+      "state": [
+        1.542,
+        0.729
+      ],
+
+      "observation_interfaces": {
+        "I_full_state": [
+          1.542,
+          0.729
+        ],
+
+        "I_position_only": [
+          1.542
+        ],
+
+        "I_hidden_dimension": [
+          0.729
+        ],
+
+        "I_scalar_projection": [
+          2.271
+        ]
+      }
+    },
+
+    {
+      "t": 4,
+
+      "state": [
+        1.6878,
+        0.6561
+      ],
+
+      "observation_interfaces": {
+        "I_full_state": [
+          1.6878,
+          0.6561
+        ],
+
+        "I_position_only": [
+          1.6878
+        ],
+
+        "I_hidden_dimension": [
+          0.6561
+        ],
+
+        "I_scalar_projection": [
+          2.3439
+        ]
+      }
+    },
+
+    {
+      "t": 5,
+
+      "state": [
+        1.81902,
+        0.59049
+      ],
+
+      "target_values": {
+        "T_current_position": 1.0,
+
+        "T_future_position": 1.81902,
+
+        "T_hidden_state": 0.59049
+      },
+
+      "observation_interfaces": {
+        "I_full_state": [
+          1.81902,
+          0.59049
+        ],
+
+        "I_position_only": [
+          1.81902
+        ],
+
+        "I_hidden_dimension": [
+          0.59049
+        ],
+
+        "I_scalar_projection": [
+          2.40951
+        ]
+      }
+    }
+  ],
+
+  "paired_comparison": {
+    "reference_trace": "system_A",
+
+    "initial_relation": {
+      "system_A_x0": [
+        1.0,
+        0.0
+      ],
+
+      "system_B_x0": [
+        1.0,
+        1.0
+      ]
+    },
+
+    "observation_equivalence": {
+      "I_position_only": {
+        "status": "equivalent",
+
+        "reason": "Both systems expose identical initial x_1 value."
+      },
+
+      "I_full_state": {
+        "status": "not_equivalent"
+      },
+
+      "I_hidden_dimension": {
+        "status": "not_equivalent"
+      }
+    },
+
+    "target_divergence": {
+      "T_future_position": {
+        "system_A": 1.0,
+
+        "system_B": 1.81902,
+
+        "diverged": true
+      }
+    }
+  },
+
+  "counterexample_role": {
+    "failure_condition": {
+      "observation_relation": "O_A(x_0)=O_B(x_0)",
+
+      "target_relation": "L_A(x_0)!=L_B(x_0)"
+    },
+
+    "demonstrates": "A one-dimensional observation boundary can merge states with different future outcomes."
+  },
+
+  "validation": {
+    "trajectory_rollout_verified": true,
+
+    "observation_projection_verified": true,
+
+    "target_divergence_verified": true,
+
+    "counterexample_condition_verified": true
+  },
+
+  "decision": {
+    "status": "VALID",
+
+    "meaning": "System B provides the canonical hidden-state counterexample for F0_linear."
+  }
+}
