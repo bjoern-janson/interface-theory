@@ -1,0 +1,140 @@
+{
+  "gate_id": "GATE-001",
+  "protocol_version": "CMI_v0.1",
+  "artifact_type": "oracle_control_trace",
+
+  "evaluation": {
+    "channel": "controlled_updater_pathway_assay",
+    "purpose": "verify that matched systems differ outside the tested behavioral interface",
+    "status": "BOUNDARY_CONTROL_ONLY"
+  },
+
+  "interface": {
+    "name": "oracle updater pathway assay",
+    "included_in_CMI_v0_1": false,
+    "access_level": "privileged",
+
+    "allowed_information": [
+      "updater pathway state",
+      "internal revision variables",
+      "hidden transition structure"
+    ],
+
+    "forbidden_in_CMI": [
+      "all privileged updater information"
+    ]
+  },
+
+  "systems": [
+    {
+      "system_id": "A",
+      "target_class": "HIGH",
+
+      "updater_trace": {
+        "initial_revision_state": "S0",
+        "evidence_processing": [
+          {
+            "step": 1,
+            "evidence": "E1",
+            "internal_update": "revision_path_A_1"
+          },
+          {
+            "step": 2,
+            "evidence": "E2",
+            "internal_update": "revision_path_A_2"
+          }
+        ],
+
+        "final_internal_signature": {
+          "revision_profile": "adaptive",
+          "future_update_compatibility": "preserved"
+        }
+      }
+    },
+
+    {
+      "system_id": "B",
+      "target_class": "LOW",
+
+      "updater_trace": {
+        "initial_revision_state": "S0",
+        "evidence_processing": [
+          {
+            "step": 1,
+            "evidence": "E1",
+            "internal_update": "revision_path_B_1"
+          },
+          {
+            "step": 2,
+            "evidence": "E2",
+            "internal_update": "revision_path_B_2"
+          }
+        ],
+
+        "final_internal_signature": {
+          "revision_profile": "fragile",
+          "future_update_compatibility": "collapsed"
+        }
+      }
+    }
+  ],
+
+  "comparison": {
+    "behavioral_interface_equivalence": {
+      "result": true,
+      "statement": "O_CMI(A)=O_CMI(B)"
+    },
+
+    "updater_pathway_difference": {
+      "result": true,
+      "statement": "U(A)!=U(B)"
+    },
+
+    "target_difference": {
+      "result": true,
+      "statement": "L(A)!=L(B)"
+    }
+  },
+
+  "separation_test": {
+    "classifier": "oracle_pathway_classifier",
+
+    "features": [
+      "updater_pathway_state",
+      "internal_revision_signature"
+    ],
+
+    "result": {
+      "auc": 1.0,
+      "accuracy": 1.0,
+      "interpretation": "perfect privileged separation"
+    }
+  },
+
+  "formal_boundary_result": {
+    "observation_relation": {
+      "CMI_interface": "O(A)=O(B)",
+      "oracle_interface": "O_oracle(A)!=O_oracle(B)"
+    },
+
+    "interpretation": "Target distinction exists but is removed by the frozen behavioral interface"
+  },
+
+  "decision": {
+    "oracle_assay_validated": true,
+    "CMI_v0_1_sufficient": false,
+    "estimator_development_authorized": false
+  },
+
+  "validation": {
+    "privileged_access_used": true,
+    "kept_out_of_CMI_score": true,
+    "boundary_compliance": true
+  },
+
+  "notes": [
+    "This assay is a control experiment, not a candidate measurement interface.",
+    "AUC=1.0 demonstrates distinguishability only when excluded information is allowed.",
+    "The result supports the interpretation of CMI v0.1 failure as interface insufficiency rather than matched-system identity."
+  ]
+}
