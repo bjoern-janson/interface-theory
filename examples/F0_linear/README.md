@@ -1,319 +1,89 @@
-# F0_linear — Canonical Linear Interface Identifiability Example
+# F0_linear — Target-Relative Linear Identifiability
 
-## Overview
+**Status:** illustrative linear factorization example. The canonical completed-gate
+record is maintained in [docs/RESULT_LEDGER.md](../../docs/RESULT_LEDGER.md).
 
-`F0_linear` is the foundational example for Interface Theory.
-
-It defines the smallest nontrivial dynamical system where:
-
-- hidden state exists;
-- observations may discard information;
-- targets depend on future evolution;
-- factorization can be verified exactly.
-
-The purpose is not to demonstrate advanced dynamics.
-
-The purpose is to establish the core principle:
+## System and target
 
 \[
-\boxed{
-\text{A target is identifiable only if the interface preserves every distinction the target requires.}
-}
-\]
-
----
-
-# System Definition
-
-The system evolves according to:
-
-\[
-x_{t+1}=Ax_t
-\]
-
-where:
-
-\[
-x_t\in\mathbb{R}^2
-\]
-
-and:
-
-\[
+x_{t+1}=Ax_t,
+\qquad
 A=
 \begin{bmatrix}
 1&0.2\\
 0&0.9
-\end{bmatrix}
+\end{bmatrix}.
 \]
 
-The observation interface is:
+The example target is the first coordinate after five transitions:
 
 \[
-y_t=Cx_t
+L_T(x_0)=e_1^\top A^5x_0
+=
+\begin{bmatrix}
+1&0.81902
+\end{bmatrix}x_0.
 \]
 
-where \(C\) determines what information is accessible.
+The target is a scalar linear functional. It does **not** require reconstruction
+of the entire initial state.
 
----
+## Factorization test
 
-# Target
-
-The benchmark target is:
+An interface (O) is sufficient for (L_T) if
 
 \[
-L_T(x_0)=x_5^{(1)}
+\exists\widehat L
+\quad\text{such that}\quad
+L_T=\widehat L\circ O.
 \]
 
-Meaning:
-
-> Given an observation interface, can the system's future first state coordinate be determined?
-
-The question is not whether the full internal state can be reconstructed.
-
-The question is whether the target can be computed from available observations.
-
----
-
-# Factorization Criterion
-
-An interface \(O\) is sufficient when:
-
-\[
-\exists \widehat L:
-L=\widehat L\circ O
-\]
-
-Equivalent test:
+A counterexample is a pair (x_a,x_b) for which
 
 \[
 O(x_a)=O(x_b)
-\Rightarrow
-L(x_a)=L(x_b)
+\quad\text{but}\quad
+L_T(x_a)\ne L_T(x_b).
 \]
 
-A failed interface produces:
+## Declared candidate interfaces
+
+| Interface | Observation | Result for (L_T) |
+|---|---|---|
+| Full state | (O(x)=x) | Sufficient |
+| First coordinate | (O(x)=x_1) | Insufficient |
+| Second coordinate | (O(x)=x_2) | Insufficient |
+| Target-aligned scalar | (O(x)=[1,0.81902]x) | Sufficient |
+
+The target-aligned scalar interface has (widehat L(y)=y). It shows why
+minimality is target-relative: one scalar can identify this scalar target,
+whereas full-state access remains necessary for targets such as complete
+trajectory reconstruction.
+
+The finite candidate menu is specified in interfaces.json. It is not a claim
+about every conceivable interface cost or an execution record for the broader
+frozen nonlinear (F_0) gate.
+
+## Correct reference values
 
 \[
-O(x_a)=O(x_b)
-\]
-
-but:
-
-\[
-L(x_a)\neq L(x_b)
-\]
-
-meaning the interface merged states that the target must distinguish.
-
----
-
-# Included Interfaces
-
-## 1. Full State Interface
-
-\[
-C=
+A^5=
 \begin{bmatrix}
-1&0\\
-0&1
-\end{bmatrix}
+1&0.81902\\
+0&0.59049
+\end{bmatrix}.
 \]
 
-Observation:
+Therefore,
 
 \[
-O(x)=x
+L_T([0,1]^\top)=0.81902,
+\qquad
+L_T([1,1]^\top)=1.81902.
 \]
 
-Result:
+## Scope
 
-factorization: verified
-status: sufficient
-
-Reason:
-
-The complete state determines the future trajectory.
-
----
-
-## 2. Position-Only Interface
-
-\[
-C=
-\begin{bmatrix}
-1&0
-\end{bmatrix}
-\]
-
-Observation:
-
-\[
-O(x)=x_1
-\]
-
-Two states:
-
-\[
-x_a=
-\begin{bmatrix}
-1\\
-0
-\end{bmatrix}
-\]
-
-\[
-x_b=
-\begin{bmatrix}
-1\\
-1
-\end{bmatrix}
-\]
-
-produce:
-
-\[
-O(x_a)=O(x_b)
-\]
-
-but evolve differently:
-
-\[
-L(x_a)\neq L(x_b)
-\]
-
-Result:
-
-factorization: rejected
-status: insufficient
-
----
-
-## 3. Hidden-Dimension Interface
-
-\[
-C=
-\begin{bmatrix}
-0&1
-\end{bmatrix}
-\]
-
-The interface observes only the second dimension.
-
-The first dimension directly affects the target.
-
-Result:
-
-factorization: rejected
-status: insufficient
-
----
-
-# Counterexample Principle
-
-Every failed interface has the same structure:
-
-## Observation collision
-
-\[
-O(x_a)=O(x_b)
-\]
-
-## Target divergence
-
-\[
-L(x_a)\neq L(x_b)
-\]
-
-The collision demonstrates that information necessary for the target has been removed.
-
----
-
-# Minimal Interface Search
-
-The search evaluates candidate observation matrices.
-
-Objective:
-
-\[
-\min C(O)
-\]
-
-subject to:
-
-\[
-L=\widehat L\circ O
-\]
-
-For this system:
-
-minimum sufficient dimension: 2
-minimum sufficient interface: full state
-
-The result is specific to this target and dynamics.
-
-A different target may require less information.
-
----
-
-# Files
-
-F0_linear/
-├── README.md
-├── system.json
-├── interfaces.json
-├── targets.json
-├── factorization_check.json
-├── counterexamples.json
-├── minimal_interface_search.json
-└── traces/
-├── system_A.json
-├── system_B.json
-└── equivalence_classes.json
-
----
-
-# Role in Interface Theory
-
-`F0_linear` establishes the baseline before introducing:
-
-- nonlinear dynamics;
-- stochastic observations;
-- hidden-state generalization;
-- temporal delays;
-- nonstationary systems;
-- adaptive interfaces.
-
-The progression is:
-
-F0_linear
-|
-├── F1_nonlinear
-|
-├── F2_hidden_state
-|
-├── F3_stochastic
-|
-├── F4_delay
-|
-├── F5_nonstationary
-|
-└── F6_adaptive_interface
-
----
-
-# Scientific Interpretation
-
-The benchmark validates:
-
-\[
-\boxed{
-\text{Computation cannot recover distinctions that the interface has eliminated.}
-}
-\]
-
-The limiting factor is not solver power.
-
-The limiting factor is whether the observation boundary preserves the information required by the target.
-
-`F0_linear` is the smallest environment where that boundary can be measured exactly.
+This example illustrates the factorization criterion. It does not validate an
+adaptive target, a correctability metric, or a mechanism. For the current
+class-scoped evidence, consult the [frozen result ledger](../../docs/RESULT_LEDGER.md).
