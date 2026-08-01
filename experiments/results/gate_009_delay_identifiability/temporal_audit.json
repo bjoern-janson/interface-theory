@@ -8,5 +8,12 @@
   "minimum_scalar_observation_cost": 2,
   "minimum_observation_lag": 1,
   "all_lower_scalar_cost_candidates_failed": true,
-  "scope": "No delay sweep or additive interface-cost law."
+  "scope": "No delay sweep or additive interface-cost law.",
+  "evidence_class": "FROZEN_SUMMARY_RECORD",
+  "reproducibility": {
+    "status": "SUMMARY_RECORD_ONLY",
+    "raw_candidate_audit": "NOT_COMMITTED",
+    "generation_script": "NOT_COMMITTED",
+    "correction_note": "This artifact records the frozen conclusion after prior incompatible or invented summary material was removed. It is not a complete independently reproducible candidate-level audit."
+  }
 }
