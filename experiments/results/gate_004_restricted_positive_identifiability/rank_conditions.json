@@ -1,0 +1,199 @@
+{
+  "gate_id": "GATE-004",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+  "artifact_type": "rank_conditions",
+
+  "purpose": {
+    "description": "Verify sufficient rank conditions for positive identifiability within a restricted linear evolution class.",
+    "role": "Establish a constructive positive case after finite-interface non-identifiability results.",
+    "not_used_for": [
+      "universal identifiability claims",
+      "metric construction",
+      "estimator optimization outside declared class"
+    ]
+  },
+
+  "formal_setup": {
+    "system_class": {
+      "symbol": "F_linear",
+
+      "definition": {
+        "evolution_model": "theta_t = Phi(t) alpha",
+
+        "parameters": {
+          "alpha": "unknown evolution coefficient vector"
+        }
+      }
+    },
+
+    "target": {
+      "symbol": "L",
+
+      "definition": "future state functional evaluated at target time T",
+
+      "form": {
+        "L(theta)=phi(T)^T alpha"
+      }
+    },
+
+    "observation_model": {
+      "symbol": "O",
+
+      "definition": "spatially observable projections over selected temporal samples",
+
+      "form": {
+        "observations": "Y = X_T alpha"
+      }
+    }
+  },
+
+  "identifiability_condition": {
+    "primary_condition": {
+      "statement": "phi(T) belongs to rowspace(X_T)",
+
+      "verified": true
+    },
+
+    "equivalent_condition": {
+      "statement": "ker(X_T) subseteq ker(phi(T)^T)",
+
+      "verified": true
+    },
+
+    "factorization": {
+      "exists": true,
+
+      "statement": "L = L_hat o O"
+    }
+  },
+
+  "rank_analysis": {
+    "design_matrix": {
+      "name": "X_T",
+
+      "dimensions": [
+        2,
+        2
+      ],
+
+      "matrix": [
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ]
+      ]
+    },
+
+    "rank": {
+      "value": 2,
+
+      "full_parameter_rank": true
+    },
+
+    "target_vector": {
+      "phi_T": [
+        1,
+        2
+      ]
+    },
+
+    "rowspace_membership": {
+      "phi_T_in_rowspace": true
+    }
+  },
+
+  "null_space_check": {
+    "observation_null_space": {
+      "dimension": 0
+    },
+
+    "target_null_space_relation": {
+      "ker_X_subset_ker_L": true
+    },
+
+    "hidden_target_modes": {
+      "exist": false
+    }
+  },
+
+  "spatial_observability": {
+    "condition": {
+      "statement": "sampled observations expose all target-relevant state components",
+
+      "verified": true
+    },
+
+    "unobservable_target_directions": []
+  },
+
+  "temporal_rank_analysis": {
+    "evolution_basis_dimension": 2,
+
+    "required_temporal_rank": 2,
+
+    "observed_temporal_rank": 2,
+
+    "condition_satisfied": true
+  },
+
+  "comparison_to_failure_cases": {
+    "finite_interface_failure": {
+      "failure_mode": "observation equivalence classes contain different target values"
+    },
+
+    "current_gate": {
+      "result": "observation classes are target-pure"
+    }
+  },
+
+  "theorem_result": {
+    "status": "PASSED",
+
+    "statement": "Within the declared linear evolution class, the target is identifiable when spatial observability holds and phi(T) lies in the row space of the temporal design matrix."
+  },
+
+  "scope": {
+    "valid_for": [
+      "declared linear evolution family",
+      "known basis functions",
+      "noiseless observations",
+      "declared observation operator"
+    ],
+
+    "not_established": [
+      "unknown evolution families",
+      "nonlinear dynamics",
+      "adversarial drift",
+      "stochastic finite-sample recovery"
+    ]
+  },
+
+  "validation": {
+    "rank_computation": "passed",
+    "null_space_verification": "passed",
+    "factorization_check": "passed",
+    "scope_constraints": "passed"
+  },
+
+  "decision": {
+    "gate_status": "PASSED",
+
+    "meaning": "The declared target is identifiable from the declared interface under the restricted class.",
+
+    "next_authorized_step": [
+      "construct exact decoder",
+      "test approximate/noisy extension",
+      "evaluate minimal interface requirements"
+    ]
+  },
+
+  "notes": [
+    "This gate establishes the positive counterpart to Gate 003.",
+    "Identifiability is restored by matching interface structure to target structure.",
+    "The result supports interface-first measurement design."
+  ]
+}
