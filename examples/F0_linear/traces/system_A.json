@@ -1,0 +1,262 @@
+{
+  "example_id": "F0_linear",
+  "artifact_type": "trajectory_trace",
+  "trace_id": "system_A",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+
+  "purpose": {
+    "description": "Record a complete state trajectory for System A under the canonical linear dynamics.",
+    "role": "Provide ground-truth state evolution for observation equivalence and factorization tests.",
+    "usage": [
+      "counterexample construction",
+      "interface projection",
+      "target evaluation"
+    ]
+  },
+
+  "system": {
+    "system_id": "A",
+
+    "initial_state": {
+      "x_0": [
+        1.0,
+        0.0
+      ]
+    },
+
+    "transition_matrix": [
+      [
+        1.0,
+        0.2
+      ],
+      [
+        0.0,
+        0.9
+      ]
+    ],
+
+    "dynamics": "x_{t+1}=Ax_t",
+
+    "horizon": 5
+  },
+
+  "trajectory": [
+    {
+      "t": 0,
+
+      "state": [
+        1.0,
+        0.0
+      ],
+
+      "observation_interfaces": {
+        "I_full_state": [
+          1.0,
+          0.0
+        ],
+
+        "I_position_only": [
+          1.0
+        ],
+
+        "I_hidden_dimension": [
+          0.0
+        ],
+
+        "I_scalar_projection": [
+          1.0
+        ]
+      }
+    },
+
+    {
+      "t": 1,
+
+      "state": [
+        1.0,
+        0.0
+      ],
+
+      "observation_interfaces": {
+        "I_full_state": [
+          1.0,
+          0.0
+        ],
+
+        "I_position_only": [
+          1.0
+        ],
+
+        "I_hidden_dimension": [
+          0.0
+        ],
+
+        "I_scalar_projection": [
+          1.0
+        ]
+      }
+    },
+
+    {
+      "t": 2,
+
+      "state": [
+        1.0,
+        0.0
+      ],
+
+      "observation_interfaces": {
+        "I_full_state": [
+          1.0,
+          0.0
+        ],
+
+        "I_position_only": [
+          1.0
+        ],
+
+        "I_hidden_dimension": [
+          0.0
+        ],
+
+        "I_scalar_projection": [
+          1.0
+        ]
+      }
+    },
+
+    {
+      "t": 3,
+
+      "state": [
+        1.0,
+        0.0
+      ],
+
+      "observation_interfaces": {
+        "I_full_state": [
+          1.0,
+          0.0
+        ],
+
+        "I_position_only": [
+          1.0
+        ],
+
+        "I_hidden_dimension": [
+          0.0
+        ],
+
+        "I_scalar_projection": [
+          1.0
+        ]
+      }
+    },
+
+    {
+      "t": 4,
+
+      "state": [
+        1.0,
+        0.0
+      ],
+
+      "observation_interfaces": {
+        "I_full_state": [
+          1.0,
+          0.0
+        ],
+
+        "I_position_only": [
+          1.0
+        ],
+
+        "I_hidden_dimension": [
+          0.0
+        ],
+
+        "I_scalar_projection": [
+          1.0
+        ]
+      }
+    },
+
+    {
+      "t": 5,
+
+      "state": [
+        1.0,
+        0.0
+      ],
+
+      "target_values": {
+        "T_current_position": 1.0,
+
+        "T_future_position": 1.0,
+
+        "T_hidden_state": 0.0
+      },
+
+      "observation_interfaces": {
+        "I_full_state": [
+          1.0,
+          0.0
+        ],
+
+        "I_position_only": [
+          1.0
+        ],
+
+        "I_hidden_dimension": [
+          0.0
+        ],
+
+        "I_scalar_projection": [
+          1.0
+        ]
+      }
+    }
+  ],
+
+  "derived_properties": {
+    "trajectory_stability": {
+      "classification": "fixed_point",
+
+      "reason": "Initial state lies on invariant trajectory."
+    },
+
+    "target_signature": {
+      "future_position": 1.0,
+
+      "hidden_state": 0.0
+    }
+  },
+
+  "equivalence_role": {
+    "paired_with": "system_B",
+
+    "purpose": "Compare observation equivalence under insufficient interfaces.",
+
+    "expected_relation": {
+      "I_position_only": "equivalent",
+
+      "I_hidden_dimension": "not_equivalent",
+
+      "I_full_state": "not_equivalent"
+    }
+  },
+
+  "validation": {
+    "trajectory_rollout_verified": true,
+
+    "matrix_application_verified": true,
+
+    "target_computation_verified": true
+  },
+
+  "decision": {
+    "status": "VALID",
+
+    "meaning": "System A trace provides ground truth for linear interface factorization experiments."
+  }
+}
