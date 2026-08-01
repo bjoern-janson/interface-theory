@@ -1,0 +1,143 @@
+{
+  "gate_id": "GATE-002",
+  "protocol_version": "CMI_v0.2",
+  "artifact_type": "checkpoint_features",
+
+  "purpose": {
+    "description": "Frozen updater-pathway observations available before held-out continuation.",
+    "role": "Define the information content of the candidate interface.",
+    "not_used_for": [
+      "future target labels",
+      "post-continuation outcomes",
+      "estimator optimization"
+    ]
+  },
+
+  "interface": {
+    "name": "CMI updater pathway interface",
+    "version": "v0.2",
+
+    "observation_scope": {
+      "access": [
+        "checkpoint state summaries",
+        "controlled replay pathway features",
+        "pre-continuation updater signatures"
+      ],
+
+      "excluded": [
+        "future continuation trajectory",
+        "held-out adaptation outcome",
+        "oracle target variable"
+      ]
+    }
+  },
+
+  "feature_schema": {
+    "feature_groups": [
+      {
+        "name": "checkpoint_state",
+        "features": [
+          "state_summary_vector",
+          "revision_context_encoding",
+          "active_update_configuration"
+        ]
+      },
+
+      {
+        "name": "update_transition",
+        "features": [
+          "observed_update_delta",
+          "transition_direction",
+          "local_update_consistency"
+        ]
+      },
+
+      {
+        "name": "replay_response",
+        "features": [
+          "replay_output_signature",
+          "response_stability",
+          "pathway_alignment"
+        ]
+      }
+    ]
+  },
+
+  "systems": [
+    {
+      "system_id": "A",
+
+      "target_class": "HIGH",
+
+      "checkpoint": {
+        "time": "pre_continuation",
+        "feature_vector": [
+          "checkpoint_signature_X",
+          "transition_signature_X",
+          "replay_signature_X"
+        ]
+      },
+
+      "interface_signature": {
+        "hash": "signature_X",
+        "equivalence_class": "E1"
+      }
+    },
+
+    {
+      "system_id": "B",
+
+      "target_class": "LOW",
+
+      "checkpoint": {
+        "time": "pre_continuation",
+        "feature_vector": [
+          "checkpoint_signature_X",
+          "transition_signature_X",
+          "replay_signature_X"
+        ]
+      },
+
+      "interface_signature": {
+        "hash": "signature_X",
+        "equivalence_class": "E1"
+      }
+    }
+  ],
+
+  "equivalence_check": {
+    "observation_map": "O_CMI_v0.2",
+
+    "result": {
+      "system_A_signature": "signature_X",
+      "system_B_signature": "signature_X",
+      "observationally_equivalent": true
+    }
+  },
+
+  "target_alignment": {
+    "held_out_target_available": false,
+
+    "separate_target_record": "held_out_continuation_results.json",
+
+    "purpose": "Prevent leakage between interface observation and target evaluation."
+  },
+
+  "leakage_controls": {
+    "target_feature_included": false,
+    "future_outcome_included": false,
+    "post_failure_information_included": false
+  },
+
+  "validation": {
+    "schema_valid": true,
+    "feature_freeze_applied": true,
+    "interface_boundary_respected": true
+  },
+
+  "notes": [
+    "The identical interface signature for systems A and B is intentional and forms the basis of the Gate 002 counterexample.",
+    "Checkpoint similarity alone does not establish identical future adaptation.",
+    "This artifact defines what the measurement interface can see before continuation."
+  ]
+}
