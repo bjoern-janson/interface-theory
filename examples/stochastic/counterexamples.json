@@ -1,0 +1,374 @@
+{
+  "example_id": "stochastic",
+  "artifact_type": "counterexamples",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+
+  "purpose": {
+    "description": "Collect adversarial stochastic examples where interfaces fail to preserve target-relevant distributions.",
+    "role": "Demonstrate probabilistic non-identifiability failures.",
+    "principle": "If observation distributions are equivalent while target distributions differ, the interface is insufficient."
+  },
+
+  "formal_condition": {
+    "failure": {
+      "observation_equivalence": "P(O_I|x_A)=P(O_I|x_B)",
+
+      "target_divergence": "P(L|x_A)!=P(L|x_B)"
+    },
+
+    "interpretation": "The interface collapses distinct stochastic generators into the same observable distribution."
+  },
+
+  "system": {
+    "dynamics": {
+      "equation": "x_{t+1}=1.1*x_t+epsilon_t"
+    },
+
+    "process_noise": {
+      "distribution": "Normal(0,0.05)"
+    },
+
+    "observation": {
+      "equation": "y_t=x_t+eta_t"
+    },
+
+    "observation_noise": {
+      "distribution": "Normal(0,0.1)"
+    }
+  },
+
+  "counterexamples": [
+    {
+      "id": "CE_stochastic_observation_overlap_001",
+
+      "name": "Same noisy observation distribution, different latent states",
+
+      "interface": "I_observation",
+
+      "latent_processes": [
+        {
+          "process_id": "A",
+
+          "state_distribution": {
+            "mean": 1.0,
+
+            "variance": 0.05
+          }
+        },
+        {
+          "process_id": "B",
+
+          "state_distribution": {
+            "mean": 1.05,
+
+            "variance": 0.05
+          }
+        }
+      ],
+
+      "observation_comparison": {
+        "P(y|A)": "approximately_equal",
+
+        "P(y|B)": "approximately_equal",
+
+        "distribution_overlap": "high"
+      },
+
+      "target_comparison": {
+        "target": "T_current_state_distribution",
+
+        "P(x|A)": "different",
+
+        "P(x|B)": "different",
+
+        "equivalent": false
+      },
+
+      "result": {
+        "factorization": false,
+
+        "failure_type": "distributional_aliasing"
+      }
+    },
+
+    {
+      "id": "CE_stochastic_finite_sample_001",
+
+      "name": "Insufficient samples hide distribution differences",
+
+      "interface": "I_distribution_estimator",
+
+      "sample_count": 5,
+
+      "latent_processes": [
+        {
+          "process_id": "A",
+
+          "true_mean": 1.0
+        },
+        {
+          "process_id": "B",
+
+          "true_mean": 1.3
+        }
+      ],
+
+      "estimated_distribution": {
+        "A": {
+          "mean": 1.12
+        },
+
+        "B": {
+          "mean": 1.15
+        }
+      },
+
+      "observation_comparison": {
+        "estimated_difference": "small",
+
+        "true_difference": "large"
+      },
+
+      "target_comparison": {
+        "target": "T_hidden_process_class",
+
+        "equivalent": false
+      },
+
+      "result": {
+        "factorization": "temporarily_fails",
+
+        "failure_type": "finite_sample_error"
+      }
+    },
+
+    {
+      "id": "CE_stochastic_point_estimate_001",
+
+      "name": "Point estimate destroys uncertainty information",
+
+      "interface": "I_observation",
+
+      "latent_processes": [
+        {
+          "process_id": "A",
+
+          "state_distribution": {
+            "mean": 1.0,
+
+            "variance": 0.01
+          }
+        },
+        {
+          "process_id": "B",
+
+          "state_distribution": {
+            "mean": 1.0,
+
+            "variance": 0.5
+          }
+        }
+      ],
+
+      "observation_comparison": {
+        "point_estimate": {
+          "A": 1.0,
+
+          "B": 1.0
+        },
+
+        "equivalent": true
+      },
+
+      "target_comparison": {
+        "target": "T_uncertainty_calibration",
+
+        "uncertainty_structure": {
+          "A": "low",
+
+          "B": "high"
+        },
+
+        "equivalent": false
+      },
+
+      "result": {
+        "factorization": false,
+
+        "failure_type": "uncertainty_collapse"
+      }
+    },
+
+    {
+      "id": "CE_stochastic_model_mismatch_001",
+
+      "name": "Incorrect belief model produces false certainty",
+
+      "interface": "I_belief_state",
+
+      "assumed_model": {
+        "process_noise": 0.05,
+
+        "observation_noise": 0.1
+      },
+
+      "true_model": {
+        "process_noise": 0.2,
+
+        "observation_noise": 0.5
+      },
+
+      "belief_output": {
+        "uncertainty": "low"
+      },
+
+      "true_uncertainty": {
+        "uncertainty": "high"
+      },
+
+      "target": {
+        "id": "T_uncertainty_calibration"
+      },
+
+      "result": {
+        "factorization": false,
+
+        "failure_type": "model_mismatch"
+      }
+    },
+
+    {
+      "id": "CE_stochastic_process_aliasing_001",
+
+      "name": "Different generators produce identical observations",
+
+      "interface": "I_observation",
+
+      "processes": [
+        {
+          "process_id": "A",
+
+          "dynamics": {
+            "a": 1.1,
+
+            "noise": "Normal(0,0.05)"
+          }
+        },
+        {
+          "process_id": "B",
+
+          "dynamics": {
+            "a": 1.05,
+
+            "noise": "Normal(0,0.1)"
+          }
+        }
+      ],
+
+      "observation_distribution": {
+        "P(y|A)": "equal_to",
+
+        "P(y|B)": "equal_to"
+      },
+
+      "target_distribution": {
+        "P(f|A)": "different",
+
+        "P(f|B)": "different"
+      },
+
+      "result": {
+        "factorization": false,
+
+        "failure_type": "dynamics_aliasing"
+      }
+    },
+
+    {
+      "id": "CE_stochastic_intervention_limit_001",
+
+      "name": "Weak interventions fail to separate processes",
+
+      "interface": "I_intervention",
+
+      "intervention": {
+        "magnitude": "insufficient"
+      },
+
+      "processes": [
+        {
+          "process_id": "A",
+
+          "response_difference": 0.01
+        },
+        {
+          "process_id": "B",
+
+          "response_difference": 0.011
+        }
+      ],
+
+      "signal_to_noise_ratio": "low",
+
+      "result": {
+        "factorization": "conditional",
+
+        "failure_type": "weak_causal_signal"
+      }
+    }
+  ],
+
+  "failure_taxonomy": {
+    "distributional_aliasing": {
+      "description": "Different latent states produce overlapping observation distributions."
+    },
+
+    "finite_sample_error": {
+      "description": "Available data is insufficient to distinguish probability structures."
+    },
+
+    "uncertainty_collapse": {
+      "description": "Interface discards variance and confidence information."
+    },
+
+    "model_mismatch": {
+      "description": "Internal probabilistic model differs from the true process."
+    },
+
+    "dynamics_aliasing": {
+      "description": "Different transition rules generate indistinguishable observations."
+    }
+  },
+
+  "summary": {
+    "total_counterexamples": 6,
+
+    "central_result": "Stochastic interfaces fail when probability structures relevant to the target are erased or indistinguishable."
+  },
+
+  "comparison_to_deterministic_cases": {
+    "deterministic_failure": "same observation, different target",
+
+    "stochastic_failure": "same observation distribution, different target distribution"
+  },
+
+  "validation": {
+    "counterexamples_defined": true,
+
+    "probabilistic_failure_conditions_verified": true,
+
+    "uncertainty_failures_covered": true
+  },
+
+  "decision": {
+    "status": "READY",
+
+    "meaning": "Counterexample suite for stochastic interface non-identifiability."
+  },
+
+  "notes": [
+    "Noise does not automatically destroy identifiability; discarded uncertainty does.",
+    "The benchmark distinguishes random variation from representational failure.",
+    "A stochastic interface must preserve the probability structure required by the target."
+  ]
+}
