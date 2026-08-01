@@ -82,13 +82,14 @@ selection and observable authority-flow pilot.
 - The archived delay, hidden-state, stochastic, and nonstationary example JSON
   files are **INVALIDATED_LEGACY** tombstones. Their former self-certifying
   fields were removed.
-- The GitHub Actions integrity workflow validates repository consistency only;
-  it does not regenerate the missing candidate-level audits. No raw-audit
-  generator is currently committed.
+- The GitHub Actions integrity workflow validates repository consistency and
+  regenerates the Gate 013 complete audit. It does not regenerate the missing
+  candidate-level audits for the earlier summary-only records.
 
 ## Required before independent replication claims
 
-A future replication-quality update must add, for each frozen result:
+A future replication-quality update must add, for each remaining
+summary-only frozen result:
 
 1. the complete candidate table or equivalence-class audit;
 2. the generating command or deterministic script;
