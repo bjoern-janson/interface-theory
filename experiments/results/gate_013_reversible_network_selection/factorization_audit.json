@@ -13,7 +13,7 @@
     ],
     "assumptions": [
       "Three candidate mechanisms with fixed directed dependency semantics.",
-      "Deterministic phase-A suppression followed by a held-out phase-B regime reversal.",
+      "Deterministic phase-A suppression followed by a post-suppression phase-B reversal intervention.",
       "No hidden state, noise, drift, rewiring, or learning beyond declared policies."
     ]
   },
@@ -415,7 +415,6 @@
       "counterexample_witnesses": []
     }
   ],
-  "minimum_scalar_readout_cost": 3,
   "minimum_identifying_interfaces": [
     [
       "baseline",
@@ -423,6 +422,86 @@
       "downstream_flow"
     ]
   ],
-  "all_lower_cost_interfaces_failed": true,
-  "decision": "RECORD_GATE_1_ONLY; estimation, predictive validity, and mechanism claims remain closed."
+  "decision": "RECORD_GATE_1_ONLY; estimation, predictive validity, and mechanism claims remain closed.",
+  "target_relevant_projection": {
+    "readouts": [
+      "reversal_recovery",
+      "downstream_flow"
+    ],
+    "scalar_readout_cost": 2,
+    "identifiable": true,
+    "observation_classes": [
+      {
+        "observation": [
+          0,
+          0
+        ],
+        "systems": [
+          "delete_independent"
+        ],
+        "targets": [
+          [
+            0,
+            0
+          ]
+        ]
+      },
+      {
+        "observation": [
+          0,
+          1
+        ],
+        "systems": [
+          "delete_propagating"
+        ],
+        "targets": [
+          [
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "observation": [
+          1,
+          0
+        ],
+        "systems": [
+          "reversible_independent"
+        ],
+        "targets": [
+          [
+            1,
+            0
+          ]
+        ]
+      },
+      {
+        "observation": [
+          1,
+          1
+        ],
+        "systems": [
+          "reversible_propagating"
+        ],
+        "targets": [
+          [
+            1,
+            1
+          ]
+        ]
+      }
+    ],
+    "counterexample_witnesses": []
+  },
+  "minimum_protocol_scalar_readout_cost": 3,
+  "minimum_target_relevant_scalar_readout_cost": 2,
+  "mandatory_protocol_controls": [
+    "baseline"
+  ],
+  "all_lower_protocol_cost_interfaces_failed": true,
+  "constructive_factorization": {
+    "map": "L_hat(1, r, k) = (r, k)",
+    "scope": "Operational interface composition by design; not discovery of an adaptive-system invariant."
+  }
 }
