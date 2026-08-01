@@ -29,11 +29,12 @@ canonical in the evidence index establish a current frozen result.
 | Gate 011 — hidden-plus-delay composition | \(F_{HD}\) | Unique minimum has three scalar observations at lag one; no supra-compositional penalty or lower-cost synergy in the frozen class. | Record scoped composition |
 | Gate 012 — nonstationary identifiability | \(F_N\) | Under known closed linear drift, two pre-target slices identify the \(t=2\) target; no interface below scalar cost four succeeds. | Record scoped result |
 
-## Target-specific factorization pilot
+## Target-specific factorization gates
 
 | Gate | Declared class and target | Scientific result | Decision |
 |---|---|---|---|
 | Gate 013 — operational reopenability and flow composition | Four labeled records in \(F_{RS}\), \(L_{RS}=(R_{\mathrm{reopen}},K_{\mathrm{flow}})\) | Individual probes are non-identifying for the joint target. Direct label/readout aliases make the combined mandatory-baseline protocol identifying at protocol cost three; the derived informative projection costs two within the declared binary probes. | Record Gate 1 only; estimation, predictive validity, and intervention remain closed. |
+| Gate 014 — cross-context dynamic factorization | 216 deterministic rational systems in \(F_{014}\), with identification contexts \(-1,0\) and target context \(+1\) | Every informative interface below probe cost four has a preserved counterexample. Three incomparable cost-four interfaces induce 54 target-homogeneous classes of size four and retain structural dynamics diversity. | Record `PASS_NONTRIVIAL_QUOTIENT` as finite target-preserving compression only; Gates 2–4 remain closed. |
 
 The complete contract, deterministic generator, and all counterexample witnesses
 are committed under [Gate 013](gate_013_reversible_network_selection/README.md).
@@ -41,6 +42,14 @@ This is a deliberately finite operational composition by construction. The
 generator simulates no suppression, recurrence, graph edges, authority
 redistribution, propagation, or relearning, and establishes no result about
 general authority dynamics, diversity preservation, or adaptive intelligence.
+
+The frozen Gate 014 contract, generator, complete quotient audit, and execution
+report are committed under
+[Gate 014](gate_014_dynamic_reopenability_flow/README.md). Architecture labels
+and operational outcomes dissociate, and target assays are disjoint from the
+identification interface. The passing quotient remains a finite-class result:
+it does not rule out lookup over interface fingerprints or establish
+generalization, prediction, or mechanism benefit.
 
 ## Legacy Gate 005 and Gate 007 audit records
 
@@ -65,3 +74,4 @@ total sufficient interfaces. See [EVIDENCE_INDEX.md](../docs/EVIDENCE_INDEX.md).
 A failed factorization gate blocks estimator development for that declared
 \((F,L,\mathfrak I)\) branch. A successful finite-class gate does not establish
 predictive validity or mechanism efficacy.
+

@@ -31,6 +31,7 @@ otherwise.
 | \(F_{HD}\): fixed latent state plus fixed one-step delay | \(\{-1,0,1\}\times\{r_\Sigma\}\times\{\lambda=1\}\) | \((3,1,3,1,1,\mathrm{exact})\) | The lifted hidden-state interface is the unique minimum at lag one. No supra-compositional cost or lower-cost synergy appears in this ladder. | [FHD record](EVIDENCE_INDEX.md#fhd-hidden-state--delay) |
 | \(F_N\): closed known-linear-drift response class | \(\{t=0,1\}\times\{e=-1\}\times\{r_1,r_2\}\) | \((4,2,1,1,1,\mathrm{exact})\) | One pre-target slice fails; two slices identify the held-out \(t=2\) coefficient vector. Among 150 interfaces, 26 identify; none below scalar cost four does. | [FN record](EVIDENCE_INDEX.md#fn-known-linear-drift) |
 | \(F_{RS}\): four-record operational label class | \(\{\text{baseline},\text{reversal recovery},\text{downstream flow}\}\) | \(C_{\mathrm{protocol}}=3;\ C_{\mathrm{informative}}=2\) within the declared readout vocabulary | Each individual probe is insufficient for the joint target. The combined protocol factors by direct label/readout aliases. The complete finite audit and deterministic generator are committed. | [FRS record](EVIDENCE_INDEX.md#frs-reversible-network-selection) |
+| \(F_{014}\): 216-system cross-context rational dynamic class | Identification contexts \(c\in\{-1,0\}\); target context \(c=+1\). A representative minimum is \(\{R_{-1},R_0,K_{-1},K_{\mathrm{context}}\}\). | \(C_{\mathrm{protocol}}=5\) probes including the mandatory constant baseline; \(C_{\mathrm{informative}}=4\) probes and 29 raw scalar coordinates within the frozen vocabulary. | Every lower-cost interface fails. Three incomparable cost-four interfaces induce 54 target-homogeneous classes of size four, with all 216 dynamically inequivalent systems in collisions. | [F014 record](EVIDENCE_INDEX.md#f014-cross-context-dynamic-factorization) |
 
 ## Interpretation limits
 
@@ -49,11 +50,20 @@ otherwise.
   Protocol cost three includes a mandatory constant baseline. Informative cost
   two is minimal only over the two predeclared binary probes; unrestricted
   scalar encodings are outside the audit.
+- The \(F_{014}\) result is an exact finite target-preserving compression
+  result under a shared affine context law. A noninjective quotient prevents
+  lookup by complete system identity, but the induced target map may still be
+  an arbitrary lookup over finite interface fingerprints. It establishes no
+  estimator, cross-class generalization, predictive validity, or mechanism
+  efficacy. Probe and scalar costs are scoped to the frozen vocabulary.
 - No row opens estimator development without a separate frozen estimation
   protocol.
 
 ## Current decision
 
-Theoretical pruning is complete for the original interface classes. The
-\(F_{RS}\) target has passed only its scoped factorization gate; a separate
-frozen estimation protocol is required before measurement development begins.
+Theoretical pruning is complete for the original interface classes. Gate 013
+remains the direct-projection control. Gate 014 establishes only scoped
+cross-context finite factorization over \(F_{014}\); Gates 2–4 remain closed.
+Any estimation, prediction, or mechanism study requires a separately frozen
+protocol and cannot modify either completed Gate 1 record.
+
