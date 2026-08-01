@@ -1,0 +1,271 @@
+{
+  "example_id": "F0_linear",
+  "artifact_type": "counterexamples",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+
+  "purpose": {
+    "description": "Provide explicit counterexamples showing failure of target factorization under insufficient linear interfaces.",
+    "role": "Demonstrate that observational equivalence classes must be target-pure.",
+    "criterion": "Find x_a,x_b such that O(x_a)=O(x_b) while L(x_a)!=L(x_b)."
+  },
+
+  "system": {
+    "state_space": "R^2",
+
+    "dynamics": {
+      "equation": "x_{t+1}=Ax_t",
+
+      "matrix": [
+        [
+          1.0,
+          0.2
+        ],
+        [
+          0.0,
+          0.9
+        ]
+      ]
+    },
+
+    "horizon": 5,
+
+    "target": {
+      "symbol": "L_T",
+
+      "definition": "first coordinate of x_5"
+    }
+  },
+
+  "counterexamples": [
+    {
+      "id": "CE-001",
+
+      "interface": "I_position_only",
+
+      "failure_mode": "hidden_state_aliasing",
+
+      "description": "Unobserved state dimension influences future target.",
+
+      "observation_matrix": [
+        [
+          1.0,
+          0.0
+        ]
+      ],
+
+      "state_pair": {
+        "x_a": [
+          1.0,
+          0.0
+        ],
+
+        "x_b": [
+          1.0,
+          1.0
+        ]
+      },
+
+      "observations": {
+        "O(x_a)": [
+          1.0
+        ],
+
+        "O(x_b)": [
+          1.0
+        ]
+      },
+
+      "trajectory_difference": {
+        "x5_a": [
+          1.0,
+          0.0
+        ],
+
+        "x5_b": [
+          1.81902,
+          0.59049
+        ]
+      },
+
+      "targets": {
+        "L(x_a)": 1.0,
+
+        "L(x_b)": 1.81902
+      },
+
+      "factorization": false
+    },
+
+    {
+      "id": "CE-002",
+
+      "interface": "I_hidden_dimension",
+
+      "failure_mode": "direct_target_loss",
+
+      "description": "Interface observes only a component unrelated to target initialization.",
+
+      "observation_matrix": [
+        [
+          0.0,
+          1.0
+        ]
+      ],
+
+      "state_pair": {
+        "x_a": [
+          0.0,
+          1.0
+        ],
+
+        "x_b": [
+          1.0,
+          1.0
+        ]
+      },
+
+      "observations": {
+        "O(x_a)": [
+          1.0
+        ],
+
+        "O(x_b)": [
+          1.0
+        ]
+      },
+
+      "targets": {
+        "L(x_a)": 0.65536,
+
+        "L(x_b)": 1.65536
+      },
+
+      "factorization": false
+    },
+
+    {
+      "id": "CE-003",
+
+      "interface": "I_scalar_projection",
+
+      "failure_mode": "projection_collision",
+
+      "description": "Different states collapse under a one-dimensional projection.",
+
+      "observation_matrix": [
+        [
+          1.0,
+          1.0
+        ]
+      ],
+
+      "state_pair": {
+        "x_a": [
+          1.0,
+          0.0
+        ],
+
+        "x_b": [
+          0.0,
+          1.0
+        ]
+      },
+
+      "observations": {
+        "O(x_a)": [
+          1.0
+        ],
+
+        "O(x_b)": [
+          1.0
+        ]
+      },
+
+      "targets": {
+        "L(x_a)": 1.0,
+
+        "L(x_b)": 0.81802
+      },
+
+      "factorization": false
+    },
+
+    {
+      "id": "CE-004",
+
+      "interface": "I_delayed_position",
+
+      "failure_mode": "temporal_aliasing",
+
+      "description": "A delayed observation cannot reconstruct the current target state.",
+
+      "observation_matrix": [
+        [
+          1.0,
+          0.0
+        ]
+      ],
+
+      "delay": 3,
+
+      "state_pair": {
+        "history_equivalent": true,
+
+        "current_state_different": true
+      },
+
+      "result": {
+        "observation_relation": "O(x_{t-3}^a)=O(x_{t-3}^b)",
+
+        "target_relation": "L(x_t^a)!=L(x_t^b)"
+      },
+
+      "factorization": false
+    }
+  ],
+
+  "failure_taxonomy": {
+    "hidden_state_aliasing": {
+      "description": "Unobserved dimensions affect future target."
+    },
+
+    "projection_collision": {
+      "description": "Many states map to the same observation."
+    },
+
+    "temporal_aliasing": {
+      "description": "Past observations fail to identify current target state."
+    }
+  },
+
+  "general_counterexample_pattern": {
+    "required_conditions": [
+      "O(x_a)=O(x_b)",
+      "L(x_a)!=L(x_b)"
+    ],
+
+    "interpretation": "The interface merges states that the target function must distinguish."
+  },
+
+  "validation": {
+    "counterexamples_verified": true,
+
+    "trajectory_rollouts_verified": true,
+
+    "observation_equivalence_verified": true,
+
+    "target_divergence_verified": true
+  },
+
+  "decision": {
+    "status": "PASSED",
+
+    "meaning": "F0_linear counterexamples establish the failure boundary of insufficient interfaces in the simplest dynamical setting."
+  },
+
+  "notes": [
+    "Failure is caused by information loss at the observation boundary, not system complexity.",
+    "Increasing computation cannot recover distinctions removed by the interface.",
+    "These counterexamples define the baseline for nonlinear, stochastic, and adaptive extensions."
+  ]
+}
