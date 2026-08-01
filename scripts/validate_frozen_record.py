@@ -28,8 +28,13 @@ def main() -> None:
     json_files = list(ROOT.rglob("*.json"))
     require(json_files, "Expected JSON evidence artifacts.")
     for path in json_files:
-        with path.open(encoding="utf-8") as handle:
-            json.load(handle)
+        try:
+            with path.open(encoding="utf-8") as handle:
+                json.load(handle)
+        except json.JSONDecodeError as error:
+            raise AssertionError(
+                f"Invalid JSON: {path.relative_to(ROOT)}: {error}"
+            ) from error
 
     f0 = load("examples/F0_linear/factorization_check.json")
     aligned = next(
