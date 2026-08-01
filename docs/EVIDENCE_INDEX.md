@@ -31,6 +31,38 @@ generator.
 | FHD hidden state plus delay | [source](../experiments/results/gate_011_hd_composition/composition_search.json) | `da90ee5d7f68c6840e44e7925727917851733659` | **FROZEN_SUMMARY_RECORD.** 100 candidates; 13 identifying; unique cost-three minimum at lag one. Summary record only. Raw candidate table: not committed. Generator: not committed. |
 | FN known linear drift | [source](../experiments/results/gate_012_nonstationary_identifiability/temporal_design_results.json) | `6f6217d44ec18785688c39cf3707c78a97f6f640` | **FROZEN_SUMMARY_RECORD.** 150 candidates; 26 identifying; seven minimum-cost candidates at scalar cost four. Summary record only. Raw candidate table: not committed. Generator: not committed. |
 
+## Stable evidence anchors
+
+<a id="f0-nonlinear-baseline"></a>
+### F0 nonlinear baseline
+
+Frozen ledger row for the closed deterministic nonlinear response class.
+
+<a id="fh-hidden-state"></a>
+### FH hidden state
+
+Frozen ledger row for the fixed latent-state extension.
+
+<a id="fd-delay"></a>
+### FD delay
+
+Frozen ledger row for the fixed known one-step-delay extension.
+
+<a id="fs-stochastic-readout-noise"></a>
+### FS stochastic readout noise
+
+Frozen ledger row for known stationary binary readout noise.
+
+<a id="fhd-hidden-state--delay"></a>
+### FHD hidden state + delay
+
+Frozen ledger row for the combined fixed latent-state and one-step-delay class.
+
+<a id="fn-known-linear-drift"></a>
+### FN known linear drift
+
+Frozen ledger row for the closed known-linear-drift class.
+
 ## Corrections and limitations
 
 - The nonlinear \(F_0\) ledger result is distinct from the illustrative
@@ -42,9 +74,9 @@ generator.
 - The archived delay, hidden-state, stochastic, and nonstationary example JSON
   files are **INVALIDATED_LEGACY** tombstones. Their former self-certifying
   fields were removed.
-- No GitHub Actions workflow or full raw-audit generator is claimed by this
-  index. The repository's validation workflow checks content integrity only;
-  it cannot regenerate evidence that was never committed.
+- The GitHub Actions integrity workflow validates repository consistency only;
+  it does not regenerate the missing candidate-level audits. No raw-audit
+  generator is currently committed.
 
 ## Required before independent replication claims
 

@@ -8,6 +8,7 @@ candidate-level audits identified in docs/EVIDENCE_INDEX.md.
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 
@@ -97,6 +98,29 @@ def main() -> None:
     )
     require(stochastic.get("error_tolerance") == 0.05, "Incorrect stochastic tolerance.")
     require("confidence_threshold" not in stochastic, "Ambiguous confidence field remains.")
+
+    ledger_text = (ROOT / "docs/RESULT_LEDGER.md").read_text(encoding="utf-8")
+    evidence_text = (ROOT / "docs/EVIDENCE_INDEX.md").read_text(encoding="utf-8")
+    expected_evidence_anchors = {
+        "f0-nonlinear-baseline",
+        "fh-hidden-state",
+        "fd-delay",
+        "fs-stochastic-readout-noise",
+        "fhd-hidden-state--delay",
+        "fn-known-linear-drift",
+    }
+    referenced_evidence_anchors = set(
+        re.findall(r"EVIDENCE_INDEX\.md#([a-z0-9-]+)", ledger_text)
+    )
+    require(
+        referenced_evidence_anchors == expected_evidence_anchors,
+        "Ledger evidence links changed without updating the six-anchor contract.",
+    )
+    for anchor in expected_evidence_anchors:
+        require(
+            f'<a id="{anchor}"></a>' in evidence_text,
+            f"Missing evidence anchor: {anchor}",
+        )
 
     for relative, text in {
         "README.md": "L=\\widehat L\\circ O",
