@@ -31,7 +31,8 @@ otherwise.
 | \(F_{HD}\): fixed latent state plus fixed one-step delay | \(\{-1,0,1\}\times\{r_\Sigma\}\times\{\lambda=1\}\) | \((3,1,3,1,1,\mathrm{exact})\) | The lifted hidden-state interface is the unique minimum at lag one. No supra-compositional cost or lower-cost synergy appears in this ladder. | [FHD record](EVIDENCE_INDEX.md#fhd-hidden-state--delay) |
 | \(F_N\): closed known-linear-drift response class | \(\{t=0,1\}\times\{e=-1\}\times\{r_1,r_2\}\) | \((4,2,1,1,1,\mathrm{exact})\) | One pre-target slice fails; two slices identify the held-out \(t=2\) coefficient vector. Among 150 interfaces, 26 identify; none below scalar cost four does. | [FN record](EVIDENCE_INDEX.md#fn-known-linear-drift) |
 
-| \(F_{RS}\): finite reversible-selection network class | \(\{\text{baseline},\text{reversal recovery},\text{downstream flow}\}\) | \((3,3,2,\mathrm{two\text{-}phase},1,\mathrm{exact})\) | Baseline and either individual behavioral intervention are non-identifying; the combined cost-three interface identifies \(L_{RS}=(R_{\mathrm{reopen}},K_{\mathrm{flow}})\). The complete finite audit and deterministic generator are committed. | [FRS record](EVIDENCE_INDEX.md#frs-reversible-network-selection) |\n
+| \(F_{RS}\): finite reversible-selection network class | \(\{\text{baseline},\text{reversal recovery},\text{downstream flow}\}\) | \((3,3,2,\mathrm{two\text{-}phase},1,\mathrm{exact})\) | Baseline and either individual behavioral intervention are non-identifying; the combined cost-three interface identifies \(L_{RS}=(R_{\mathrm{reopen}},K_{\mathrm{flow}})\). The complete finite audit and deterministic generator are committed. | [FRS record](EVIDENCE_INDEX.md#frs-reversible-network-selection) |
+
 ## Interpretation limits
 
 - The \(F_S\) row concerns **readout noise**, not stochastic transition
