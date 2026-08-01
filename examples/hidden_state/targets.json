@@ -1,0 +1,289 @@
+{
+  "example_id": "hidden_state",
+  "artifact_type": "target_definitions",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+
+  "purpose": {
+    "description": "Define target functions used to evaluate whether observation interfaces preserve latent-state information.",
+    "role": "Specify what must remain identifiable despite hidden system variables.",
+    "principle": "Interface sufficiency is always relative to a target."
+  },
+
+  "system_reference": {
+    "state_symbol": "z_t",
+
+    "state_components": {
+      "observable": "x_t",
+
+      "hidden": "h_t"
+    },
+
+    "dynamics": {
+      "equation": "z_{t+1}=Az_t",
+
+      "matrix": [
+        [
+          1.0,
+          0.5
+        ],
+        [
+          0.0,
+          0.95
+        ]
+      ]
+    }
+  },
+
+  "targets": [
+    {
+      "target_id": "T_current_observable",
+
+      "name": "Current observable state",
+
+      "definition": {
+        "symbol": "L_x(z_t)",
+
+        "expression": "x_t"
+      },
+
+      "horizon": 0,
+
+      "semantic_description": "Read the currently visible state component.",
+
+      "dependency": {
+        "state_dimensions": [
+          0
+        ]
+      },
+
+      "difficulty": "low",
+
+      "expected_interfaces": {
+        "I_observation_only": "sufficient",
+
+        "I_history_window": "sufficient",
+
+        "I_full_state": "sufficient"
+      }
+    },
+
+    {
+      "target_id": "T_hidden_state",
+
+      "name": "Current latent state estimation",
+
+      "definition": {
+        "symbol": "L_h(z_t)",
+
+        "expression": "h_t"
+      },
+
+      "horizon": 0,
+
+      "semantic_description": "Recover the hidden causal variable at the current timestep.",
+
+      "dependency": {
+        "state_dimensions": [
+          1
+        ]
+      },
+
+      "difficulty": "hidden_state",
+
+      "expected_interfaces": {
+        "I_observation_only": "insufficient",
+
+        "I_history_window": "window_dependent",
+
+        "I_full_state": "sufficient",
+
+        "I_intervention": "improved"
+      }
+    },
+
+    {
+      "target_id": "T_future_observable",
+
+      "name": "Future observable prediction",
+
+      "definition": {
+        "symbol": "L_x^T(z_t)",
+
+        "expression": "x_{t+T}"
+      },
+
+      "horizon": 10,
+
+      "semantic_description": "Predict future visible behavior influenced by hidden state.",
+
+      "dependency": {
+        "state_dimensions": [
+          0,
+          1
+        ],
+
+        "reason": "Hidden state contributes to future observable evolution."
+      },
+
+      "difficulty": "dynamic_identification",
+
+      "expected_interfaces": {
+        "I_observation_only": "insufficient",
+
+        "I_history_window": "conditional",
+
+        "I_full_state": "sufficient",
+
+        "I_intervention": "improved"
+      }
+    },
+
+    {
+      "target_id": "T_future_hidden",
+
+      "name": "Future latent state prediction",
+
+      "definition": {
+        "symbol": "L_h^T(z_t)",
+
+        "expression": "h_{t+T}"
+      },
+
+      "horizon": 10,
+
+      "semantic_description": "Predict future hidden-state evolution.",
+
+      "dependency": {
+        "state_dimensions": [
+          1
+        ]
+      },
+
+      "difficulty": "latent_dynamics",
+
+      "expected_interfaces": {
+        "I_observation_only": "insufficient",
+
+        "I_history_window": "conditional",
+
+        "I_full_state": "sufficient",
+
+        "I_intervention": "improved"
+      }
+    },
+
+    {
+      "target_id": "T_latent_trajectory",
+
+      "name": "Hidden trajectory reconstruction",
+
+      "definition": {
+        "symbol": "L_{latent}(z_t)",
+
+        "expression": "(h_t,h_{t+1},...,h_{t+T})"
+      },
+
+      "horizon": 10,
+
+      "semantic_description": "Recover the complete hidden-state trajectory.",
+
+      "dependency": {
+        "state_dimensions": [
+          1
+        ]
+      },
+
+      "difficulty": "high",
+
+      "expected_interfaces": {
+        "I_observation_only": "insufficient",
+
+        "I_history_window": "requires_observability",
+
+        "I_full_state": "sufficient",
+
+        "I_intervention": "potentially_sufficient"
+      }
+    },
+
+    {
+      "target_id": "T_regime_identity",
+
+      "name": "Latent state equivalence classification",
+
+      "definition": {
+        "symbol": "L_R(z_a,z_b)",
+
+        "expression": "whether two states have equivalent future behavior"
+      },
+
+      "horizon": 10,
+
+      "semantic_description": "Determine whether hidden states belong to the same future-relevant equivalence class.",
+
+      "dependency": {
+        "state_dimensions": [
+          0,
+          1
+        ]
+      },
+
+      "difficulty": "equivalence_learning",
+
+      "expected_interfaces": {
+        "I_observation_only": "insufficient",
+
+        "I_history_window": "conditional",
+
+        "I_intervention": "strong"
+      }
+    }
+  ],
+
+  "target_equivalence_relation": {
+    "definition": "Two latent states are equivalent when they produce identical target values.",
+
+    "notation": {
+      "z_a~_Lz_b": "L(z_a)=L(z_b)"
+    },
+
+    "factorization_requirement": {
+      "statement": "Observation equivalence must refine latent target equivalence."
+    }
+  },
+
+  "benchmark_usage": {
+    "factorization_tests": [
+      "T_hidden_state",
+      "T_future_observable",
+      "T_future_hidden",
+      "T_latent_trajectory"
+    ],
+
+    "minimal_interface_search": true,
+
+    "counterexample_generation": true,
+
+    "belief_state_analysis": true
+  },
+
+  "validation": {
+    "target_dependencies_verified": true,
+
+    "latent_coupling_verified": true,
+
+    "interface_expectations_defined": true
+  },
+
+  "decision": {
+    "status": "READY",
+
+    "meaning": "Targets define the identifiability requirements for hidden-state interfaces."
+  },
+
+  "notes": [
+    "A target may be identifiable without full state reconstruction.",
+    "Future prediction can require latent information even when current observations are sufficient.",
+    "The benchmark separates hidden-state estimation from target-specific identifiability."
+  ]
+}
