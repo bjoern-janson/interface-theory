@@ -135,9 +135,18 @@ def main() -> None:
         "Gate 013 identifiability result changed.",
     )
     require(
-        gate_013["minimum_scalar_readout_cost"] == 3
-        and gate_013["all_lower_cost_interfaces_failed"],
-        "Gate 013 minimum-interface certificate changed.",
+        gate_013["minimum_protocol_scalar_readout_cost"] == 3
+        and gate_013["minimum_target_relevant_scalar_readout_cost"] == 2
+        and gate_013["all_lower_protocol_cost_interfaces_failed"],
+        "Gate 013 protocol/informative cost certificate changed.",
+    )
+    require(
+        gate_013["target_relevant_projection"]["identifiable"],
+        "Gate 013 informative two-readout projection changed.",
+    )
+    require(
+        gate_013["constructive_factorization"]["map"] == "L_hat(1, r, k) = (r, k)",
+        "Gate 013 constructive factorization changed.",
     )
     audit_script = ROOT / "experiments/gate_013_reversible_network_selection/run_gate_013.py"
     generated = subprocess.run(
