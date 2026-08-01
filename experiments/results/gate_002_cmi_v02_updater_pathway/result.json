@@ -1,0 +1,146 @@
+{
+  "gate_id": "GATE-002",
+  "protocol_version": "CMI_v0.2",
+  "artifact_type": "gate_result",
+
+  "evaluation": {
+    "title": "CMI v0.2 updater-pathway sufficiency test",
+    "question": "Does controlled updater-pathway access provide an identifiable interface for the declared adaptive revision target?",
+    "gate_layer": "Interface Theory",
+    "status": "EXECUTED"
+  },
+
+  "declared_target": {
+    "name": "future_adaptation_target",
+    "symbol": "L",
+    "description": "held-out future revision reliability under continuation",
+    "target_access_during_measurement": false
+  },
+
+  "interface": {
+    "name": "CMI checkpoint-and-replay updater pathway assay",
+    "version": "v0.2",
+
+    "allowed_information": [
+      "checkpoint states",
+      "replay trajectories",
+      "controlled updater pathway features"
+    ],
+
+    "excluded_information": [
+      "future continuation outcome",
+      "held-out target labels",
+      "post-measurement adaptation collapse"
+    ]
+  },
+
+  "preregistered_question": {
+    "hypothesis": "Updater-pathway observations identify future adaptation target differences.",
+    "failure_condition": "Target-changing systems remain observationally equivalent under frozen checkpoint-and-replay features."
+  },
+
+  "test_suite": {
+    "total_tests": 31,
+    "passed": 31,
+    "failed": 0,
+
+    "test_categories": [
+      "local mimics",
+      "strategic mimics",
+      "behavioral controls",
+      "checkpoint replay controls",
+      "held-out continuation probes"
+    ]
+  },
+
+  "results": {
+    "development_pathway_features": {
+      "auc": 0.5,
+      "interpretation": "non-identifying"
+    },
+
+    "held_out_probe_results": {
+      "local_mimics": {
+        "distinguishable": true,
+        "used_for_scoring": false
+      },
+
+      "strategic_mimics": {
+        "distinguishable": true,
+        "used_for_scoring": false
+      },
+
+      "fragile_updater_mimic": {
+        "distinguishable_before_outcome": false,
+        "later_adaptation_failure": true
+      }
+    }
+  },
+
+  "identifiability_analysis": {
+    "observation_map": "O_CMI_v0_2",
+
+    "counterexample": {
+      "exists": true,
+      "statement": "O(A)=O(B) while L(A)!=L(B)"
+    },
+
+    "factorization": {
+      "claim": "L = L_hat o O_CMI_v0_2",
+      "exists": false,
+      "reason": "target-changing continuation remains hidden"
+    }
+  },
+
+  "decision": {
+    "gate_status": "FAILED",
+
+    "measurement_authorization": {
+      "candidate_estimator": false,
+      "reason": "interface insufficiency"
+    },
+
+    "next_allowed_action": [
+      "record measurement boundary",
+      "pursue causal identifiability theory",
+      "pursue disjoint trajectory-property program"
+    ]
+  },
+
+  "scope": {
+    "supports": [
+      "tested finite interface is insufficient",
+      "updater-pathway access tested here does not guarantee identifiability"
+    ],
+
+    "does_not_support": [
+      "universal impossibility of adaptive measurement",
+      "failure of latent construct",
+      "need for CMI v0.3"
+    ]
+  },
+
+  "no_repair_rule": {
+    "active": true,
+
+    "statement": "No estimator revision may be introduced as a response to this failure without a separately preregistered interface theory result."
+  },
+
+  "artifacts": {
+    "result_report": "RESULTS.md",
+    "interface_definition": "CORRECTABILITY_MEASUREMENT_INTERFACE_V0_2.md",
+    "machine_result": "results/cmi_v02_sufficiency_v01.json"
+  },
+
+  "validation": {
+    "preregistration_checked": true,
+    "feature_freeze_checked": true,
+    "all_tests_passed": true
+  },
+
+  "notes": [
+    "This gate weakens the current measurement program, not the underlying adaptive revision construct.",
+    "The result closes the CMI v0.2 estimator-development branch.",
+    "Further progress requires a new identifiability result or a disjoint target program."
+  ]
+}
