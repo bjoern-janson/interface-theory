@@ -1,0 +1,144 @@
+{
+  "gate_id": "GATE-002",
+  "protocol_version": "CMI_v0.2",
+  "artifact_type": "updater_feature_auc",
+
+  "purpose": {
+    "description": "Diagnostic separability analysis of frozen updater-pathway features.",
+    "role": "Measure whether available interface features contain detectable differences between evaluated systems.",
+    "not_used_for": [
+      "defining the target",
+      "proving identifiability",
+      "authorizing estimator development"
+    ]
+  },
+
+  "classifier": {
+    "name": "updater_feature_classifier",
+
+    "task": {
+      "description": "Classify future adaptation target class using only frozen CMI v0.2 observations.",
+      "input": "O_CMI_v0.2",
+      "output": "target_class"
+    },
+
+    "features": [
+      "checkpoint_signature",
+      "transition_signature",
+      "replay_signature"
+    ],
+
+    "excluded_features": [
+      "held_out_continuation",
+      "future target value",
+      "oracle state"
+    ]
+  },
+
+  "dataset": {
+    "source": [
+      "local_mimics",
+      "strategic_mimics",
+      "fragile_updater_mimic"
+    ],
+
+    "feature_freeze": true,
+
+    "label_access": {
+      "training": true,
+      "evaluation": true,
+
+      "interpretation": "labels used only for diagnostic separability evaluation"
+    }
+  },
+
+  "results": {
+    "overall": {
+      "auc": 0.5,
+
+      "interpretation": "chance-level separability under frozen interface observations"
+    },
+
+    "accuracy": {
+      "value": 0.5,
+
+      "interpretation": "equivalent to random classification"
+    },
+
+    "calibration": {
+      "available_information": "insufficient",
+      "result": "no stable target separation"
+    }
+  },
+
+  "breakdown": [
+    {
+      "assay": "local_mimics",
+
+      "result": {
+        "auc": 1.0,
+        "interpretation": "visible updater-pathway differences are detectable"
+      }
+    },
+
+    {
+      "assay": "strategic_mimics",
+
+      "result": {
+        "auc": 0.5,
+        "interpretation": "identical interface signatures prevent separation"
+      }
+    },
+
+    {
+      "assay": "fragile_updater_mimic",
+
+      "result": {
+        "auc": 0.5,
+        "interpretation": "future target divergence is hidden from interface"
+      }
+    }
+  ],
+
+  "factorization_relevance": {
+    "diagnostic_question": "Does the observation contain target-relevant information?",
+
+    "answer": {
+      "some_observable_variation": true,
+      "sufficient_target_information": false
+    },
+
+    "formal_note": "Classifier performance cannot exceed information available in O_CMI_v0.2."
+  },
+
+  "relationship_to_gate_result": {
+    "supports": [
+      "interface sensitivity is nonzero",
+      "interface insufficiency is target-specific"
+    ],
+
+    "does_not_support": [
+      "existence of valid target estimator",
+      "metric construction",
+      "universal impossibility"
+    ]
+  },
+
+  "validation": {
+    "feature_leakage_check": "passed",
+    "target_separation_check": "passed",
+    "frozen_feature_set_verified": true
+  },
+
+  "decision": {
+    "estimator_authorization": false,
+
+    "reason": "AUC measures diagnostic separability, not factorization existence. The factorization gate failed due to observational equivalence."
+  },
+
+  "notes": [
+    "The chance-level result on adversarial pairs is expected and is the decisive diagnostic.",
+    "The perfect local mimic result demonstrates that the interface is not universally blind.",
+    "The failure occurs because target-relevant distinctions can remain outside the observation map."
+  ]
+}
