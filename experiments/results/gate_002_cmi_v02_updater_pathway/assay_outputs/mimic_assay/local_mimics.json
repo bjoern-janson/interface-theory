@@ -1,0 +1,144 @@
+{
+  "gate_id": "GATE-002",
+  "protocol_version": "CMI_v0.2",
+  "artifact_type": "local_mimics",
+
+  "purpose": {
+    "description": "Evaluate whether the frozen updater-pathway interface can distinguish systems with local observable pathway differences.",
+    "role": "Positive control for interface sensitivity.",
+    "not_used_for": [
+      "target definition",
+      "future adaptation scoring",
+      "repairing failed identifiability"
+    ]
+  },
+
+  "assay": {
+    "name": "local_updater_mimic_assay",
+    "question": "Can CMI v0.2 separate systems when observable updater features differ locally?",
+
+    "success_condition": {
+      "condition": "different updater signatures produce distinguishable observations",
+      "interpretation": "interface can detect exposed pathway variation"
+    }
+  },
+
+  "interface": {
+    "name": "CMI updater pathway interface",
+    "version": "v0.2",
+
+    "features_used": [
+      "checkpoint_signature",
+      "transition_signature",
+      "replay_signature"
+    ],
+
+    "features_excluded": [
+      "future continuation outcome",
+      "target label",
+      "oracle internal state"
+    ]
+  },
+
+  "mimic_pairs": [
+    {
+      "pair_id": "LOCAL_001",
+
+      "system_A": {
+        "id": "A_local",
+        "target_class": "CONTROL",
+        "signature": {
+          "checkpoint_signature": "checkpoint_X",
+          "transition_signature": "transition_X",
+          "replay_signature": "replay_X"
+        }
+      },
+
+      "system_B": {
+        "id": "B_local",
+        "target_class": "CONTROL",
+        "signature": {
+          "checkpoint_signature": "checkpoint_Y",
+          "transition_signature": "transition_Y",
+          "replay_signature": "replay_Y"
+        }
+      },
+
+      "comparison": {
+        "observationally_equivalent": false,
+        "signature_difference": true
+      }
+    },
+
+    {
+      "pair_id": "LOCAL_002",
+
+      "system_A": {
+        "id": "A_local_2",
+        "target_class": "CONTROL",
+        "signature": {
+          "checkpoint_signature": "checkpoint_M",
+          "transition_signature": "transition_M",
+          "replay_signature": "replay_M"
+        }
+      },
+
+      "system_B": {
+        "id": "B_local_2",
+        "target_class": "CONTROL",
+        "signature": {
+          "checkpoint_signature": "checkpoint_N",
+          "transition_signature": "transition_N",
+          "replay_signature": "replay_N"
+        }
+      },
+
+      "comparison": {
+        "observationally_equivalent": false,
+        "signature_difference": true
+      }
+    }
+  ],
+
+  "classification_results": {
+    "classifier": {
+      "type": "updater_signature_classifier"
+    },
+
+    "results": {
+      "auc": 1.0,
+      "accuracy": 1.0,
+
+      "interpretation": "local observable differences are detectable"
+    }
+  },
+
+  "equivalence_analysis": {
+    "result": {
+      "local_variations_detectable": true,
+
+      "interface_is_completely_blind": false
+    }
+  },
+
+  "relationship_to_gate_failure": {
+    "importance": "positive_control",
+
+    "interpretation": [
+      "The interface detects differences when those differences are expressed in observed pathway features.",
+      "Gate 002 failure arises from target-relevant distinctions that remain outside those features."
+    ]
+  },
+
+  "validation": {
+    "feature_freeze_respected": true,
+    "target_leakage_check": "passed",
+    "protocol_compliance": true
+  },
+
+  "notes": [
+    "Local mimic success prevents the conclusion that CMI v0.2 has no observational resolution.",
+    "The decisive failure case is the fragile updater mimic, where future targets diverge despite shared observed signatures.",
+    "Sensitivity to visible variation does not imply sufficient target identifiability."
+  ]
+}
