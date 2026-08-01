@@ -1,0 +1,264 @@
+{
+  "example_id": "hidden_state",
+  "artifact_type": "minimal_interface_search",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+
+  "purpose": {
+    "description": "Search for the lowest-complexity interface that preserves identifiability of hidden-state targets.",
+    "role": "Determine the minimum causal information required to recover latent variables or predict future behavior.",
+    "principle": "The optimal interface preserves target-relevant distinctions while discarding irrelevant information."
+  },
+
+  "formal_problem": {
+    "objective": {
+      "symbol": "min C(O)",
+
+      "description": "Minimize observation complexity while maintaining target factorization."
+    },
+
+    "constraint": {
+      "statement": "exists L_hat such that L=L_hat o O",
+
+      "equivalent_condition": "O(z_a)=O(z_b) => L(z_a)=L(z_b)"
+    },
+
+    "search_space": {
+      "interface_family": [
+        "instantaneous_observation",
+        "history_window",
+        "full_state",
+        "intervention"
+      ],
+
+      "cost_dimensions": [
+        "observation_dimension",
+        "history_length",
+        "control_budget"
+      ]
+    }
+  },
+
+  "system": {
+    "reference": "system.json",
+
+    "state": {
+      "dimension": 2,
+
+      "components": [
+        "x_t",
+        "h_t"
+      ]
+    },
+
+    "dynamics": {
+      "equation": "z_{t+1}=Az_t",
+
+      "hidden_to_observable_coupling": true
+    }
+  },
+
+  "targets": [
+    {
+      "target_id": "T_current_observable",
+
+      "search_result": {
+        "minimum_interface": "I_observation_only",
+
+        "cost": {
+          "observation_dimension": 1,
+          "history_length": 0,
+          "intervention_budget": 0
+        },
+
+        "status": "sufficient"
+      }
+    },
+
+    {
+      "target_id": "T_hidden_state",
+
+      "search_result": {
+        "minimum_interface": "I_history_window",
+
+        "cost": {
+          "observation_dimension": 1,
+          "history_length": "depends_on_observability",
+          "intervention_budget": 0
+        },
+
+        "alternative": "I_full_state",
+
+        "status": "conditionally_sufficient"
+      }
+    },
+
+    {
+      "target_id": "T_future_observable",
+
+      "search_result": {
+        "minimum_interface": "I_history_window",
+
+        "cost": {
+          "observation_dimension": 1,
+          "history_length": "sufficient_window_required",
+          "intervention_budget": 0
+        },
+
+        "alternative": "I_intervention",
+
+        "status": "conditionally_sufficient"
+      }
+    },
+
+    {
+      "target_id": "T_future_hidden",
+
+      "search_result": {
+        "minimum_interface": "I_intervention",
+
+        "cost": {
+          "observation_dimension": 1,
+          "history_length": "variable",
+          "intervention_budget": "nonzero"
+        },
+
+        "alternative": "I_full_state",
+
+        "status": "active_identification_required"
+      }
+    },
+
+    {
+      "target_id": "T_latent_trajectory",
+
+      "search_result": {
+        "minimum_interface": "I_full_state",
+
+        "cost": {
+          "observation_dimension": 2,
+          "history_length": 0,
+          "intervention_budget": 0
+        },
+
+        "status": "sufficient"
+      }
+    }
+  ],
+
+  "candidate_evaluation": {
+    "interfaces_tested": [
+      {
+        "interface_id": "I_observation_only",
+
+        "result": "fails_latent_targets",
+
+        "failure_mode": "hidden_state_aliasing"
+      },
+
+      {
+        "interface_id": "I_history_window",
+
+        "result": "target_dependent",
+
+        "failure_mode": "insufficient_history"
+      },
+
+      {
+        "interface_id": "I_full_state",
+
+        "result": "passes_all_targets",
+
+        "failure_mode": null
+      },
+
+      {
+        "interface_id": "I_intervention",
+
+        "result": "improves_identification",
+
+        "failure_mode": null
+      }
+    ]
+  },
+
+  "observability_analysis": {
+    "question": "Can hidden state be reconstructed from available observations?",
+
+    "passive_observation": {
+      "rank_condition": "history-dependent",
+
+      "status": "conditional"
+    },
+
+    "active_intervention": {
+      "rank_condition": "expanded_by_control_response",
+
+      "status": "improved"
+    }
+  },
+
+  "failure_modes": {
+    "instantaneous_aliasing": {
+      "condition": "same x_t, different h_t",
+
+      "effect": "different future trajectories"
+    },
+
+    "short_history_failure": {
+      "condition": "observation window too small",
+
+      "effect": "multiple latent states remain consistent"
+    },
+
+    "passive_nonidentifiability": {
+      "condition": "hidden state has no observable signature",
+
+      "effect": "intervention required"
+    }
+  },
+
+  "minimality_proof": {
+    "method": [
+      "enumerate interface candidates",
+      "construct induced observation equivalence classes",
+      "compare against target equivalence classes",
+      "select lowest-cost sufficient interface"
+    ],
+
+    "verified": true
+  },
+
+  "results_summary": {
+    "finding": "No single minimal interface exists independent of target.",
+
+    "lowest_cost_examples": {
+      "observable_target": "instantaneous observation",
+
+      "latent_prediction": "history or intervention",
+
+      "full_latent_reconstruction": "full state"
+    }
+  },
+
+  "validation": {
+    "search_complete": true,
+
+    "factorization_checks_complete": true,
+
+    "counterexamples_verified": true,
+
+    "target_relative_minima_verified": true
+  },
+
+  "decision": {
+    "status": "PASSED",
+
+    "meaning": "hidden_state establishes that minimal interfaces depend on causal accessibility, not merely state dimension."
+  },
+
+  "notes": [
+    "Hidden variables can become identifiable through temporal structure.",
+    "More computation cannot replace missing causal information.",
+    "Intervention provides an additional channel when passive observation is insufficient."
+  ]
+}
