@@ -1,0 +1,318 @@
+{
+  "example_id": "hidden_state",
+  "artifact_type": "trajectory_trace",
+  "trace_id": "hidden_state_B",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+
+  "purpose": {
+    "description": "Record a latent-state trajectory that is observationally equivalent to hidden_state_A under restricted interfaces but diverges in future behavior.",
+    "role": "Provide the canonical hidden-state counterexample trace.",
+    "usage": [
+      "factorization failure verification",
+      "observation aliasing tests",
+      "latent trajectory comparison"
+    ]
+  },
+
+  "system": {
+    "system_id": "B",
+
+    "initial_state": {
+      "z_0": [
+        1.0,
+        1.0
+      ]
+    },
+
+    "state_components": {
+      "x_t": "observable",
+
+      "h_t": "hidden"
+    },
+
+    "transition_matrix": [
+      [
+        1.0,
+        0.5
+      ],
+      [
+        0.0,
+        0.95
+      ]
+    ],
+
+    "dynamics": "z_{t+1}=Az_t",
+
+    "horizon": 10
+  },
+
+  "trajectory": [
+    {
+      "t": 0,
+
+      "state": {
+        "x": 1.0,
+
+        "h": 1.0
+      },
+
+      "observations": {
+        "I_observation_only": [
+          1.0
+        ]
+      }
+    },
+
+    {
+      "t": 1,
+
+      "state": {
+        "x": 1.5,
+
+        "h": 0.95
+      },
+
+      "observations": {
+        "I_observation_only": [
+          1.5
+        ]
+      }
+    },
+
+    {
+      "t": 2,
+
+      "state": {
+        "x": 1.975,
+
+        "h": 0.9025
+      },
+
+      "observations": {
+        "I_observation_only": [
+          1.975
+        ]
+      }
+    },
+
+    {
+      "t": 3,
+
+      "state": {
+        "x": 2.42625,
+
+        "h": 0.857375
+      },
+
+      "observations": {
+        "I_observation_only": [
+          2.42625
+        ]
+      }
+    },
+
+    {
+      "t": 4,
+
+      "state": {
+        "x": 2.8549375,
+
+        "h": 0.81450625
+      },
+
+      "observations": {
+        "I_observation_only": [
+          2.8549375
+        ]
+      }
+    },
+
+    {
+      "t": 5,
+
+      "state": {
+        "x": 3.262190625,
+
+        "h": 0.7737809375
+      },
+
+      "observations": {
+        "I_observation_only": [
+          3.262190625
+        ]
+      }
+    },
+
+    {
+      "t": 6,
+
+      "state": {
+        "x": 3.648?,
+
+        "h": 0.735091890625
+      },
+
+      "observations": {
+        "I_observation_only": [
+          3.648? 
+        ]
+      }
+    },
+
+    {
+      "t": 7,
+
+      "state": {
+        "x": 4.015?,
+
+        "h": 0.69833729609375
+      },
+
+      "observations": {
+        "I_observation_only": [
+          4.015?
+        ]
+      }
+    },
+
+    {
+      "t": 8,
+
+      "state": {
+        "x": 4.364?,
+
+        "h": 0.6634204312890625
+      },
+
+      "observations": {
+        "I_observation_only": [
+          4.364?
+        ]
+      }
+    },
+
+    {
+      "t": 9,
+
+      "state": {
+        "x": 4.696?,
+
+        "h": 0.6302494097246094
+      },
+
+      "observations": {
+        "I_observation_only": [
+          4.696?
+        ]
+      }
+    },
+
+    {
+      "t": 10,
+
+      "state": {
+        "x": 5.011?,
+
+        "h": 0.5987369392383789
+      },
+
+      "target_values": {
+        "T_current_observable": 1.0,
+
+        "T_hidden_state": 0.5987369392383789,
+
+        "T_future_observable": 5.011?,
+
+        "T_future_hidden": 0.5987369392383789
+      },
+
+      "observations": {
+        "I_observation_only": [
+          5.011?
+        ]
+      }
+    }
+  ],
+
+  "paired_comparison": {
+    "paired_trace": "hidden_state_A",
+
+    "initial_observation_equivalence": {
+      "hidden_state_A": [
+        1.0
+      ],
+
+      "hidden_state_B": [
+        1.0
+      ],
+
+      "equivalent": true
+    },
+
+    "initial_latent_difference": {
+      "hidden_state_A": 0.0,
+
+      "hidden_state_B": 1.0,
+
+      "difference": 1.0
+    },
+
+    "future_divergence": {
+      "condition": "same_observation_different_future",
+
+      "verified": true
+    }
+  },
+
+  "counterexample_signature": {
+    "interface": "I_observation_only",
+
+    "failure_condition": {
+      "observation_equivalence": "true",
+
+      "target_equivalence": "false"
+    },
+
+    "formal": {
+      "O(z_A)=O(z_B)": true,
+
+      "L(z_A)!=L(z_B)": true
+    }
+  },
+
+  "derived_properties": {
+    "trajectory_type": "latent_excited_state",
+
+    "hidden_state_behavior": {
+      "decay_rate": 0.95,
+
+      "classification": "persistent_hidden_signal"
+    },
+
+    "causal_effect": {
+      "hidden_state_influences_visible_future": true
+    }
+  },
+
+  "validation": {
+    "trajectory_rollout_verified": false,
+
+    "note": "Several x-values intentionally require exact recalculation before final benchmark freeze.",
+
+    "observation_collision_verified": true,
+
+    "latent_divergence_verified": true
+  },
+
+  "decision": {
+    "status": "DRAFT",
+
+    "meaning": "Canonical hidden-state counterexample trajectory pending numeric precision cleanup."
+  },
+
+  "notes": [
+    "The important invariant is not the exact numeric trajectory but the initial observation collision and divergent future evolution.",
+    "Before benchmark release, replace approximate placeholders with exact rollout values.",
+    "This trace demonstrates that visible equality at one timestep does not imply causal equivalence."
+  ]
+}
