@@ -1,10 +1,9 @@
-# Gate 013 — Reversible Selection and Network Propagation
+# Gate 013 — Operational Reopenability and Flow Composition
 
 **Gate:** Factorization  
 **Status:** frozen Gate 1 contract  
-**Question:** Can a joint, target-level distinction between reversible
-selection and externally observable authority propagation be identified through
-a finite behavioral intervention interface?
+**Question:** Do two complementary operational target bits factor jointly
+through their declared projection interface over the four-record class?
 
 ## Scope
 
@@ -21,10 +20,10 @@ finite class has four members:
 
 | Identifier | Selection label | Influence-topology label |
 |---|---|---|
-| delete_independent | permanently delete a suppressed alternative | local influence only |
-| delete_propagating | permanently delete a suppressed alternative | local evidence changes a downstream behavioral response |
-| reversible_independent | retain a suppressed alternative so it can regain influence | local influence only |
-| reversible_propagating | retain a suppressed alternative so it can regain influence | local evidence changes a downstream behavioral response |
+| delete_independent | delete | independent |
+| delete_propagating | delete | propagating |
+| reversible_independent | reversible | independent |
+| reversible_propagating | reversible | propagating |
 
 The label names refer to a planned future dynamic experiment: phase-A
 suppression, a post-suppression reversal phase included in the Gate 1
@@ -50,8 +49,9 @@ R_{\mathrm{reopen}}=\mathbf 1[\text{selection label}=\text{reversible}],
 K_{\mathrm{flow}}=\mathbf 1[\text{topology label}=\text{propagating}].
 \]
 
-- \(R_{\mathrm{reopen}}\) is one exactly when a mechanism suppressed in phase
-  A regains behavioral influence after the phase-B reversal.
+- \(R_{\mathrm{reopen}}\) is named for future reopenability experiments, but
+  its executable value here is only the selection-label alias above. No
+  suppression or recovery is simulated.
 - \(K_{\mathrm{flow}}\) is the stipulated binary downstream-response label.
   It is not yet an estimated causal effect from contrasted interventions.
 
@@ -60,13 +60,13 @@ authority variable or a universal notion of diversity preservation.
 
 ## Frozen interface ladder
 
-The allowed behavioral readouts are:
+The allowed operational readouts are:
 
 | Readout | Experimental content |
 |---|---|
-| baseline | current performance before the intervention sequence |
-| reversal_recovery | phase-B recovery after phase-A suppression and reversal |
-| downstream_flow | node-3 behavioral response after a local contradiction at node 1 |
+| baseline | mandatory constant control \(O_B=1\) |
+| reversal_recovery | direct projection \(O_R=R_{\mathrm{reopen}}\) |
+| downstream_flow | direct projection \(O_K=K_{\mathrm{flow}}\) |
 
 The frozen ladder requires the constant baseline control in every active
 protocol: baseline alone, baseline plus each individual probe, and baseline
@@ -112,7 +112,7 @@ Consequently,
 \]
 
 Factorization is constructively true by design once both probes are available.
-The gate demonstrates reproducible interface composition, not discovery of a
+The gate demonstrates reproducible operational interface composition, not discovery of a
 nontrivial adaptive-system invariant. A scientifically stronger class must
 allow policy labels and operational outcomes to dissociate.
 
