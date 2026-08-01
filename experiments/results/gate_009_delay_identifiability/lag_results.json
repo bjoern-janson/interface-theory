@@ -26,5 +26,12 @@
     "lag": 1,
     "target_identifiable": true
   },
-  "decision": "Record a temporal-alignment requirement; no measurement gate."
+  "decision": "Record a temporal-alignment requirement; no measurement gate.",
+  "evidence_class": "FROZEN_SUMMARY_RECORD",
+  "reproducibility": {
+    "status": "SUMMARY_RECORD_ONLY",
+    "raw_candidate_audit": "NOT_COMMITTED",
+    "generation_script": "NOT_COMMITTED",
+    "correction_note": "This artifact records the frozen conclusion after prior incompatible or invented summary material was removed. It is not a complete independently reproducible candidate-level audit."
+  }
 }
