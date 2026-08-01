@@ -1,0 +1,230 @@
+{
+  "gate_id": "GATE-009",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+  "artifact_type": "lag_results",
+
+  "purpose": {
+    "description": "Evaluate how observation delay affects target identifiability and determine the minimum temporal access required to restore factorization.",
+    "role": "Extend Interface Theory from hidden-state ambiguity to delayed observation systems.",
+    "not_used_for": [
+      "claiming all delayed systems are non-identifiable",
+      "equating latency with information loss",
+      "replacing temporal interface design with faster sampling"
+    ]
+  },
+
+  "formal_setup": {
+    "system_class": {
+      "symbol": "F_D",
+
+      "description": "Dynamical systems where observations are delayed relative to underlying state evolution."
+    },
+
+    "state": {
+      "symbol": "x_t"
+    },
+
+    "observation_operator": {
+      "symbol": "O_tau",
+
+      "definition": "Returns observations offset by delay tau."
+    },
+
+    "target": {
+      "symbol": "L_T",
+
+      "description": "Future target dependent on system trajectory beyond observation time."
+    },
+
+    "identifiability_condition": {
+      "statement": "O_tau(f_a)=O_tau(f_b) implies L_T(f_a)=L_T(f_b)"
+    }
+  },
+
+  "delay_sweep": {
+    "tested_delays": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+
+    "interfaces_per_delay": 50,
+
+    "total_evaluated": 300
+  },
+
+  "lag_results": [
+    {
+      "delay": 0,
+
+      "description": "Synchronous observation",
+
+      "sufficient_interfaces": 18,
+
+      "failed_interfaces": 32,
+
+      "minimum_cost": 2,
+
+      "factorization": {
+        "exists": true
+      }
+    },
+
+    {
+      "delay": 1,
+
+      "description": "Single-step delayed observation",
+
+      "sufficient_interfaces": 14,
+
+      "failed_interfaces": 36,
+
+      "minimum_cost": 3,
+
+      "failure_mode": "future state ambiguity"
+    },
+
+    {
+      "delay": 2,
+
+      "description": "Two-step observation lag",
+
+      "sufficient_interfaces": 9,
+
+      "failed_interfaces": 41,
+
+      "minimum_cost": 4,
+
+      "failure_mode": "trajectory aliasing"
+    },
+
+    {
+      "delay": 3,
+
+      "description": "Extended delayed observation",
+
+      "sufficient_interfaces": 4,
+
+      "failed_interfaces": 46,
+
+      "minimum_cost": 5,
+
+      "failure_mode": "irrecoverable collapse under tested interface budget"
+    },
+
+    {
+      "delay": 4,
+
+      "description": "High latency regime",
+
+      "sufficient_interfaces": 1,
+
+      "failed_interfaces": 49,
+
+      "minimum_cost": 6,
+
+      "failure_mode": "insufficient temporal rank"
+    },
+
+    {
+      "delay": 5,
+
+      "description": "Extreme lag regime",
+
+      "sufficient_interfaces": 0,
+
+      "failed_interfaces": 50,
+
+      "minimum_cost": null,
+
+      "factorization": {
+        "exists": false,
+        "within_declared_interface_family": true
+      }
+    }
+  ],
+
+  "temporal_rank_analysis": {
+    "criterion": {
+      "statement": "target-relevant future directions must remain distinguishable after delay"
+    },
+
+    "failure_pattern": {
+      "description": "Increasing lag collapses distinct trajectories into identical delayed histories."
+    },
+
+    "observed_transition": {
+      "critical_delay": 3,
+
+      "meaning": "Beyond this point the tested interface family loses sufficient temporal access."
+    }
+  },
+
+  "minimal_interface_scaling": {
+    "delay_vs_cost": [
+      {
+        "tau": 0,
+        "minimum_cost": 2
+      },
+      {
+        "tau": 1,
+        "minimum_cost": 3
+      },
+      {
+        "tau": 2,
+        "minimum_cost": 4
+      },
+      {
+        "tau": 3,
+        "minimum_cost": 5
+      },
+      {
+        "tau": 4,
+        "minimum_cost": 6
+      }
+    ],
+
+    "relationship": {
+      "pattern": "approximately linear cost increase with delay",
+      "interpretation": "additional temporal information compensates for lost immediacy"
+    }
+  },
+
+  "connection_to_factorization": {
+    "successful_case": {
+      "statement": "Delay increases required interface refinement until observation fibers become target-pure."
+    },
+
+    "failure_case": {
+      "statement": "When delayed observations merge target-divergent trajectories, factorization fails."
+    }
+  },
+
+  "validation": {
+    "delay_sweep_complete": true,
+    "trajectory_matching_verified": true,
+    "target_divergence_verified": true,
+    "minimal_cost_audit_complete": true
+  },
+
+  "decision": {
+    "gate_status": "PASSED",
+
+    "meaning": "Temporal delay is an interface resource constraint rather than an automatic impossibility condition.",
+
+    "authorized_next_steps": [
+      "derive temporal-rank lower bounds",
+      "test noisy delayed interfaces",
+      "extend to stochastic delayed systems"
+    ]
+  },
+
+  "notes": [
+    "Delay converts accessible present information into a temporal inference problem.",
+    "The relevant quantity is not delay alone but whether delayed observation preserves target purity.",
+    "Additional history or interventions can compensate for lost temporal alignment."
+  ]
+}
