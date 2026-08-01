@@ -1,0 +1,289 @@
+{
+  "example_id": "hidden_state",
+  "artifact_type": "belief_equivalence_classes",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+
+  "purpose": {
+    "description": "Represent sets of latent states that remain indistinguishable under available observation histories.",
+    "role": "Measure uncertainty reduction as interfaces gain causal access.",
+    "usage": [
+      "belief-state analysis",
+      "temporal identifiability",
+      "minimal interface search"
+    ]
+  },
+
+  "formal_definition": {
+    "latent_state": {
+      "symbol": "z_t",
+
+      "components": [
+        "x_t",
+        "h_t"
+      ]
+    },
+
+    "belief_class": {
+      "definition": "B(O)= {z : O(z)=o}",
+
+      "meaning": "All latent states consistent with the available observation."
+    },
+
+    "target_sufficiency": {
+      "condition": "For every belief class B, all states must share the same target value.",
+
+      "failure": "A belief class contains target-divergent states."
+    }
+  },
+
+  "system": {
+    "state_space": "R^2",
+
+    "observation_model": {
+      "interface": "I_observation_only",
+
+      "equation": "y_t=x_t"
+    },
+
+    "transition_matrix": [
+      [
+        1.0,
+        0.5
+      ],
+      [
+        0.0,
+        0.95
+      ]
+    ]
+  },
+
+  "belief_classes": [
+    {
+      "class_id": "B0_instantaneous",
+
+      "interface": "I_observation_only",
+
+      "observation": [
+        1.0
+      ],
+
+      "members": [
+        {
+          "state_id": "hidden_state_A",
+
+          "state": [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "state_id": "hidden_state_B",
+
+          "state": [
+            1.0,
+            1.0
+          ]
+        }
+      ],
+
+      "belief_size": 2,
+
+      "target_values": {
+        "T_hidden_state": [
+          0.0,
+          1.0
+        ],
+
+        "T_future_observable": [
+          1.0,
+          1.5
+        ]
+      },
+
+      "purity": {
+        "status": "impure",
+
+        "reason": "Multiple latent states share the same observation but have different futures."
+      },
+
+      "factorization": false
+    },
+
+    {
+      "class_id": "B1_short_history",
+
+      "interface": "I_history_1",
+
+      "observation_history": [
+        1.0
+      ],
+
+      "members": [
+        {
+          "state_id": "hidden_state_A",
+
+          "state": [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "state_id": "hidden_state_B",
+
+          "state": [
+            1.0,
+            1.0
+          ]
+        }
+      ],
+
+      "belief_size": 2,
+
+      "purity": {
+        "status": "impure",
+
+        "reason": "A single timestep provides no temporal signature."
+      },
+
+      "factorization": false
+    },
+
+    {
+      "class_id": "B2_two_step_history",
+
+      "interface": "I_history_2",
+
+      "observation_history": [
+        1.0,
+        1.5
+      ],
+
+      "members": [
+        {
+          "state_id": "hidden_state_B",
+
+          "state": [
+            1.0,
+            1.0
+          ]
+        }
+      ],
+
+      "belief_size": 1,
+
+      "purity": {
+        "status": "pure",
+
+        "reason": "Temporal evolution separates latent explanations."
+      },
+
+      "factorization": true
+    },
+
+    {
+      "class_id": "B3_extended_history",
+
+      "interface": "I_history_5",
+
+      "observation_history": [
+        1.0,
+        1.5,
+        1.975,
+        2.42625,
+        2.8549375
+      ],
+
+      "members": [
+        {
+          "state_id": "hidden_state_B",
+
+          "state": [
+            1.0,
+            1.0
+          ]
+        }
+      ],
+
+      "belief_size": 1,
+
+      "purity": {
+        "status": "pure",
+
+        "reason": "Extended trajectory uniquely identifies the latent source."
+      },
+
+      "factorization": true
+    }
+  ],
+
+  "belief_reduction_analysis": {
+    "initial_observation": {
+      "belief_size": 2,
+
+      "entropy": "high"
+    },
+
+    "temporal_extension": {
+      "effect": "belief collapse",
+
+      "mechanism": "hidden state influences future observations"
+    },
+
+    "final_state": {
+      "belief_size": 1,
+
+      "entropy": "low"
+    }
+  },
+
+  "equivalence_partition_comparison": {
+    "instantaneous_partition": {
+      "classes": "large",
+
+      "contains_target_collisions": true
+    },
+
+    "history_partition": {
+      "classes": "smaller",
+
+      "contains_target_collisions": false
+    },
+
+    "interpretation": "Additional temporal information refines the latent-state partition."
+  },
+
+  "counterexample_signature": {
+    "condition": {
+      "same_observation": true,
+
+      "different_target": true
+    },
+
+    "states": [
+      "hidden_state_A",
+      "hidden_state_B"
+    ],
+
+    "result": "observation interface insufficient"
+  },
+
+  "validation": {
+    "belief_classes_defined": true,
+
+    "partition_logic_verified": true,
+
+    "target_purity_checks_defined": true
+  },
+
+  "decision": {
+    "status": "READY",
+
+    "meaning": "Belief equivalence classes provide the latent-state partition analysis layer for hidden_state."
+  },
+
+  "notes": [
+    "Belief classes make uncertainty explicit rather than treating hidden variables as missing labels.",
+    "An interface succeeds when every remaining ambiguity is target-irrelevant.",
+    "Temporal information works by shrinking equivalence classes."
+  ]
+}
