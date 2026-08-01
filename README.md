@@ -36,7 +36,7 @@ interface.
 | Gate | Question | A failure means |
 |---|---|---|
 | Factorization | Does (L) factor through (O) over (F)? | The target is not identifiable under this interface. |
-| Estimation | Can finite data estimate (widehat L) with declared uncertainty? | The target may be identifiable in principle but not measurable under the available budget. |
+| Estimation | Can finite data estimate \(\widehat L\) with declared uncertainty? | The target may be identifiable in principle but not measurable under the available budget. |
 | Predictive validity | Does the recovered target improve held-out prediction beyond preregistered baselines? | The target is measurable but currently redundant. |
 | Intervention | Can a candidate mechanism causally change the validated target? | The mechanism is not effective for that target. |
 
