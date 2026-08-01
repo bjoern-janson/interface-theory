@@ -1,0 +1,285 @@
+{
+  "example_id": "hidden_state",
+  "artifact_type": "counterexamples",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+
+  "purpose": {
+    "description": "Provide explicit latent-state counterexamples demonstrating failure of insufficient observation interfaces.",
+    "role": "Establish the boundary between hidden variables and identifiable hidden variables.",
+    "criterion": "Find states with identical interface outputs but divergent target values."
+  },
+
+  "formal_failure_condition": {
+    "observation_collision": "O(z_a)=O(z_b)",
+
+    "target_divergence": "L(z_a)!=L(z_b)",
+
+    "interpretation": "The interface collapses causal states that the target requires distinguishing."
+  },
+
+  "system": {
+    "state_space": "R^2",
+
+    "state_components": [
+      "x_t",
+      "h_t"
+    ],
+
+    "transition_matrix": [
+      [
+        1.0,
+        0.5
+      ],
+      [
+        0.0,
+        0.95
+      ]
+    ],
+
+    "horizon": 10
+  },
+
+  "counterexamples": [
+    {
+      "id": "CE-HS-001",
+
+      "interface": "I_observation_only",
+
+      "failure_mode": "instantaneous_hidden_state_aliasing",
+
+      "description": "Two latent states share the same visible state but have different future trajectories.",
+
+      "states": {
+        "z_a": [
+          1.0,
+          0.0
+        ],
+
+        "z_b": [
+          1.0,
+          1.0
+        ]
+      },
+
+      "observations": {
+        "O(z_a)": [
+          1.0
+        ],
+
+        "O(z_b)": [
+          1.0
+        ]
+      },
+
+      "observation_equivalent": true,
+
+      "future_evolution": {
+        "z_a_T": [
+          1.0,
+          0.0
+        ],
+
+        "z_b_T": [
+          6.013,
+          0.5987
+        ]
+      },
+
+      "targets": {
+        "T_hidden_state": {
+          "a": 0.0,
+
+          "b": 0.5987
+        },
+
+        "T_future_observable": {
+          "a": 1.0,
+
+          "b": 6.013
+        }
+      },
+
+      "factorization": false
+    },
+
+    {
+      "id": "CE-HS-002",
+
+      "interface": "I_history_window",
+
+      "failure_mode": "insufficient_temporal_window",
+
+      "description": "A short observation history leaves multiple latent explanations consistent with the same data.",
+
+      "window_size": 1,
+
+      "states": {
+        "z_a": [
+          0.5,
+          0.2
+        ],
+
+        "z_b": [
+          0.5,
+          0.8
+        ]
+      },
+
+      "history": {
+        "O(z_a)": [
+          0.5
+        ],
+
+        "O(z_b)": [
+          0.5
+        ]
+      },
+
+      "observation_equivalent": true,
+
+      "future_divergence": {
+        "next_visible_state": {
+          "a": 0.6,
+
+          "b": 0.9
+        }
+      },
+
+      "factorization": false,
+
+      "resolution": {
+        "increase_window": true,
+
+        "use_intervention": true
+      }
+    },
+
+    {
+      "id": "CE-HS-003",
+
+      "interface": "I_observation_only",
+
+      "failure_mode": "latent_trajectory_nonidentifiability",
+
+      "description": "Different hidden trajectories produce the same visible snapshot.",
+
+      "states": {
+        "z_a": [
+          2.0,
+          -1.0
+        ],
+
+        "z_b": [
+          2.0,
+          1.0
+        ]
+      },
+
+      "observations": {
+        "O(z_a)": [
+          2.0
+        ],
+
+        "O(z_b)": [
+          2.0
+        ]
+      },
+
+      "observation_equivalent": true,
+
+      "latent_targets": {
+        "trajectory_a": [
+          -1.0,
+          -0.95,
+          -0.9025
+        ],
+
+        "trajectory_b": [
+          1.0,
+          0.95,
+          0.9025
+        ]
+      },
+
+      "factorization": false
+    },
+
+    {
+      "id": "CE-HS-004",
+
+      "interface": "I_passive_observation",
+
+      "failure_mode": "causal_channel_absence",
+
+      "description": "A hidden state that does not leave an observable signature cannot be recovered passively.",
+
+      "modified_system": {
+        "hidden_to_observable_coupling": false
+      },
+
+      "condition": {
+        "h_t": "persistent",
+
+        "x_t": "independent"
+      },
+
+      "result": {
+        "passive_identification": false,
+
+        "intervention_required": true
+      },
+
+      "factorization": false
+    }
+  ],
+
+  "failure_taxonomy": {
+    "instantaneous_hidden_state_aliasing": {
+      "cause": "Current observation discards latent dimensions."
+    },
+
+    "temporal_window_failure": {
+      "cause": "History contains insufficient information."
+    },
+
+    "trajectory_aliasing": {
+      "cause": "Multiple latent futures map to the same observation."
+    },
+
+    "causal_channel_absence": {
+      "cause": "Hidden state never affects available observations."
+    }
+  },
+
+  "positive_boundary": {
+    "description": "Not all hidden states are fundamentally unidentifiable.",
+
+    "recovery_conditions": [
+      "observable dynamic coupling",
+      "sufficient history",
+      "active intervention"
+    ]
+  },
+
+  "validation": {
+    "counterexamples_verified": true,
+
+    "observation_collisions_verified": true,
+
+    "target_divergence_verified": true,
+
+    "failure_modes_classified": true
+  },
+
+  "decision": {
+    "status": "PASSED",
+
+    "meaning": "Hidden-state counterexamples establish that identifiability depends on causal accessibility, not direct observability."
+  },
+
+  "notes": [
+    "The benchmark separates hidden variables from impossible variables.",
+    "A latent state can become identifiable when the interface preserves its causal footprint.",
+    "Computation cannot recover latent distinctions erased by the observation boundary."
+  ]
+}
