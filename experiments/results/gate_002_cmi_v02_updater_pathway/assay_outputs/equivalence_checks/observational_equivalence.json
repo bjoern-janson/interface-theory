@@ -1,0 +1,132 @@
+{
+  "gate_id": "GATE-002",
+  "protocol_version": "CMI_v0.2",
+  "artifact_type": "observational_equivalence_check",
+
+  "purpose": {
+    "description": "Formal verification that matched systems are indistinguishable under the frozen CMI v0.2 updater-pathway observation interface.",
+    "role": "Establish the observation-side condition required for factorization failure.",
+    "not_used_for": [
+      "target estimation",
+      "future outcome prediction",
+      "interface expansion"
+    ]
+  },
+
+  "interface": {
+    "name": "CMI updater pathway interface",
+    "version": "v0.2",
+
+    "observation_operator": "O_CMI_v0.2",
+
+    "signature_components": [
+      "checkpoint_signature",
+      "transition_signature",
+      "replay_signature"
+    ]
+  },
+
+  "systems_compared": {
+    "system_A": {
+      "id": "A",
+      "role": "reference adaptive updater",
+
+      "signature": {
+        "checkpoint_signature": "checkpoint_X",
+        "transition_signature": "transition_X",
+        "replay_signature": "replay_X"
+      },
+
+      "canonical_observation": "signature_X"
+    },
+
+    "system_B": {
+      "id": "B",
+      "role": "fragile updater mimic",
+
+      "signature": {
+        "checkpoint_signature": "checkpoint_X",
+        "transition_signature": "transition_X",
+        "replay_signature": "replay_X"
+      },
+
+      "canonical_observation": "signature_X"
+    }
+  },
+
+  "comparison": {
+    "component_checks": [
+      {
+        "component": "checkpoint_signature",
+        "A": "checkpoint_X",
+        "B": "checkpoint_X",
+        "equal": true
+      },
+      {
+        "component": "transition_signature",
+        "A": "transition_X",
+        "B": "transition_X",
+        "equal": true
+      },
+      {
+        "component": "replay_signature",
+        "A": "replay_X",
+        "B": "replay_X",
+        "equal": true
+      }
+    ],
+
+    "full_signature_match": true
+  },
+
+  "formal_result": {
+    "observation_relation": {
+      "statement": "O_CMI_v0.2(A)=O_CMI_v0.2(B)",
+      "holds": true
+    },
+
+    "equivalence_class": {
+      "class_id": "E1",
+      "members": [
+        "A",
+        "B"
+      ]
+    }
+  },
+
+  "target_independence": {
+    "target_values_checked_elsewhere": true,
+
+    "target_artifact": "target_divergence.json",
+
+    "warning": "Observational equivalence alone does not imply target equivalence."
+  },
+
+  "factorization_relevance": {
+    "required_for_failure": {
+      "observation_equivalence": true,
+      "target_divergence": true
+    },
+
+    "current_artifact_establishes": [
+      "observation_equivalence"
+    ],
+
+    "does_not_establish": [
+      "factorization failure alone"
+    ]
+  },
+
+  "validation": {
+    "signature_generation": "passed",
+    "comparison_deterministic": true,
+    "interface_scope_respected": true,
+    "future_information_excluded": true
+  },
+
+  "notes": [
+    "This file establishes the left side of the Gate 002 counterexample.",
+    "The decisive failure requires combining this result with held-out target divergence.",
+    "The interface maps distinct systems into the same observational equivalence class."
+  ]
+}
