@@ -1,0 +1,144 @@
+{
+  "gate_id": "GATE-002",
+  "protocol_version": "CMI_v0.2",
+  "artifact_type": "target_divergence_check",
+
+  "purpose": {
+    "description": "Formal verification that observationally equivalent systems under the frozen CMI v0.2 interface produce different held-out target outcomes.",
+    "role": "Establish the target-side condition required for factorization failure.",
+    "not_used_for": [
+      "constructing the target after observation",
+      "interface modification",
+      "estimator optimization"
+    ]
+  },
+
+  "target": {
+    "symbol": "L",
+
+    "name": "future_adaptation_target",
+
+    "definition": {
+      "description": "Held-out future revision reliability after continuation.",
+      "evaluation_phase": "post-observation"
+    },
+
+    "source_artifact": "held_out_continuation_results.json"
+  },
+
+  "systems_compared": {
+    "system_A": {
+      "id": "A",
+
+      "observation_signature": "signature_X",
+
+      "target_class": "HIGH",
+
+      "target_value": {
+        "L_A": 1.0
+      },
+
+      "continuation_outcome": {
+        "revision_success": true,
+        "adaptation_reliability": 1.0
+      }
+    },
+
+    "system_B": {
+      "id": "B",
+
+      "observation_signature": "signature_X",
+
+      "target_class": "LOW",
+
+      "target_value": {
+        "L_B": 0.1
+      },
+
+      "continuation_outcome": {
+        "revision_success": false,
+        "adaptation_reliability": 0.1
+      }
+    }
+  },
+
+  "comparison": {
+    "observation_relation": {
+      "O_CMI_v0.2(A)": "signature_X",
+      "O_CMI_v0.2(B)": "signature_X",
+
+      "observationally_equivalent": true
+    },
+
+    "target_relation": {
+      "L_A": 1.0,
+      "L_B": 0.1,
+
+      "target_difference": true
+    }
+  },
+
+  "formal_result": {
+    "counterexample_condition": {
+      "same_observation": true,
+      "different_target": true
+    },
+
+    "statement": [
+      "O_CMI_v0.2(A)=O_CMI_v0.2(B)",
+      "L(A)!=L(B)"
+    ],
+
+    "satisfied": true
+  },
+
+  "factorization_analysis": {
+    "criterion": "L = L_hat o O_CMI_v0.2",
+
+    "result": {
+      "factorization_possible": false
+    },
+
+    "reason": "The same observation equivalence class contains multiple target values."
+  },
+
+  "equivalence_class_analysis": {
+    "class_id": "E1",
+
+    "members": [
+      "A",
+      "B"
+    ],
+
+    "target_values_in_class": [
+      1.0,
+      0.1
+    ],
+
+    "class_is_target_pure": false
+  },
+
+  "validation": {
+    "target_calculation_verified": true,
+    "observation_target_separation_preserved": true,
+    "future_information_leakage": false,
+    "gate_contract_satisfied": true
+  },
+
+  "decision_relevance": {
+    "combined_with": [
+      "observational_equivalence.json"
+    ],
+
+    "establishes": [
+      "CMI v0.2 factorization failure",
+      "interface insufficiency for declared target"
+    ]
+  },
+
+  "notes": [
+    "This artifact establishes the right side of the Gate 002 counterexample.",
+    "Observational equivalence and target divergence together prove non-identifiability.",
+    "The result is scoped to the frozen target, interface, and system class."
+  ]
+}
