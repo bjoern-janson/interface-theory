@@ -1,25 +1,165 @@
 {
-  "system_id": "F0_linear",
+  "example_id": "F0_linear",
+  "artifact_type": "system_definition",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
 
-  "class": "linear_dynamical_system",
+  "metadata": {
+    "name": "Canonical Linear Dynamical System",
+    "description": "Minimal two-dimensional linear system for testing interface identifiability.",
+    "purpose": "Provide the base environment for exact factorization, minimal interface search, and counterexample generation."
+  },
+
+  "system_class": {
+    "family": "linear_dynamical_system",
+
+    "stationarity": "stationary",
+
+    "determinism": "deterministic",
+
+    "state_dimension": 2,
+
+    "observation_dimension_variable": true
+  },
 
   "state": {
     "symbol": "x_t",
-    "dimension": 2
+
+    "space": "R^2",
+
+    "components": [
+      {
+        "index": 0,
+        "name": "visible_component",
+        "symbol": "x_1"
+      },
+      {
+        "index": 1,
+        "name": "latent_component",
+        "symbol": "x_2"
+      }
+    ]
   },
 
   "dynamics": {
     "equation": "x_{t+1}=Ax_t",
 
-    "matrix": [
-      [1.0, 0.2],
-      [0.0, 0.9]
+    "transition_matrix": [
+      [
+        1.0,
+        0.2
+      ],
+      [
+        0.0,
+        0.9
+      ]
+    ],
+
+    "properties": {
+      "linear": true,
+
+      "time_invariant": true,
+
+      "stable_component": true,
+
+      "coupling": {
+        "present": true,
+
+        "description": "Latent dimension influences future visible dimension through off-diagonal coupling."
+      }
+    }
+  },
+
+  "initial_conditions": {
+    "domain": "R^2",
+
+    "sampling": {
+      "distribution": "uniform",
+
+      "range": [
+        -1.0,
+        1.0
+      ]
+    }
+  },
+
+  "observation_model": {
+    "general_form": "y_t=Cx_t",
+
+    "matrix_variable": true,
+
+    "available_interfaces": [
+      "I_full_state",
+      "I_position_only",
+      "I_hidden_dimension",
+      "I_scalar_projection"
     ]
   },
 
-  "observation": {
-    "general_form": "y_t=Cx_t"
+  "trajectory_generation": {
+    "default_horizon": 5,
+
+    "trajectory": {
+      "definition": "x_0,x_1,...,x_T",
+
+      "recurrence": "x_{t+1}=Ax_t"
+    }
   },
 
-  "description": "Minimal linear system for testing interface sufficiency."
+  "causal_structure": {
+    "dependencies": {
+      "x_2_t": [
+        "x_1_{t+1}",
+        "x_2_{t+1}"
+      ],
+
+      "x_1_t": [
+        "x_1_{t+1}"
+      ]
+    },
+
+    "interpretation": "The latent state cannot be ignored for long-horizon prediction."
+  },
+
+  "benchmark_targets": [
+    "T_current_position",
+    "T_future_position",
+    "T_hidden_state",
+    "T_full_trajectory"
+  ],
+
+  "expected_behavior": {
+    "full_state_observation": {
+      "factorization": true,
+
+      "reason": "Complete state uniquely determines trajectory."
+    },
+
+    "partial_observation": {
+      "factorization": "target-dependent",
+
+      "reason": "Some targets require hidden dimensions."
+    }
+  },
+
+  "validation": {
+    "dimension_check": true,
+
+    "matrix_consistency": true,
+
+    "trajectory_rollout_verified": true,
+
+    "target_dependency_verified": true
+  },
+
+  "decision": {
+    "status": "ACTIVE",
+
+    "role": "Baseline environment for Interface Theory experiments."
+  },
+
+  "notes": [
+    "This system is intentionally minimal: two dimensions are sufficient to create hidden-state ambiguity.",
+    "The off-diagonal transition term makes future identifiability depend on observing latent structure.",
+    "All later examples extend this same observation-boundary principle."
+  ]
 }
