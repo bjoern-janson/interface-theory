@@ -1,268 +1,59 @@
 {
   "gate_id": "GATE-012",
   "protocol_version": "INTERFACE_THEORY_v0.1",
-  "artifact_type": "drift_counterexamples",
-
-  "purpose": {
-    "description": "Construct explicit counterexamples showing how nonstationary drift breaks previously valid factorization.",
-    "role": "Identify failure boundaries between stationary and evolving interface sufficiency.",
-    "not_used_for": [
-      "claiming all drift causes non-identifiability",
-      "assuming historical data always becomes obsolete",
-      "equating distribution shift with target failure"
-    ]
+  "artifact_type": "corrected_known_drift_counterexample",
+  "execution_status": "EXECUTED",
+  "system_class": "F_N: closed 16-system known linear-drift response class",
+  "target": "held-out coefficient vector (a_2,b_2)",
+  "inherited_interface": {
+    "phases": [
+      0
+    ],
+    "interventions": [
+      -1
+    ],
+    "readouts": [
+      "r1",
+      "r2"
+    ],
+    "target_identifiable": false
   },
-
-  "formal_setup": {
-    "system_class": {
-      "symbol": "F_NS"
+  "witness": {
+    "system_a": {
+      "a0": 0,
+      "b0": 0,
+      "va": 0,
+      "vb": 0,
+      "trace": [
+        0,
+        0
+      ],
+      "future_target": [
+        0,
+        0
+      ]
     },
-
-    "state": {
-      "symbol": "x_t"
-    },
-
-    "transition": {
-      "symbol": "F_t"
-    },
-
-    "observation": {
-      "symbol": "O_t"
-    },
-
-    "target": {
-      "symbol": "L_T"
-    },
-
-    "failure_condition": {
-      "statement": "There exist systems f_a, f_b where observations are equivalent under the interface but targets diverge over time.",
-      "formal": "O_{0:T}(f_a)=O_{0:T}(f_b) and L_T(f_a)!=L_T(f_b)"
+    "system_b": {
+      "a0": 0,
+      "b0": 0,
+      "va": 0.5,
+      "vb": 0.5,
+      "trace": [
+        0,
+        0
+      ],
+      "future_target": [
+        1,
+        1
+      ]
     }
   },
-
-  "counterexamples": [
-    {
-      "id": "DRIFT-001",
-
-      "name": "hidden_transition_change",
-
-      "regime": "slow_drift",
-
-      "description": "Two systems begin with identical dynamics but gradually diverge in transition behavior.",
-
-      "construction": {
-        "system_A": {
-          "transition": "F_t"
-        },
-
-        "system_B": {
-          "transition": "F_t + epsilon_t"
-        }
-      },
-
-      "observations": {
-        "interface": "snapshot_only",
-
-        "equivalent_until": "t=50",
-
-        "observation_relation": "O_A(t)=O_B(t)"
-      },
-
-      "targets": {
-        "divergence_time": "t=60",
-
-        "relation": "L_A != L_B"
-      },
-
-      "result": {
-        "factorization": false
-      },
-
-      "failure_mode": "temporal_stale_equivalence"
-    },
-
-    {
-      "id": "DRIFT-002",
-
-      "name": "regime_transition_alias",
-
-      "regime": "phase_transition",
-
-      "description": "Different hidden regimes produce identical observations immediately before a transition.",
-
-      "construction": {
-        "system_A": {
-          "regime": "stable"
-        },
-
-        "system_B": {
-          "regime": "critical"
-        }
-      },
-
-      "observations": {
-        "interface": "fixed_history",
-
-        "equivalent_window": [
-          "t-10",
-          "t"
-        ]
-      },
-
-      "targets": {
-        "future_outcome": {
-          "system_A": "stable continuation",
-
-          "system_B": "transition event"
-        }
-      },
-
-      "result": {
-        "factorization": false
-      },
-
-      "failure_mode": "regime_aliasing"
-    },
-
-    {
-      "id": "DRIFT-003",
-
-      "name": "adaptive_lag_failure",
-
-      "regime": "rapid_shift",
-
-      "description": "The environment changes faster than the interface can update.",
-
-      "construction": {
-        "environment_rate": "rho",
-
-        "interface_update_rate": "lambda",
-
-        "condition": "rho > lambda"
-      },
-
-      "observations": {
-        "interface": "adaptive_window",
-
-        "update_delay": "tau"
-      },
-
-      "targets": {
-        "relation": "future divergence before adaptation"
-      },
-
-      "result": {
-        "factorization": false
-      },
-
-      "failure_mode": "adaptation_lag"
-    },
-
-    {
-      "id": "DRIFT-004",
-
-      "name": "history_misleading",
-
-      "regime": "slow_drift",
-
-      "description": "Past observations preserve the wrong equivalence structure after a gradual system change.",
-
-      "construction": {
-        "history": "identical",
-
-        "current_dynamics": "different"
-      },
-
-      "observations": {
-        "interface": "long_history",
-
-        "relation": "O_history(A)=O_history(B)"
-      },
-
-      "targets": {
-        "relation": "L_A != L_B"
-      },
-
-      "result": {
-        "factorization": false
-      },
-
-      "failure_mode": "historical_aliasing"
-    }
-  ],
-
-  "common_structure": {
-    "shared_pattern": {
-      "statement": "A previously sufficient interface becomes insufficient when drift changes target-relevant equivalence classes."
-    },
-
-    "formal": {
-      "before": "O(f_a)=O(f_b) implies L(f_a)=L(f_b)",
-
-      "after_drift": "O(f_a)=O(f_b) while L(f_a)!=L(f_b)"
-    }
-  },
-
-  "counterexample_summary": {
-    "total_cases": 4,
-
-    "factorization_failures": 4,
-
-    "dominant_failure_modes": [
-      "stale equivalence",
-      "regime aliasing",
-      "adaptation lag"
-    ]
-  },
-
-  "repair_conditions": {
-    "successful_strategies": [
-      {
-        "method": "change_detection",
-
-        "effect": "separates evolving regimes"
-      },
-      {
-        "method": "adaptive_temporal_window",
-
-        "effect": "preserves current target-relevant history"
-      },
-      {
-        "method": "intervention_access",
-
-        "effect": "actively separates ambiguous trajectories"
-      }
-    ]
-  },
-
-  "theoretical_implication": {
-    "finding": "Nonstationarity does not invalidate factorization; it invalidates fixed interfaces whose equivalence classes no longer match the target.",
-
-    "extension": "Interface sufficiency is time-indexed."
-  },
-
-  "validation": {
-    "counterexample_generation_complete": true,
-    "target_divergence_verified": true,
-    "observation_equivalence_verified": true,
-    "repair_pathways_identified": true
-  },
-
-  "decision": {
-    "gate_status": "PASSED",
-
-    "meaning": "Drift counterexamples establish the boundary where static interfaces fail under changing system structure.",
-
-    "authorized_next_steps": [
-      "formalize dynamic factorization criterion",
-      "derive adaptation latency bounds",
-      "test self-modifying interfaces"
-    ]
-  },
-
-  "notes": [
-    "The failure is not caused by change alone but by change that modifies target-relevant distinctions.",
-    "Historical information can become actively misleading after regime change.",
-    "Adaptive interfaces preserve factorization by tracking evolving observation boundaries."
-  ]
+  "interpretation": "A single slice cannot distinguish a current state from its future drift direction.",
+  "evidence_class": "FROZEN_SUMMARY_RECORD",
+  "reproducibility": {
+    "status": "SUMMARY_RECORD_ONLY",
+    "raw_candidate_audit": "NOT_COMMITTED",
+    "generation_script": "NOT_COMMITTED",
+    "correction_note": "This artifact records the frozen conclusion after prior incompatible or invented summary material was removed. It is not a complete independently reproducible candidate-level audit."
+  }
 }

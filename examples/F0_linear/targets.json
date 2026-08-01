@@ -2,182 +2,129 @@
   "example_id": "F0_linear",
   "artifact_type": "targets",
   "protocol_version": "INTERFACE_THEORY_v0.1",
-
   "purpose": {
     "description": "Define target functions used to evaluate interface sufficiency in the canonical linear system.",
     "role": "Specify what information must be preserved by an observation interface.",
     "principle": "Identifiability is target-relative; an interface may be sufficient for one target and insufficient for another."
   },
-
   "system_reference": {
     "state_space": "R^2",
-
     "state_symbol": "x_t",
-
     "dynamics": {
       "equation": "x_{t+1}=Ax_t",
-
       "matrix": [
         [
-          1.0,
+          1,
           0.2
         ],
         [
-          0.0,
+          0,
           0.9
         ]
       ]
     },
-
     "initial_condition": {
       "symbol": "x_0"
     }
   },
-
   "targets": [
     {
       "target_id": "T_future_position",
-
       "name": "Future first-coordinate prediction",
-
       "definition": {
         "symbol": "L_T(x_0)",
-
         "expression": "e_1^T A^5 x_0"
       },
-
       "horizon": 5,
-
       "semantic_description": "Predict the first state coordinate after five transitions.",
-
       "dependency": {
         "state_dimensions": [
           0,
           1
         ],
-
-        "reason": "The transition matrix couples the second dimension into the first over time."
+        "reason": "Both coordinates enter the scalar target through the linear functional e_1^T A^5."
       },
-
       "difficulty": "baseline",
-
       "expected_interfaces": {
         "I_full_state": "sufficient",
-
         "I_position_only": "insufficient",
-
-        "I_hidden_dimension": "insufficient"
-      }
+        "I_hidden_dimension": "insufficient",
+        "I_target_aligned_projection": "sufficient"
+      },
+      "note": "A one-dimensional target-aligned projection is sufficient for this scalar target."
     },
-
     {
       "target_id": "T_current_position",
-
       "name": "Current first-coordinate observation",
-
       "definition": {
         "symbol": "L_0(x_0)",
-
         "expression": "e_1^T x_0"
       },
-
       "horizon": 0,
-
       "semantic_description": "Read the current first state coordinate.",
-
       "dependency": {
         "state_dimensions": [
           0
         ]
       },
-
       "difficulty": "low",
-
       "expected_interfaces": {
         "I_position_only": "sufficient",
-
         "I_full_state": "sufficient",
-
         "I_hidden_dimension": "insufficient"
       },
-
       "note": "Demonstrates target-relative interface sufficiency."
     },
-
     {
       "target_id": "T_hidden_state",
-
       "name": "Future second-coordinate prediction",
-
       "definition": {
         "symbol": "L_H(x_0)",
-
         "expression": "e_2^T A^5 x_0"
       },
-
       "horizon": 5,
-
       "semantic_description": "Predict the hidden second state coordinate after evolution.",
-
       "dependency": {
         "state_dimensions": [
           1
         ]
       },
-
       "difficulty": "hidden_state",
-
       "expected_interfaces": {
         "I_hidden_dimension": "sufficient",
-
         "I_position_only": "insufficient",
-
         "I_full_state": "sufficient"
       }
     },
-
     {
       "target_id": "T_full_trajectory",
-
       "name": "Future trajectory reconstruction",
-
       "definition": {
         "symbol": "L_{traj}(x_0)",
-
         "expression": "(x_1,x_2,x_3,x_4,x_5)"
       },
-
       "horizon": 5,
-
       "semantic_description": "Recover the complete future trajectory.",
-
       "dependency": {
         "state_dimensions": [
           0,
           1
         ]
       },
-
       "difficulty": "high",
-
       "expected_interfaces": {
         "I_full_state": "sufficient",
-
         "partial_interfaces": "insufficient"
       }
     }
   ],
-
   "target_equivalence_relation": {
     "definition": "Two states are equivalent for target L when they produce identical target values.",
-
     "notation": {
       "x_a~_Lx_b": "L(x_a)=L(x_b)"
     },
-
     "importance": "Observation equivalence must refine target equivalence."
   },
-
   "benchmark_usage": {
     "factorization_tests": [
       "T_current_position",
@@ -185,26 +132,18 @@
       "T_hidden_state",
       "T_full_trajectory"
     ],
-
     "minimal_interface_search": true,
-
     "counterexample_generation": true
   },
-
   "validation": {
     "target_definitions_verified": true,
-
     "trajectory_targets_verified": true,
-
     "dependency_analysis_verified": true
   },
-
   "decision": {
     "status": "READY",
-
     "meaning": "Targets define the observable quantities against which candidate interfaces are evaluated."
   },
-
   "notes": [
     "The benchmark intentionally separates system complexity from target complexity.",
     "A richer target requires a richer interface.",

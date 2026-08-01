@@ -1,264 +1,42 @@
 {
   "gate_id": "GATE-008",
   "protocol_version": "INTERFACE_THEORY_v0.1",
-  "artifact_type": "hidden_state_pairs",
-
-  "purpose": {
-    "description": "Construct hidden-state counterexamples showing that identical external observations can correspond to different internal causal states and future target values.",
-    "role": "Generalize interface non-identifiability from finite observation ambiguity to latent-state ambiguity.",
-    "not_used_for": [
-      "claiming hidden states are always unrecoverable",
-      "proving internal access is always required",
-      "replacing interface refinement analysis"
-    ]
-  },
-
-  "formal_setup": {
-    "system_class": {
-      "symbol": "F_H",
-
-      "description": "Systems containing latent internal states not directly exposed by the declared interface."
-    },
-
-    "state_space": {
-      "external": "x_t",
-
-      "hidden": "z_t"
-    },
-
-    "observation_operator": {
-      "symbol": "O",
-
-      "definition": "Maps full system state and dynamics to externally available observations."
-    },
-
-    "target_functional": {
-      "symbol": "L",
-
-      "definition": "Future target dependent on hidden-state evolution."
-    },
-
-    "failure_condition": {
-      "statement": "O(f_A)=O(f_B) while L(f_A)!=L(f_B)"
-    }
-  },
-
-  "hidden_state_pairs": [
-    {
-      "pair_id": "HS-001",
-
-      "type": "latent_memory_divergence",
-
-      "description": "Systems have identical observable history but different hidden memory states.",
-
-      "system_A": {
-        "external_trace": [
-          0,
-          1,
-          0
-        ],
-
-        "hidden_state": {
-          "z_0": "active"
-        },
-
-        "transition": {
-          "hidden_dynamics": "retain_signal"
-        },
-
-        "target": {
-          "L": 1.0
-        }
-      },
-
-      "system_B": {
-        "external_trace": [
-          0,
-          1,
-          0
-        ],
-
-        "hidden_state": {
-          "z_0": "inactive"
-        },
-
-        "transition": {
-          "hidden_dynamics": "discard_signal"
-        },
-
-        "target": {
-          "L": 0.0
-        }
-      },
-
-      "verification": {
-        "observation_equivalence": true,
-
-        "hidden_state_difference": true,
-
-        "target_divergence": true,
-
-        "factorization_failure": true
-      }
-    },
-
-    {
-      "pair_id": "HS-002",
-
-      "type": "latent_adaptation_capacity",
-
-      "description": "Systems exhibit identical adaptation traces but differ in future update capability.",
-
-      "system_A": {
-        "observed_updates": [
-          "update_1",
-          "update_2"
-        ],
-
-        "hidden_state": {
-          "capacity": "preserved"
-        },
-
-        "future_target": {
-          "L": 1.0
-        }
-      },
-
-      "system_B": {
-        "observed_updates": [
-          "update_1",
-          "update_2"
-        ],
-
-        "hidden_state": {
-          "capacity": "degraded"
-        },
-
-        "future_target": {
-          "L": 0.2
-        }
-      },
-
-      "verification": {
-        "same_observed_path": true,
-
-        "different_hidden_configuration": true,
-
-        "different_future_target": true
-      }
-    },
-
-    {
-      "pair_id": "HS-003",
-
-      "type": "hidden_state_reconstruction_failure",
-
-      "description": "Multiple latent states map to the same observable state.",
-
-      "mapping": {
-        "hidden_to_observation": {
-          "z_A": "x",
-
-          "z_B": "x"
-        }
-      },
-
-      "target_effect": {
-        "z_A": {
-          "future": "stable"
-        },
-
-        "z_B": {
-          "future": "collapse"
-        }
-      },
-
-      "verification": {
-        "many_to_one_observation_map": true,
-
-        "target_not_constant_on_fiber": true
-      }
-    }
-  ],
-
-  "equivalence_class_analysis": {
-    "observation_fibers": [
-      {
-        "fiber_id": "O^-1(x)",
-
-        "members": [
-          "z_A",
-          "z_B"
-        ],
-
-        "target_values": [
-          1.0,
-          0.0
-        ],
-
-        "target_pure": false
-      }
+  "artifact_type": "corrected_hidden_state_witness",
+  "execution_status": "EXECUTED",
+  "identifiability_result": "INHERITED_INTERFACE_NONIDENTIFIABLE",
+  "system_class": "F_H: F_0 plus one fixed latent revision state",
+  "inherited_interface": {
+    "interventions": [
+      -1
     ],
-
-    "interpretation": "The observation map collapses latent distinctions that remain relevant to the target."
+    "readouts": [
+      "r1",
+      "r2"
+    ]
   },
-
-  "connection_to_factorization": {
-    "criterion": "L = L_hat o O",
-
-    "failure_reason": "No function of observations alone can assign a unique target value to the hidden-state equivalence class.",
-
-    "result": "Factorization fails over the declared hidden-state class."
-  },
-
-  "comparison_to_previous_gates": {
-    "gate_003": {
-      "failure_mode": "finite interface aliasing"
+  "witness": {
+    "system_a": {
+      "a": 1,
+      "b": 1,
+      "h": 0
     },
-
-    "gate_006": {
-      "failure_mode": "nonlinear observational aliasing"
+    "system_b": {
+      "a": 1,
+      "b": 1,
+      "h": 1
     },
-
-    "gate_008": {
-      "failure_mode": "latent-state aliasing"
-    }
-  },
-
-  "scope": {
-    "established": [
-      "the tested external interface cannot identify hidden-state-dependent targets"
+    "shared_trace": [
+      -1,
+      1
     ],
-
-    "not_established": [
-      "all hidden states require direct measurement",
-      "latent variables are impossible to infer",
-      "no sufficient external interface exists"
-    ]
+    "target_relation": "different"
   },
-
-  "validation": {
-    "observation_matching": "passed",
-    "hidden_state_divergence": "passed",
-    "target_divergence": "passed",
-    "factorization_failure": "passed"
-  },
-
-  "decision": {
-    "gate_status": "FAILED",
-
-    "meaning": "The declared external interface is insufficient when the target depends on latent state distinctions.",
-
-    "authorized_next_steps": [
-      "search predictive state interfaces",
-      "test latent-state observability conditions",
-      "define minimal hidden-state access requirements"
-    ]
-  },
-
-  "notes": [
-    "Hidden-state failure is an interface limitation, not a statement about the existence of latent information.",
-    "The correct question remains whether the target factors through the chosen interface.",
-    "A sufficient interface may expose latent consequences without directly exposing latent variables."
-  ]
+  "decision": "Search the frozen behavioral interface ladder; do not begin estimator development.",
+  "evidence_class": "FROZEN_SUMMARY_RECORD",
+  "reproducibility": {
+    "status": "SUMMARY_RECORD_ONLY",
+    "raw_candidate_audit": "NOT_COMMITTED",
+    "generation_script": "NOT_COMMITTED",
+    "correction_note": "This artifact records the frozen conclusion after prior incompatible or invented summary material was removed. It is not a complete independently reproducible candidate-level audit."
+  }
 }

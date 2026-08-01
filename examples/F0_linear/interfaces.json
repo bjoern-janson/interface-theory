@@ -2,271 +2,196 @@
   "example_id": "F0_linear",
   "artifact_type": "interface_definitions",
   "protocol_version": "INTERFACE_THEORY_v0.1",
-
   "purpose": {
     "description": "Define candidate observation interfaces used to evaluate target identifiability in the canonical linear system.",
     "role": "Specify the information boundary available to an external observer.",
     "principle": "Interfaces determine which system distinctions remain observable."
   },
-
   "formal_definition": {
     "observation_model": {
       "equation": "y_t=Cx_t",
-
       "operator": "O_C(x_t)=Cx_t"
     },
-
     "sufficiency_condition": {
       "statement": "O_C(x_a)=O_C(x_b) implies L(x_a)=L(x_b)",
-
       "interpretation": "The interface must preserve target-relevant distinctions."
     }
   },
-
   "interfaces": [
     {
       "interface_id": "I_full_state",
-
       "name": "Full State Observation",
-
       "observation_matrix": [
         [
-          1.0,
-          0.0
+          1,
+          0
         ],
         [
-          0.0,
-          1.0
+          0,
+          1
         ]
       ],
-
       "dimension": {
         "input": 2,
-
         "output": 2
       },
-
       "rank": 2,
-
       "information_access": [
         "x_1",
         "x_2"
       ],
-
       "equivalence_structure": {
         "classes": "singleton",
-
         "meaning": "Each state maps to a unique observation."
       },
-
       "expected_factorization": {
         "T_current_position": true,
-
         "T_future_position": true,
-
         "T_hidden_state": true,
-
         "T_full_trajectory": true
       },
-
       "status": "sufficient"
     },
-
     {
       "interface_id": "I_position_only",
-
       "name": "First Coordinate Observation",
-
       "observation_matrix": [
         [
-          1.0,
-          0.0
+          1,
+          0
         ]
       ],
-
       "dimension": {
         "input": 2,
-
         "output": 1
       },
-
       "rank": 1,
-
       "information_access": [
         "x_1"
       ],
-
       "information_removed": [
         "x_2"
       ],
-
       "equivalence_structure": {
         "classes": "non-singleton",
-
         "meaning": "States sharing x_1 collapse into the same observation."
       },
-
       "expected_factorization": {
         "T_current_position": true,
-
         "T_future_position": false,
-
         "T_hidden_state": false,
-
         "T_full_trajectory": false
       },
-
       "failure_mode": "hidden_state_aliasing",
-
       "status": "target_dependent"
     },
-
     {
       "interface_id": "I_hidden_dimension",
-
       "name": "Second Coordinate Observation",
-
       "observation_matrix": [
         [
-          0.0,
-          1.0
+          0,
+          1
         ]
       ],
-
       "dimension": {
         "input": 2,
-
         "output": 1
       },
-
       "rank": 1,
-
       "information_access": [
         "x_2"
       ],
-
       "information_removed": [
         "x_1"
       ],
-
       "equivalence_structure": {
         "classes": "non-singleton",
-
         "meaning": "States differing in the first coordinate become indistinguishable."
       },
-
       "expected_factorization": {
         "T_current_position": false,
-
         "T_future_position": false,
-
         "T_hidden_state": true,
-
         "T_full_trajectory": false
       },
-
       "failure_mode": "target_component_omission",
-
       "status": "target_dependent"
     },
-
     {
-      "interface_id": "I_scalar_projection",
-
-      "name": "Mixed Linear Projection",
-
+      "interface_id": "I_target_aligned_projection",
+      "name": "Target-Aligned Future-Position Projection",
       "observation_matrix": [
         [
-          1.0,
-          1.0
+          1,
+          0.81902
         ]
       ],
-
       "dimension": {
         "input": 2,
-
         "output": 1
       },
-
       "rank": 1,
-
       "information_access": [
-        "x_1+x_2"
+        "x_1 + 0.81902 x_2"
       ],
-
       "information_removed": [
-        "orthogonal_state_component"
+        "directions irrelevant to T_future_position"
       ],
-
       "equivalence_structure": {
-        "classes": "non-singleton",
-
-        "meaning": "Multiple states share the same scalar projection."
+        "classes": "target-pure for T_future_position",
+        "meaning": "Equal observations imply equal future first-coordinate target values."
       },
-
       "expected_factorization": {
         "T_current_position": false,
-
-        "T_future_position": false,
-
+        "T_future_position": true,
         "T_hidden_state": false,
-
         "T_full_trajectory": false
       },
-
-      "failure_mode": "projection_collision",
-
-      "status": "insufficient"
+      "status": "target_dependent"
     }
   ],
-
   "interface_comparison": {
     "interfaces_tested": 4,
-
     "full_rank_interfaces": 1,
-
     "partial_rank_interfaces": 3,
-
-    "finding": "Rank provides information capacity but target alignment determines sufficiency."
+    "finding": "Rank bounds total state recovery, but target alignment determines target-specific sufficiency."
   },
-
   "minimality": {
     "search_space": {
-      "linear_projection_dimension": [
-        1,
-        2
-      ]
+      "family": "frozen finite candidate menu",
+      "interfaces": [
+        "I_full_state",
+        "I_position_only",
+        "I_hidden_dimension",
+        "I_target_aligned_projection"
+      ],
+      "note": "This is not an exhaustive search over all real-valued linear projections."
     },
-
     "result": {
       "for_full_trajectory": {
         "minimum_dimension": 2
       },
-
       "for_current_position": {
         "minimum_dimension": 1
+      },
+      "for_future_position": {
+        "minimum_dimension": 1,
+        "example_interface": "I_target_aligned_projection"
       }
     },
-
-    "interpretation": "The minimum interface depends on the target function."
+    "interpretation": "The minimum interface depends on the declared target function and the declared candidate family."
   },
-
   "validation": {
     "matrix_dimensions_verified": true,
-
     "rank_computed": true,
-
     "target_compatibility_checked": true,
-
     "counterexample_generation_enabled": true
   },
-
   "decision": {
     "status": "READY",
-
     "meaning": "Candidate interfaces are defined for factorization testing and minimal interface search."
   },
-
   "notes": [
     "No interface is universally sufficient independent of the target.",
     "A lower-dimensional interface may be optimal for simpler targets.",
