@@ -15,22 +15,23 @@ nor a claim about real neural or organizational systems.
 
 ## Declared system class \(F_{RS}\)
 
-Each system has three candidate mechanisms arranged in a fixed directed
-dependency graph. Every system shares the same baseline current performance.
-The finite class has four members:
+The executable class is a Cartesian product of two binary labels, not a
+simulated mechanism graph. Every record shares the same baseline value. The
+finite class has four members:
 
-| Identifier | Selection policy | Influence topology |
+| Identifier | Selection label | Influence-topology label |
 |---|---|---|
 | delete_independent | permanently delete a suppressed alternative | local influence only |
 | delete_propagating | permanently delete a suppressed alternative | local evidence changes a downstream behavioral response |
 | reversible_independent | retain a suppressed alternative so it can regain influence | local influence only |
 | reversible_propagating | retain a suppressed alternative so it can regain influence | local evidence changes a downstream behavioral response |
 
-Phase A supplies evidence favoring mechanism 1 and suppressing mechanism 2.
-Phase B is a post-suppression reversal intervention, not a held-out predictive
-test. Mechanism 2 becomes useful after not being favored during phase A. A
-local contradiction is separately applied to mechanism 1, and the externally
-visible behavioral consequence at mechanism 3 is read.
+The label names refer to a planned future dynamic experiment: phase-A
+suppression, a post-suppression reversal phase included in the Gate 1
+interface, and a contrasted local-to-downstream intervention. None of those
+dynamics is simulated here. The generator contains no suppression, recurrence,
+authority redistribution, graph edges, propagation, downstream cancellation,
+or relearning.
 
 The selection-policy flag, topology flag, authority weights, edge list, and
 architecture label are excluded from the interface.
@@ -41,11 +42,18 @@ architecture label are excluded from the interface.
 L_{RS}(f)=\left(R_{\mathrm{reopen}}(f),K_{\mathrm{flow}}(f)\right).
 \]
 
+In this class, the components are aliases for the labels:
+
+\[
+R_{\mathrm{reopen}}=\mathbf 1[\text{selection label}=\text{reversible}],
+\qquad
+K_{\mathrm{flow}}=\mathbf 1[\text{topology label}=\text{propagating}].
+\]
+
 - \(R_{\mathrm{reopen}}\) is one exactly when a mechanism suppressed in phase
   A regains behavioral influence after the phase-B reversal.
-- \(K_{\mathrm{flow}}\) is one exactly when a contradiction applied at node 1
-  produces an externally visible downstream response at node 3; otherwise it
-  is zero.
+- \(K_{\mathrm{flow}}\) is the stipulated binary downstream-response label.
+  It is not yet an estimated causal effect from contrasted interventions.
 
 The target is a finite-class operational target. It does not define a general
 authority variable or a universal notion of diversity preservation.
@@ -82,12 +90,22 @@ O_{\mathrm{informative}}=(\text{reversal recovery},\text{downstream flow}),
 \]
 
 The cost-three result is therefore a property of the frozen protocol ladder,
-not a claim that three informative scalar readouts are necessary.
+not a claim that three informative scalar readouts are necessary. The
+cost-two statement is minimal only within the predeclared binary probe
+coordinates. An unrestricted scalar could encode all four target values; such
+encodings are outside this audit.
 
 ## Constructive scope
 
-In this operational class, the two target components are defined from the same
-counterfactual responses returned by the two informative probes. Consequently,
+In this operational class, the readouts are direct aliases:
+
+\[
+O_R=R_{\mathrm{reopen}},
+\qquad
+O_K=K_{\mathrm{flow}}.
+\]
+
+Consequently,
 
 \[
 \widehat L(1,r,k)=(r,k).
