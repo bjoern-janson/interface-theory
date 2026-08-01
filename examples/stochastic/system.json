@@ -1,0 +1,267 @@
+{
+  "example_id": "stochastic",
+  "artifact_type": "system_definition",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+
+  "purpose": {
+    "description": "Define a stochastic dynamical system for evaluating probabilistic interface identifiability.",
+    "role": "Generate latent trajectories, noisy observations, and uncertainty-aware targets.",
+    "principle": "The observer receives samples from a distribution rather than direct state access."
+  },
+
+  "system": {
+    "name": "stochastic_linear_dynamics",
+
+    "state_variable": {
+      "symbol": "x_t",
+
+      "type": "continuous_latent_state",
+
+      "dimension": 1
+    },
+
+    "observation_variable": {
+      "symbol": "y_t",
+
+      "type": "noisy_measurement",
+
+      "dimension": 1
+    }
+  },
+
+  "dynamics": {
+    "equation": "x_{t+1}=a*x_t+epsilon_t",
+
+    "transition_parameter": {
+      "symbol": "a",
+
+      "value": 1.1
+    },
+
+    "process_noise": {
+      "symbol": "epsilon_t",
+
+      "distribution": "Normal(0,sigma_x^2)",
+
+      "parameters": {
+        "mean": 0,
+
+        "variance": 0.05
+      }
+    },
+
+    "transition_type": "stochastic_linear"
+  },
+
+  "observation_model": {
+    "equation": "y_t=x_t+eta_t",
+
+    "observation_noise": {
+      "symbol": "eta_t",
+
+      "distribution": "Normal(0,sigma_y^2)",
+
+      "parameters": {
+        "mean": 0,
+
+        "variance": 0.1
+      }
+    },
+
+    "observation_type": "additive_gaussian_noise"
+  },
+
+  "initial_conditions": {
+    "state_distribution": {
+      "symbol": "x_0",
+
+      "distribution": "Normal(mu_0,sigma_0^2)",
+
+      "parameters": {
+        "mean": 1.0,
+
+        "variance": 0.25
+      }
+    }
+  },
+
+  "simulation": {
+    "default_horizon": 100,
+
+    "number_of_rollouts": 1000,
+
+    "random_seed": 42,
+
+    "purpose": [
+      "estimate observation distributions",
+      "construct equivalence classes",
+      "evaluate target identifiability"
+    ]
+  },
+
+  "latent_processes": [
+    {
+      "process_id": "process_A",
+
+      "initial_distribution": {
+        "mean": 1.0,
+
+        "variance": 0.05
+      },
+
+      "transition_parameter": {
+        "a": 1.1
+      },
+
+      "description": "Baseline stochastic trajectory family."
+    },
+
+    {
+      "process_id": "process_B",
+
+      "initial_distribution": {
+        "mean": 1.3,
+
+        "variance": 0.05
+      },
+
+      "transition_parameter": {
+        "a": 1.1
+      },
+
+      "description": "Alternative trajectory family designed to test distributional separation."
+    }
+  ],
+
+  "interfaces_available": [
+    {
+      "interface_id": "I_observation",
+
+      "operator": "O(x_t)=y_t",
+
+      "information": [
+        "single noisy sample"
+      ]
+    },
+
+    {
+      "interface_id": "I_history",
+
+      "operator": "O(x_t)=(y_{t-k},...,y_t)",
+
+      "information": [
+        "temporal samples",
+        "empirical statistics"
+      ]
+    },
+
+    {
+      "interface_id": "I_belief_state",
+
+      "operator": "O(x_t)=P(x_t|y_{0:t})",
+
+      "information": [
+        "posterior distribution",
+        "uncertainty estimate"
+      ]
+    },
+
+    {
+      "interface_id": "I_intervention",
+
+      "operator": "O(x_t,u_t)=response(x_t,do(u_t))",
+
+      "information": [
+        "active perturbation response"
+      ]
+    }
+  ],
+
+  "stochastic_identifiability": {
+    "observation_equivalence": {
+      "condition": "P(y|x_A)=P(y|x_B)"
+    },
+
+    "target_divergence": {
+      "condition": "P(L|x_A)!=P(L|x_B)"
+    },
+
+    "failure_type": "distributional_aliasing"
+  },
+
+  "targets_supported": [
+    {
+      "target": "current_state_estimation",
+
+      "symbol": "L_0(x_t)",
+
+      "type": "continuous_estimation"
+    },
+    {
+      "target": "future_distribution_prediction",
+
+      "symbol": "P(x_{t+k}|y_{0:t})",
+
+      "type": "probabilistic_forecast"
+    },
+    {
+      "target": "process_identification",
+
+      "symbol": "P(f)",
+
+      "type": "dynamics_learning"
+    }
+  ],
+
+  "noise_regimes": [
+    {
+      "regime": "low_noise",
+
+      "sigma_x": 0.01,
+
+      "sigma_y": 0.01,
+
+      "expected_behavior": "observation_interface_near_sufficient"
+    },
+    {
+      "regime": "medium_noise",
+
+      "sigma_x": 0.05,
+
+      "sigma_y": 0.1,
+
+      "expected_behavior": "history_improves_identification"
+    },
+    {
+      "regime": "high_noise",
+
+      "sigma_x": 0.2,
+
+      "sigma_y": 0.5,
+
+      "expected_behavior": "belief_and_intervention_required"
+    }
+  ],
+
+  "validation": {
+    "stochastic_transition_defined": true,
+
+    "observation_distribution_defined": true,
+
+    "noise_sources_defined": true,
+
+    "interface_compatibility_defined": true
+  },
+
+  "decision": {
+    "status": "READY",
+
+    "meaning": "Canonical stochastic system for probabilistic interface identifiability experiments."
+  },
+
+  "notes": [
+    "Randomness is treated as structured uncertainty rather than missing information.",
+    "The benchmark evaluates whether interfaces preserve distributions relevant to targets.",
+    "Belief-state representations are treated as expanded interfaces, not privileged access."
+  ]
+}
