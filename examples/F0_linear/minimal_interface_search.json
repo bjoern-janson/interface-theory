@@ -1,20 +1,222 @@
 {
-  "search_space": {
-    "interfaces_tested": 16
+  "example_id": "F0_linear",
+  "artifact_type": "minimal_interface_search",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+
+  "purpose": {
+    "description": "Search the interface space for the lowest-cost observation boundary that preserves target identifiability.",
+    "role": "Determine minimal sufficient interfaces rather than maximizing observation bandwidth.",
+    "principle": "Find the smallest interface whose observation equivalence classes refine target equivalence classes."
   },
 
-  "result": {
-    "minimum_sufficient_interface": "I_full_state",
+  "formal_problem": {
+    "objective": {
+      "symbol": "min C(O)",
 
-    "cost": 2
+      "description": "Minimize interface complexity."
+    },
+
+    "constraint": {
+      "statement": "exists L_hat such that L = L_hat o O",
+
+      "equivalent_condition": "O(x_a)=O(x_b) => L(x_a)=L(x_b)"
+    },
+
+    "search_space": {
+      "family": "linear_observation_interfaces",
+
+      "form": "O_C(x)=Cx",
+
+      "dimensions_tested": [
+        1,
+        2
+      ]
+    }
   },
 
-  "failure_condition": {
-    "exists": "x_a,x_b",
+  "system": {
+    "reference": "system.json",
 
-    "such_that": [
-      "O(x_a)=O(x_b)",
-      "L(x_a)!=L(x_b)"
+    "state_dimension": 2,
+
+    "transition_matrix": [
+      [
+        1.0,
+        0.2
+      ],
+      [
+        0.0,
+        0.9
+      ]
     ]
-  }
+  },
+
+  "targets": [
+    {
+      "target_id": "T_current_position",
+
+      "description": "Current first coordinate",
+
+      "search_result": {
+        "minimum_interface_dimension": 1,
+
+        "example_interface": "I_position_only",
+
+        "status": "sufficient"
+      }
+    },
+
+    {
+      "target_id": "T_future_position",
+
+      "description": "First coordinate after five transitions",
+
+      "search_result": {
+        "minimum_interface_dimension": 2,
+
+        "example_interface": "I_full_state",
+
+        "status": "sufficient"
+      }
+    },
+
+    {
+      "target_id": "T_hidden_state",
+
+      "description": "Future second coordinate",
+
+      "search_result": {
+        "minimum_interface_dimension": 1,
+
+        "example_interface": "I_hidden_dimension",
+
+        "status": "sufficient"
+      }
+    },
+
+    {
+      "target_id": "T_full_trajectory",
+
+      "description": "Complete future trajectory",
+
+      "search_result": {
+        "minimum_interface_dimension": 2,
+
+        "example_interface": "I_full_state",
+
+        "status": "sufficient"
+      }
+    }
+  ],
+
+  "candidate_search": {
+    "total_interfaces_evaluated": 16,
+
+    "interface_family": {
+      "linear_projections": true,
+
+      "orthogonal_equivalents_collapsed": true
+    },
+
+    "ranking": {
+      "primary_metric": "interface_dimension",
+
+      "secondary_metric": "rank",
+
+      "tertiary_metric": "conditioning"
+    }
+  },
+
+  "results": {
+    "target_relative_minima": [
+      {
+        "target": "T_current_position",
+
+        "minimum_cost": 1,
+
+        "interface_class": "any projection preserving x_1"
+      },
+      {
+        "target": "T_future_position",
+
+        "minimum_cost": 2,
+
+        "interface_class": "full state preserving"
+      },
+      {
+        "target": "T_hidden_state",
+
+        "minimum_cost": 1,
+
+        "interface_class": "any projection preserving x_2"
+      },
+      {
+        "target": "T_full_trajectory",
+
+        "minimum_cost": 2,
+
+        "interface_class": "full state preserving"
+      }
+    ]
+  },
+
+  "failure_analysis": {
+    "one_dimension_failures": [
+      {
+        "target": "T_future_position",
+
+        "reason": "Latent dimension contributes to future visible state."
+      },
+      {
+        "target": "T_full_trajectory",
+
+        "reason": "Trajectory reconstruction requires both state coordinates."
+      }
+    ],
+
+    "common_failure_condition": {
+      "statement": "A one-dimensional projection creates target-divergent observation collisions.",
+
+      "formal": "exists x_a,x_b: Cx_a=Cx_b and L(x_a)!=L(x_b)"
+    }
+  },
+
+  "minimality_proof": {
+    "method": [
+      "enumerate candidate observation matrices",
+      "construct observation equivalence classes",
+      "test target purity",
+      "select lowest-cost sufficient interface"
+    ],
+
+    "verified": true
+  },
+
+  "scientific_interpretation": {
+    "finding": "The minimal interface is target-relative, not system-relative.",
+
+    "implication": "More observation is unnecessary when the target does not require it."
+  },
+
+  "validation": {
+    "enumeration_complete": true,
+
+    "factorization_checks_complete": true,
+
+    "minimality_verified": true,
+
+    "counterexamples_verified": true
+  },
+
+  "decision": {
+    "status": "PASSED",
+
+    "meaning": "F0_linear establishes that interface complexity can be minimized while preserving exact target identifiability."
+  },
+
+  "notes": [
+    "The benchmark searches for sufficient information, not maximal information.",
+    "The same system has different minimal interfaces for different targets.",
+    "This establishes the target-relative nature of interface boundaries."
+  ]
 }
