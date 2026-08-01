@@ -1,0 +1,144 @@
+{
+  "gate_id": "GATE-002",
+  "protocol_version": "CMI_v0.2",
+  "artifact_type": "updater_pathway_signatures",
+
+  "purpose": {
+    "description": "Canonical signatures representing all observable updater-pathway information available to the frozen CMI v0.2 interface.",
+    "role": "Define observational equivalence classes induced by the interface.",
+    "not_used_for": [
+      "target construction",
+      "future continuation prediction labels",
+      "oracle pathway reconstruction"
+    ]
+  },
+
+  "interface": {
+    "name": "CMI updater pathway interface",
+    "version": "v0.2",
+
+    "observation_operator": "O_CMI_v0.2",
+
+    "signature_definition": {
+      "components": [
+        "checkpoint_signature",
+        "transition_signature",
+        "replay_signature"
+      ],
+
+      "aggregation_rule": "deterministic canonical encoding of permitted observations"
+    }
+  },
+
+  "signature_space": {
+    "total_systems": 2,
+
+    "unique_signatures": 1,
+
+    "equivalence_classes": [
+      {
+        "class_id": "E1",
+
+        "members": [
+          "A",
+          "B"
+        ],
+
+        "signature": {
+          "checkpoint_signature": "checkpoint_X",
+          "transition_signature": "transition_X",
+          "replay_signature": "replay_X"
+        }
+      }
+    ]
+  },
+
+  "systems": [
+    {
+      "system_id": "A",
+
+      "target_class": "HIGH",
+
+      "signature": {
+        "checkpoint_signature": "checkpoint_X",
+        "transition_signature": "transition_X",
+        "replay_signature": "replay_X"
+      },
+
+      "canonical_hash": "signature_X"
+    },
+
+    {
+      "system_id": "B",
+
+      "target_class": "LOW",
+
+      "signature": {
+        "checkpoint_signature": "checkpoint_X",
+        "transition_signature": "transition_X",
+        "replay_signature": "replay_X"
+      },
+
+      "canonical_hash": "signature_X"
+    }
+  ],
+
+  "equivalence_analysis": {
+    "pairwise_comparisons": [
+      {
+        "pair": [
+          "A",
+          "B"
+        ],
+
+        "result": {
+          "same_signature": true,
+          "observation_equivalent": true
+        }
+      }
+    ],
+
+    "formal_relation": {
+      "statement": "O_CMI_v0.2(A)=O_CMI_v0.2(B)",
+      "satisfied": true
+    }
+  },
+
+  "target_consistency_check": {
+    "target_values_available": true,
+
+    "target_artifact": "held_out_continuation_results.json",
+
+    "result": {
+      "same_target": false,
+      "target_divergence": true
+    },
+
+    "formal_failure_pattern": {
+      "observation_equivalence": true,
+      "target_equivalence": false
+    }
+  },
+
+  "factorization_test": {
+    "criterion": "L = L_hat o O_CMI_v0.2",
+
+    "result": {
+      "factorization_exists": false,
+      "reason": "single observation equivalence class contains multiple target values"
+    }
+  },
+
+  "validation": {
+    "signature_generation": "passed",
+    "canonicalization": "passed",
+    "collision_detection": "passed",
+    "target_leakage_check": "passed"
+  },
+
+  "notes": [
+    "The shared signature is the central Gate 002 counterexample object.",
+    "The interface compresses systems A and B into the same observable equivalence class.",
+    "Because future adaptation targets diverge, no valid decoder exists from this interface alone."
+  ]
+}
