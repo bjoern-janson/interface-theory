@@ -1,0 +1,23 @@
+{
+  "targets": [
+    {
+      "id": "future_position",
+
+      "definition": "x_T[0]",
+
+      "requires": [
+        "state_dimension_0"
+      ]
+    },
+
+    {
+      "id": "hidden_state_recovery",
+
+      "definition": "x_T[1]",
+
+      "requires": [
+        "state_dimension_1"
+      ]
+    }
+  ]
+}
