@@ -220,6 +220,16 @@ def main() -> None:
         == expected_antichain,
         "Gate 014 minimum antichain changed.",
     )
+    minimum_interface_ids = {record["interface_id"] for record in antichain}
+    minimum_interfaces = {
+        interface["interface_id"]: interface
+        for interface in gate_014["interfaces"]
+        if interface["interface_id"] in minimum_interface_ids
+    }
+    require(
+        set(minimum_interfaces) == minimum_interface_ids,
+        "Gate 014 minimum interfaces are missing from the complete audit.",
+    )
     for record in antichain:
         quotient = record["quotient"]
         require(
@@ -234,6 +244,33 @@ def main() -> None:
             and quotient["heterogeneous_class_count"] == 0,
             "Gate 014 quotient certificate changed.",
         )
+        for quotient_class in minimum_interfaces[record["interface_id"]][
+            "observation_classes"
+        ]:
+            architecture_configurations = {
+                tuple(configuration)
+                for configuration in quotient_class["architecture_configurations"]
+            }
+            latent_configurations = {
+                json.dumps(configuration, sort_keys=True)
+                for configuration in quotient_class["latent_configurations"]
+            }
+            require(
+                quotient_class["architecture_configuration_count"]
+                == len(architecture_configurations)
+                and quotient_class["architecture_configuration_count"] > 1,
+                "Gate 014 minimum quotient lost architecture diversity.",
+            )
+            require(
+                quotient_class["latent_configuration_count"]
+                == len(latent_configurations)
+                and quotient_class["latent_configuration_count"] > 1,
+                "Gate 014 minimum quotient lost latent-configuration diversity.",
+            )
+            require(
+                quotient_class["internal_dynamics_signature_count"] > 1,
+                "Gate 014 minimum quotient lost internal-dynamics diversity.",
+            )
 
     targets_by_system = {
         record["system_id"]: json.dumps(record["target"], sort_keys=True)
