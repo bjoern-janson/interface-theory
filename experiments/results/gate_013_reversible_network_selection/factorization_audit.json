@@ -1,6 +1,6 @@
 {
   "gate_id": "GATE-013",
-  "protocol_version": "REVERSIBLE_NETWORK_SELECTION_v0.1",
+  "protocol_version": "OPERATIONAL_REOPENABILITY_FLOW_v0.1",
   "execution_status": "EXECUTED",
   "identifiability_result": "IDENTIFIABLE_IN_DECLARED_FINITE_CLASS",
   "system_class": {
@@ -12,9 +12,9 @@
       "reversible_propagating"
     ],
     "assumptions": [
-      "Three candidate mechanisms with fixed directed dependency semantics.",
-      "Deterministic phase-A suppression followed by a post-suppression phase-B reversal intervention.",
-      "No hidden state, noise, drift, rewiring, or learning beyond declared policies."
+      "Four labeled operational records forming a two-by-two Cartesian product.",
+      "No suppression, recurrence, authority redistribution, graph edge, propagation, or relearning dynamics are simulated.",
+      "The labels directly determine the target bits and are excluded from the allowed interface."
     ]
   },
   "target": {
@@ -23,7 +23,11 @@
       "reopenability",
       "authority_flow"
     ],
-    "definition": "(R_reopen, K_flow) as declared in the Gate 013 contract."
+    "definition": "(R_reopen, K_flow) as declared in the Gate 013 contract.",
+    "alias_formulas": {
+      "reopenability": "1[selection_label = reversible]",
+      "authority_flow": "1[topology_label = propagating]"
+    }
   },
   "interface_policy": {
     "allowed_readouts": [
@@ -37,7 +41,13 @@
       "authority weights",
       "edge list",
       "architecture label"
-    ]
+    ],
+    "projection_formulas": {
+      "reversal_recovery": "O_R = R_reopen",
+      "downstream_flow": "O_K = K_flow"
+    },
+    "frozen_ladder_requires_baseline_control": true,
+    "unrestricted_scalar_encodings_tested": false
   },
   "interfaces": [
     {
@@ -492,16 +502,19 @@
         ]
       }
     ],
-    "counterexample_witnesses": []
+    "counterexample_witnesses": [],
+    "status": "DERIVED_COST_ACCOUNTING_ONLY",
+    "member_of_frozen_protocol_ladder": false
   },
-  "minimum_protocol_scalar_readout_cost": 3,
-  "minimum_target_relevant_scalar_readout_cost": 2,
   "mandatory_protocol_controls": [
     "baseline"
   ],
-  "all_lower_protocol_cost_interfaces_failed": true,
   "constructive_factorization": {
     "map": "L_hat(1, r, k) = (r, k)",
-    "scope": "Operational interface composition by design; not discovery of an adaptive-system invariant."
-  }
+    "scope": "Direct label and readout aliases establish operational interface composition by design; not discovery of an adaptive-system invariant.",
+    "cost_scope": "The cost-two informative minimum is only over the two predeclared binary probe coordinates; unrestricted scalar encodings were not tested."
+  },
+  "minimum_protocol_scalar_readout_cost_in_frozen_ladder": 3,
+  "minimum_informative_probe_cost_in_frozen_readout_set": 2,
+  "all_evaluated_lower_protocol_cost_interfaces_in_frozen_ladder_failed": true
 }
