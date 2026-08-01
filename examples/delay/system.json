@@ -1,0 +1,245 @@
+{
+  "example_id": "delay",
+  "artifact_type": "system_definition",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+
+  "metadata": {
+    "name": "Canonical Delayed Observation Dynamical System",
+    "description": "Minimal dynamical system where observations are temporally delayed relative to the underlying state.",
+    "purpose": "Evaluate whether interfaces can recover target-relevant information when causal evidence arrives after a delay."
+  },
+
+  "system_class": {
+    "family": "partially_observed_delayed_dynamical_system",
+
+    "stationarity": "stationary",
+
+    "determinism": "deterministic",
+
+    "state_dimension": 1,
+
+    "observable_dimension": 1,
+
+    "delay_dimension": 1
+  },
+
+  "state": {
+    "symbol": "x_t",
+
+    "space": "R",
+
+    "description": "True current system state.",
+
+    "representation": {
+      "vector": [
+        "x_t"
+      ]
+    }
+  },
+
+  "dynamics": {
+    "equation": "x_{t+1}=Ax_t",
+
+    "transition_matrix": [
+      [
+        1.2
+      ]
+    ],
+
+    "properties": {
+      "linear": true,
+
+      "time_invariant": true,
+
+      "deterministic": true,
+
+      "expanding": true
+    },
+
+    "interpretation": "The current state depends on previous states and diverges from delayed observations over time."
+  },
+
+  "observation_model": {
+    "general_form": "y_t=x_{t-\tau}",
+
+    "delay_parameter": {
+      "symbol": "tau",
+
+      "default_value": 2,
+
+      "tested_values": [
+        0,
+        1,
+        2,
+        3,
+        5
+      ]
+    },
+
+    "available_information": {
+      "current_state": false,
+
+      "past_state": true
+    },
+
+    "observation_equation": {
+      "default": "y_t=x_{t-2}"
+    }
+  },
+
+  "initial_conditions": {
+    "history_required": true,
+
+    "initial_state_history": {
+      "range": [
+        -2.0,
+        2.0
+      ],
+
+      "length": 5
+    },
+
+    "sampling": {
+      "distribution": "uniform"
+    }
+  },
+
+  "trajectory_generation": {
+    "default_horizon": 15,
+
+    "trajectory_definition": [
+      "x_0",
+      "x_1",
+      "x_2",
+      "...",
+      "x_T"
+    ],
+
+    "delayed_observation_definition": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "...",
+      "y_T"
+    ]
+  },
+
+  "targets": {
+    "primary": [
+      "current_state",
+      "future_state"
+    ],
+
+    "definitions": {
+      "current_state": {
+        "symbol": "L(x_t)",
+
+        "expression": "x_t"
+      },
+
+      "future_state": {
+        "symbol": "L_k(x_t)",
+
+        "expression": "x_{t+k}"
+      }
+    }
+  },
+
+  "delay_properties": {
+    "information_present": true,
+
+    "information_alignment": "shifted",
+
+    "causal_access": {
+      "current_state": false,
+
+      "past_state": true
+    },
+
+    "interpretation": "The observer receives valid information about the wrong temporal location."
+  },
+
+  "benchmark_questions": [
+    {
+      "id": "Q1",
+
+      "question": "Can delayed observations identify the current state?",
+
+      "expected": "no_without_dynamics"
+    },
+    {
+      "id": "Q2",
+
+      "question": "Can delay-aware models compensate for temporal offset?",
+
+      "expected": "yes_if_transition_known"
+    },
+    {
+      "id": "Q3",
+
+      "question": "How much history is required to recover current state?",
+
+      "expected": "target_and_delay_dependent"
+    }
+  ],
+
+  "expected_behavior": {
+    "I_delayed_observation": {
+      "factorization": false,
+
+      "failure_mode": "temporal_aliasing"
+    },
+
+    "I_delay_compensated": {
+      "factorization": "conditional",
+
+      "dependency": "known dynamics"
+    },
+
+    "I_history_window": {
+      "factorization": "window_dependent",
+
+      "dependency": "history_length"
+    },
+
+    "I_predictive_model": {
+      "factorization": true,
+
+      "dependency": "model_correctness"
+    }
+  },
+
+  "counterexample_generation": {
+    "enabled": true,
+
+    "constraint": {
+      "same_delayed_observation": true,
+
+      "different_current_state": true
+    },
+
+    "purpose": "Construct temporally aliased states."
+  },
+
+  "validation": {
+    "state_dimension_verified": true,
+
+    "delay_channel_verified": true,
+
+    "observation_boundary_verified": true,
+
+    "causal_direction_verified": true
+  },
+
+  "decision": {
+    "status": "ACTIVE",
+
+    "meaning": "Canonical delayed-observation environment for temporal interface identifiability experiments."
+  },
+
+  "notes": [
+    "The system intentionally separates information availability from information timing.",
+    "Delay creates a temporal observation boundary rather than a missing-information boundary.",
+    "Prediction and compensation are interface capabilities, not properties of the raw observation."
+  ]
+}
