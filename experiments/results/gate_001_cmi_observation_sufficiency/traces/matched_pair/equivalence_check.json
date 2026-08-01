@@ -1,0 +1,149 @@
+{
+  "gate_id": "GATE-001",
+  "protocol_version": "CMI_v0.1",
+  "artifact_type": "observation_equivalence_check",
+
+  "pair": {
+    "system_A": "A",
+    "system_B": "B",
+    "pair_id": "PAIR_001"
+  },
+
+  "declared_question": {
+    "question": "Does the CMI v0.1 behavioral interface preserve target-relevant distinctions?",
+    "criterion": "A~I B implies L(A)=L(B)"
+  },
+
+  "interface": {
+    "name": "CMI behavioral interface",
+    "channels_tested": [
+      "behavior",
+      "intervention_response",
+      "recurrence",
+      "counterfactual"
+    ],
+    "channels_excluded": [
+      "updater_pathway",
+      "weights",
+      "gradients",
+      "private_implementation"
+    ]
+  },
+
+  "observation_comparison": {
+    "behavior_trace": {
+      "system_A": [
+        -1,
+        0,
+        1
+      ],
+      "system_B": [
+        -1,
+        0,
+        1
+      ],
+      "equal": true
+    },
+
+    "intervention_response": {
+      "system_A": [
+        -1,
+        0,
+        1
+      ],
+      "system_B": [
+        -1,
+        0,
+        1
+      ],
+      "equal": true
+    },
+
+    "recurrence": {
+      "system_A": [
+        [
+          -1,
+          0,
+          1
+        ],
+        [
+          -1,
+          0,
+          1
+        ]
+      ],
+      "system_B": [
+        [
+          -1,
+          0,
+          1
+        ],
+        [
+          -1,
+          0,
+          1
+        ]
+      ],
+      "equal": true
+    },
+
+    "counterfactual": {
+      "system_A": [
+        -1,
+        0,
+        1
+      ],
+      "system_B": [
+        -1,
+        0,
+        1
+      ],
+      "equal": true
+    }
+  },
+
+  "observation_relation": {
+    "equivalence_found": true,
+    "formal_statement": "O_I(A)=O_I(B)",
+    "interface_equivalence": "A~I B"
+  },
+
+  "target_comparison": {
+    "target_available": true,
+    "target_used_in_observation": false,
+    "system_A_target": "HIGH",
+    "system_B_target": "LOW",
+    "equal": false,
+    "formal_statement": "L(A)!=L(B)"
+  },
+
+  "identifiability_test": {
+    "condition": "O_I(A)=O_I(B) => L(A)=L(B)",
+    "satisfied": false,
+    "failure_mode": "target-changing observational equivalence"
+  },
+
+  "factorization_result": {
+    "claim_tested": "L = L_hat o O_I",
+    "factorization_exists": false,
+    "reason": "The same observation maps to multiple target values"
+  },
+
+  "decision": {
+    "gate_status": "FAIL",
+    "estimator_development": "BLOCKED",
+    "required_next_step": "Interface refinement or new identifiability analysis"
+  },
+
+  "validation": {
+    "pair_consistency_check": true,
+    "all_behavioral_channels_equal": true,
+    "target_labels_remain_outside_interface": true
+  },
+
+  "notes": [
+    "This artifact establishes interface insufficiency only.",
+    "The systems are distinguishable through privileged information, but that information is outside CMI v0.1.",
+    "The result does not imply that no behavioral interface can identify the target."
+  ]
+}
