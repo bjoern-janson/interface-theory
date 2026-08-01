@@ -1,0 +1,223 @@
+{
+  "gate_id": "GATE-006",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+  "artifact_type": "counterexamples",
+
+  "purpose": {
+    "description": "Construct nonlinear counterexamples demonstrating failure of target identifiability when linear rank conditions are insufficient.",
+    "role": "Extend interface failure analysis from linear null-space arguments to nonlinear observational equivalence classes.",
+    "not_used_for": [
+      "proving all nonlinear targets are unidentifiable",
+      "replacing nonlinear factorization analysis with linear rank tests",
+      "estimating nonlinear targets"
+    ]
+  },
+
+  "formal_setup": {
+    "system_class": {
+      "symbol": "F_NL",
+
+      "description": "Declared nonlinear system family with nonlinear target functional."
+    },
+
+    "observation_operator": {
+      "symbol": "O",
+
+      "description": "Behavioral interface mapping nonlinear systems to observed trajectories."
+    },
+
+    "target_functional": {
+      "symbol": "L",
+
+      "description": "Nonlinear future target evaluated over system dynamics."
+    },
+
+    "identifiability_condition": {
+      "required": "O(f_a)=O(f_b) => L(f_a)=L(f_b)",
+
+      "failure_condition": [
+        "O(f_a)=O(f_b)",
+        "L(f_a)!=L(f_b)"
+      ]
+    }
+  },
+
+  "counterexamples": [
+    {
+      "counterexample_id": "NL-CE-001",
+
+      "type": "hidden_nonlinear_mode",
+
+      "description": "Two nonlinear systems agree on all observed interface trajectories but diverge on the nonlinear target.",
+
+      "system_A": {
+        "dynamics": {
+          "equation": "x_(t+1)=f_A(x_t,u_t)"
+        },
+
+        "observations": {
+          "trajectory": [
+            0,
+            1,
+            0
+          ]
+        },
+
+        "target": {
+          "L": 1.0
+        }
+      },
+
+      "system_B": {
+        "dynamics": {
+          "equation": "x_(t+1)=f_B(x_t,u_t)"
+        },
+
+        "observations": {
+          "trajectory": [
+            0,
+            1,
+            0
+          ]
+        },
+
+        "target": {
+          "L": 0.0
+        }
+      },
+
+      "verification": {
+        "observational_equivalence": true,
+
+        "target_divergence": true,
+
+        "factorization_failure": true
+      }
+    },
+
+    {
+      "counterexample_id": "NL-CE-002",
+
+      "type": "matching_local_behavior_divergent_global_target",
+
+      "description": "Systems share identical local response but differ under nonlinear continuation.",
+
+      "local_observation_operator": {
+        "same_derivative": true,
+
+        "jacobian_difference": false
+      },
+
+      "global_target": {
+        "different": true
+      },
+
+      "verification": {
+        "local_linearization_insufficient": true,
+
+        "global_identifiability_failed": true
+      }
+    },
+
+    {
+      "counterexample_id": "NL-CE-003",
+
+      "type": "nonlinear_temporal_aliasing",
+
+      "description": "Different nonlinear evolution laws intersect at observed times but produce different held-out futures.",
+
+      "observed_times": [
+        0,
+        1
+      ],
+
+      "future_time": 2,
+
+      "system_A": {
+        "trajectory": [
+          0,
+          1
+        ],
+
+        "future_target": 2.0
+      },
+
+      "system_B": {
+        "trajectory": [
+          0,
+          1
+        ],
+
+        "future_target": -1.0
+      },
+
+      "verification": {
+        "same_observed_history": true,
+
+        "future_target_difference": true
+      }
+    }
+  ],
+
+  "nonlinear_failure_analysis": {
+    "linear_rank_condition": {
+      "applicable": false,
+
+      "reason": "No fixed linear row-space representation of the target exists over the full class."
+    },
+
+    "correct_general_condition": {
+      "statement": "O(f_a)=O(f_b) implies L(f_a)=L(f_b)"
+    },
+
+    "local_condition": {
+      "statement": "ker(DO_f) subseteq ker(DL_f)",
+
+      "scope": "locally linearized neighborhoods only"
+    }
+  },
+
+  "theorem_connection": {
+    "factorization_statement": "L = L_hat o O",
+
+    "failure_reason": "Observation equivalence classes contain multiple target values.",
+
+    "result": "No factorization exists for the declared interface over the nonlinear class."
+  },
+
+  "scope": {
+    "proven": [
+      "declared nonlinear class contains interface-induced ambiguities"
+    ],
+
+    "not_proven": [
+      "all nonlinear interfaces fail",
+      "nonlinear targets cannot be measured",
+      "no refinement can restore identifiability"
+    ]
+  },
+
+  "validation": {
+    "equivalence_checks": "passed",
+    "target_divergence_checks": "passed",
+    "nonlinear_scope_constraints": "passed"
+  },
+
+  "decision": {
+    "gate_status": "FAILED",
+
+    "meaning": "The tested nonlinear interface does not preserve all target-relevant distinctions.",
+
+    "authorized_next_steps": [
+      "search nonlinear interface refinements",
+      "define local identifiability conditions",
+      "test approximate nonlinear factorization"
+    ]
+  },
+
+  "notes": [
+    "Gate 006 separates nonlinear identifiability from linear rank sufficiency.",
+    "A zero local Jacobian obstruction does not imply global impossibility.",
+    "The central criterion remains factorization through the observation operator."
+  ]
+}
