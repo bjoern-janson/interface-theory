@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Exhaustive factorization audit for Gate 013.
 
-Gate 013 is deliberately small. It tests whether a declared joint target for
-reversible selection and observable authority propagation factors through a
-declared behavioral intervention interface. It does not estimate a general
+Gate 013 is deliberately small. It tests whether a declared joint operational
+target for reopenability and a stipulated flow label factors through a declared
+behavioral interface. It does not estimate a general
 correctability variable, compare architectures, or open predictive validation.
 The identifying readouts are exact operational projections of the target, so
 the result is a reproducible interface-composition proof by construction.
@@ -49,20 +49,20 @@ def target(system: OperationalRecord) -> tuple[int, int]:
     )
 
 
-def baseline_readout(_: System) -> int:
+def baseline_readout(_: OperationalRecord) -> int:
     """Current performance before the intervention sequence; equal by design."""
 
     return 1
 
 
 def reversal_recovery_readout(system: OperationalRecord) -> int:
-    """Post-suppression phase-B recovery after a reversal intervention."""
+    """Stipulated reopenability-label projection; no recovery is simulated."""
 
     return target(system)[0]
 
 
 def downstream_flow_readout(system: OperationalRecord) -> int:
-    """Effect at node 3 of do(evidence at node 1 = contradiction)."""
+    """Stipulated downstream-flow-label projection; no causal effect is estimated."""
 
     return target(system)[1]
 
