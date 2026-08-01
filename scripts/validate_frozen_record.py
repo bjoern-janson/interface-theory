@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Integrity checks for the frozen Interface Theory record.
 
-This validates repository consistency only. It does not regenerate the missing
-candidate-level audits identified in docs/EVIDENCE_INDEX.md.
+This validates repository consistency and regenerates the complete Gate 013
+audit. It does not regenerate the missing candidate-level audits identified in
+docs/EVIDENCE_INDEX.md.
 """
 
 from __future__ import annotations
@@ -117,7 +118,7 @@ def main() -> None:
     )
     require(
         referenced_evidence_anchors == expected_evidence_anchors,
-        "Ledger evidence links changed without updating the six-anchor contract.",
+        "Ledger evidence links changed without updating the seven-anchor contract.",
     )
     for anchor in expected_evidence_anchors:
         require(
@@ -156,9 +157,13 @@ def main() -> None:
         "docs/RESULT_LEDGER.md": "EVIDENCE_INDEX.md",
         "docs/EVIDENCE_INDEX.md": "FROZEN_SUMMARY_RECORD",
         "experiments/gate_registry.md": "Historical pruning gates",
-        "experiments/gate_registry.md": "Gate 013",
     }.items():
         require(text in (ROOT / relative).read_text(encoding="utf-8"), relative)
+
+    require(
+        "Gate 013" in (ROOT / "experiments/gate_registry.md").read_text(encoding="utf-8"),
+        "Gate 013 must remain in the registry.",
+    )
 
     print(f"Validated {len(json_files)} JSON artifacts and canonical record invariants.")
 
