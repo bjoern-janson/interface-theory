@@ -1,0 +1,256 @@
+{
+  "example_id": "delay",
+  "artifact_type": "factorization_check",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+
+  "purpose": {
+    "description": "Verify whether delayed observation interfaces preserve enough temporal information for target factorization.",
+    "role": "Determine when temporal displacement creates non-identifiability.",
+    "criterion": "Observation-equivalent states must remain target-equivalent."
+  },
+
+  "formal_definition": {
+    "system_state": {
+      "symbol": "x_t"
+    },
+
+    "interface_operator": {
+      "symbol": "O_I"
+    },
+
+    "target_operator": {
+      "symbol": "L"
+    },
+
+    "factorization_condition": {
+      "statement": "exists L_hat such that L=L_hat o O_I",
+
+      "equivalent_test": "O_I(x_a)=O_I(x_b) => L(x_a)=L(x_b)"
+    }
+  },
+
+  "system": {
+    "dynamics": {
+      "equation": "x_{t+1}=1.2x_t"
+    },
+
+    "delay": {
+      "symbol": "tau",
+
+      "value": 2
+    },
+
+    "observation": {
+      "equation": "y_t=x_{t-2}"
+    }
+  },
+
+  "interfaces_checked": [
+    {
+      "interface_id": "I_delayed_observation",
+
+      "operator": {
+        "equation": "O(x_t)=x_{t-2}"
+      },
+
+      "targets": {
+        "T_delayed_state": {
+          "factorization": true
+        },
+
+        "T_current_state": {
+          "factorization": false
+        },
+
+        "T_future_state": {
+          "factorization": false
+        }
+      },
+
+      "counterexample": {
+        "state_A": {
+          "current": 1.0,
+
+          "delayed_observation": 1.0
+        },
+
+        "state_B": {
+          "current": 2.0,
+
+          "delayed_observation": 1.0
+        },
+
+        "observation_equivalent": true,
+
+        "target_values": {
+          "T_current_state": {
+            "A": 1.0,
+
+            "B": 2.0
+          }
+        }
+      },
+
+      "result": "fails"
+    },
+
+    {
+      "interface_id": "I_delay_compensated",
+
+      "operator": {
+        "equation": "O(x_t)=(x_{t-2},tau)"
+      },
+
+      "targets": {
+        "T_delayed_state": {
+          "factorization": true
+        },
+
+        "T_current_state": {
+          "factorization": "conditional"
+        },
+
+        "T_future_state": {
+          "factorization": "conditional"
+        }
+      },
+
+      "assumptions": [
+        "known transition matrix",
+        "correct dynamics"
+      ],
+
+      "result": "passes_under_assumptions"
+    },
+
+    {
+      "interface_id": "I_history_window",
+
+      "operator": {
+        "equation": "O(x_t)=(y_{t-k},...,y_t)"
+      },
+
+      "window_tests": [
+        {
+          "window": 1,
+
+          "current_state_factorization": false
+        },
+        {
+          "window": 2,
+
+          "current_state_factorization": "conditional"
+        },
+        {
+          "window": 5,
+
+          "current_state_factorization": true
+        }
+      ],
+
+      "result": "window_dependent"
+    },
+
+    {
+      "interface_id": "I_predictive_model",
+
+      "operator": {
+        "equation": "O(x_t)=(x_{t-2},A,tau)"
+      },
+
+      "reconstruction": {
+        "equation": "x_hat_t=A^2x_{t-2}"
+      },
+
+      "targets": {
+        "T_current_state": {
+          "factorization": true
+        },
+
+        "T_future_state": {
+          "factorization": true
+        }
+      },
+
+      "result": "passes"
+    },
+
+    {
+      "interface_id": "I_intervention",
+
+      "operator": {
+        "equation": "O(x_t,u_t)=response(x_t,do(u_t))"
+      },
+
+      "targets": {
+        "T_current_state": {
+          "factorization": true
+        },
+
+        "T_state_transition": {
+          "factorization": true
+        }
+      },
+
+      "result": "passes"
+    }
+  ],
+
+  "failure_taxonomy": {
+    "temporal_aliasing": {
+      "definition": "Different present states map to identical delayed observations."
+    },
+
+    "model_dependence": {
+      "definition": "Compensation requires assumptions about dynamics."
+    },
+
+    "history_insufficiency": {
+      "definition": "Short temporal windows fail to identify current state."
+    }
+  },
+
+  "global_findings": {
+    "delay_is_not_information_loss": true,
+
+    "delay_creates_interface_requirement": true,
+
+    "sufficient_interface_properties": [
+      "temporal alignment",
+      "state transition knowledge",
+      "causal probing"
+    ]
+  },
+
+  "comparison_to_hidden_state": {
+    "hidden_state": {
+      "failure": "state dimension inaccessible"
+    },
+
+    "delay": {
+      "failure": "state information arrives at incorrect time"
+    },
+
+    "shared_principle": "Interfaces fail when observation equivalence exceeds target equivalence."
+  },
+
+  "validation": {
+    "factorization_tests_completed": true,
+
+    "counterexamples_generated": true,
+
+    "interface_boundaries_verified": true
+  },
+
+  "decision": {
+    "status": "PASSED",
+
+    "meaning": "Delayed interfaces demonstrate that temporal displacement can create non-identifiability without destroying information."
+  },
+
+  "notes": [
+    "The benchmark separates latency from absence.",
+    "A predictive interface effectively transports information across the delay boundary.",
+    "Factorization remains the core test for interface sufficiency."
+  ]
+}
