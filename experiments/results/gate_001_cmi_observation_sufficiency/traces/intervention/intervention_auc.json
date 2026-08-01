@@ -1,0 +1,122 @@
+{
+  "gate_id": "GATE-001",
+  "protocol_version": "CMI_v0.1",
+  "artifact_type": "intervention_auc_report",
+
+  "evaluation": {
+    "channel": "intervention_response",
+    "task": "target discrimination from controlled intervention trajectories",
+    "positive_class": "HIGH",
+    "negative_class": "LOW"
+  },
+
+  "feature_source": {
+    "interface": "CMI behavioral intervention interface v0.1",
+    "features_used": [
+      "intervention_conditions",
+      "observed_response_trajectories"
+    ],
+    "features_excluded": [
+      "future_target",
+      "updater_pathway",
+      "internal_parameters",
+      "private_state"
+    ]
+  },
+
+  "dataset": {
+    "pair_id": "PAIR_001",
+    "systems": [
+      "A",
+      "B"
+    ],
+    "intervention_count_per_system": 2,
+    "matched_interventions": [
+      "I1",
+      "I2"
+    ],
+    "samples": 4
+  },
+
+  "classifier": {
+    "type": "intervention_probe_classifier",
+    "objective": "measure interventional channel separability",
+    "target_labels_used_for_evaluation": true,
+    "target_labels_used_as_features": false
+  },
+
+  "results": {
+    "auc": 0.5,
+    "accuracy": 0.5,
+    "ranking_consistency": false,
+    "interpretation": "chance-level discrimination"
+  },
+
+  "separability_analysis": {
+    "unique_intervention_signatures": 2,
+    "target_classes_present": 2,
+    "target_changing_collisions": true,
+    "collision_summary": [
+      {
+        "signature": [
+          -1,
+          0,
+          1
+        ],
+        "systems": [
+          "A",
+          "B"
+        ],
+        "targets": [
+          "HIGH",
+          "LOW"
+        ]
+      },
+      {
+        "signature": [
+          1,
+          0,
+          -1
+        ],
+        "systems": [
+          "A",
+          "B"
+        ],
+        "targets": [
+          "HIGH",
+          "LOW"
+        ]
+      }
+    ]
+  },
+
+  "formal_identifiability_test": {
+    "condition": "O_intervention(A)=O_intervention(B) => L(A)=L(B)",
+    "observation_equivalence": true,
+    "target_equivalence": false,
+    "identifiable": false
+  },
+
+  "gate_condition": {
+    "failure_condition": "intervention interface does not separate target-changing equivalent systems",
+    "triggered": true
+  },
+
+  "decision": {
+    "interface_sufficient": false,
+    "estimator_development_authorized": false,
+    "next_allowed_step": "interface refinement or identifiability analysis"
+  },
+
+  "validation": {
+    "intervention_trace_integrity": true,
+    "no_privileged_features": true,
+    "matched_pair_preserved": true
+  },
+
+  "notes": [
+    "The intervention channel provides causal perturbation but not sufficient causal resolution for this target.",
+    "The failure demonstrates that external intervention alone does not guarantee identifiability.",
+    "The result is scoped to the CMI v0.1 interface and adversarial pair construction."
+  ]
+}
