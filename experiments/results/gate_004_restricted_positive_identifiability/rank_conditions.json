@@ -32,7 +32,7 @@
       "definition": "future state functional evaluated at target time T",
 
       "form": {
-        "L(theta)=phi(T)^T alpha"
+        "expression": "L(theta)=phi(T)^T alpha"
       }
     },
 
