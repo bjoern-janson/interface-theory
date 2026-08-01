@@ -32,6 +32,7 @@ generator.
 | FHD hidden state plus delay | [source](../experiments/results/gate_011_hd_composition/composition_search.json) | `da90ee5d7f68c6840e44e7925727917851733659` | **FROZEN_SUMMARY_RECORD.** 100 candidates; 13 identifying; unique cost-three minimum at lag one. Summary record only. Raw candidate table: not committed. Generator: not committed. |
 | FN known linear drift | [source](../experiments/results/gate_012_nonstationary_identifiability/temporal_design_results.json) | `6f6217d44ec18785688c39cf3707c78a97f6f640` | **FROZEN_SUMMARY_RECORD.** 150 candidates; 26 identifying; seven minimum-cost candidates at scalar cost four. Summary record only. Raw candidate table: not committed. Generator: not committed. |
 | FRS operational reopenability/flow composition | [audit](../experiments/results/gate_013_reversible_network_selection/factorization_audit.json) and [generator](../experiments/gate_013_reversible_network_selection/run_gate_013.py) | audit `6a86d4f7c4b2bd06f73c83e44f42d8814020e240`; generator `98c24ee0b19bf74210221446167a39e8dabdb322` | **COMPLETE_REPRODUCIBLE_AUDIT.** Four labeled records and all four frozen protocol interfaces are enumerated. The validator regenerates the direct-alias audit. Protocol cost is three; derived informative cost is two only within the declared binary readout vocabulary. |
+| F014 cross-context dynamic factorization | [contract](../experiments/gate_014_dynamic_reopenability_flow/GATE_014_CONTRACT.md), [audit](../experiments/results/gate_014_dynamic_reopenability_flow/factorization_audit.json), and [generator](../experiments/gate_014_dynamic_reopenability_flow/run_gate_014.py) | contract `fca4ab4a210962594f111dfc8f6fba711da4f497`; audit `84578928bf482ecf40950fea1bad50144a8af03d`; generator `cee4871e45b53602038348edb3976a0230daf3e6` | **COMPLETE_REPRODUCIBLE_AUDIT.** The frozen generator enumerates 216 rational dynamic systems and all 64 interfaces. The validator checks the contract SHA-256, independently audits quotient invariants, and requires byte-identical regeneration. Three incomparable cost-four informative interfaces pass as noninjective finite factors with structural diversity; every lower-cost interface fails. |
 
 ## Stable evidence anchors
 
@@ -71,6 +72,14 @@ Frozen ledger row for the closed known-linear-drift class.
 Complete reproducible finite-class audit for operational reopenability/flow
 interface composition by direct label/readout aliases.
 
+<a id="f014-cross-context-dynamic-factorization"></a>
+### F014 cross-context dynamic factorization
+
+Complete reproducible finite-class audit for factorization from behavioral
+identification assays at contexts \(-1,0\) to disjoint target assays at context
+\(+1\). The result is finite target-preserving compression, not an estimator or
+generalization claim.
+
 ## Corrections and limitations
 
 - The nonlinear \(F_0\) ledger result is distinct from the illustrative
@@ -83,8 +92,8 @@ interface composition by direct label/readout aliases.
   files are **INVALIDATED_LEGACY** tombstones. Their former self-certifying
   fields were removed.
 - The GitHub Actions integrity workflow validates repository consistency and
-  regenerates the Gate 013 complete audit. It does not regenerate the missing
-  candidate-level audits for the earlier summary-only records.
+  regenerates the Gate 013 and Gate 014 complete audits. It does not regenerate
+  the missing candidate-level audits for the earlier summary-only records.
 
 ## Required before independent replication claims
 
@@ -98,3 +107,4 @@ summary-only frozen result:
 
 Until then, the ledger records scoped frozen conclusions, not fully
 independently reproducible experiments.
+

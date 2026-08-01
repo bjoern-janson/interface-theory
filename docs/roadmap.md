@@ -104,13 +104,22 @@ jointly identifying; this is reproducible interface composition by construction,
 not a simulated authority-network result. It authorizes a separate frozen
 **estimation** protocol only as a noisy two-bit decoding study.
 
-Before Gate 3 or Gate 4, the class must expand so policy labels and operational
-outcomes can dissociate. Predeclared adversaries should include reversible
-policies that fail to reopen, deletion followed by successful relearning,
-propagating labels with downstream cancellation, and independent labels with
-common-cause downstream response. That expansion requires a new Gate 1
-contract. New unrelated theoretical work likewise requires its own contract,
-such as a temporal-rank theorem or a restricted unknown-drift class.
+Gate 014 records the separate dynamic expansion. Its 216-system rational class
+dissociates architecture labels from operational outcomes and separates
+identification contexts \(-1,0\) from target context \(+1\). Every interface
+below informative probe cost four fails. Three incomparable cost-four
+interfaces produce noninjective, target-homogeneous quotients with internal
+dynamics diversity. This establishes exact finite target-preserving
+compression under the frozen shared response law.
+
+That result does not show that reversible selection or network propagation is
+beneficial. Nor does a noninjective quotient rule out a lookup table over the
+remaining finite interface fingerprints. Gates 2–4 remain closed until a new
+protocol separately declares finite-sample estimation, held-out predictive
+validity, or a causal mechanism comparison. Gate 013 and Gate 014 may not be
+modified to make a downstream study pass. New unrelated theoretical work
+likewise requires its own contract, such as a temporal-rank theorem or a
+restricted unknown-drift class.
 
 ## Not authorized by the current evidence
 
@@ -125,3 +134,4 @@ The present record does not support claims about:
 
 Those are future target- or mechanism-specific questions, not current
 conclusions.
+
