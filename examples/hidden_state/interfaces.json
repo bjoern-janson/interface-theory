@@ -1,0 +1,259 @@
+{
+  "example_id": "hidden_state",
+  "artifact_type": "interface_definitions",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+
+  "purpose": {
+    "description": "Define observation boundaries for evaluating latent-state identifiability.",
+    "role": "Measure which hidden-state distinctions remain accessible through different interfaces.",
+    "principle": "An interface is sufficient only if it preserves distinctions required by the target."
+  },
+
+  "formal_definition": {
+    "system_state": {
+      "symbol": "z_t",
+      "components": [
+        "x_t",
+        "h_t"
+      ]
+    },
+
+    "observation_model": {
+      "equation": "y_t=Cz_t"
+    },
+
+    "factorization_condition": {
+      "statement": "exists L_hat such that L=L_hat o O",
+
+      "equivalent_test": "O(z_a)=O(z_b) => L(z_a)=L(z_b)"
+    }
+  },
+
+  "interfaces": [
+    {
+      "interface_id": "I_observation_only",
+
+      "name": "Instantaneous Observable State",
+
+      "description": "Observer receives only the visible component.",
+
+      "observation_matrix": [
+        [
+          1.0,
+          0.0
+        ]
+      ],
+
+      "dimension": {
+        "input": 2,
+        "output": 1
+      },
+
+      "rank": 1,
+
+      "information_access": [
+        "x_t"
+      ],
+
+      "hidden_information_removed": [
+        "h_t"
+      ],
+
+      "equivalence_structure": {
+        "classes": "non_singleton",
+
+        "meaning": "All states with identical x_t values collapse together."
+      },
+
+      "expected_results": {
+        "hidden_state_recovery": false,
+
+        "future_prediction": false,
+
+        "current_observation_target": true
+      },
+
+      "failure_modes": [
+        "hidden_state_aliasing"
+      ],
+
+      "status": "insufficient_for_latent_targets"
+    },
+
+    {
+      "interface_id": "I_history_window",
+
+      "name": "Temporal Observation Window",
+
+      "description": "Observer receives a sequence of past visible observations.",
+
+      "observation_operator": {
+        "equation": "O(z_t)=(y_{t-k},...,y_t)",
+
+        "window_sizes_tested": [
+          1,
+          2,
+          5,
+          10
+        ]
+      },
+
+      "dimension": {
+        "input": "variable",
+
+        "output": "k+1"
+      },
+
+      "information_access": [
+        "observable trajectory"
+      ],
+
+      "latent_recovery_mechanism": {
+        "type": "dynamic_observability",
+
+        "description": "Hidden state may leave a recoverable signature through future observations."
+      },
+
+      "expected_results": {
+        "hidden_state_recovery": "window_dependent",
+
+        "future_prediction": "improved"
+      },
+
+      "status": "conditionally_sufficient"
+    },
+
+    {
+      "interface_id": "I_full_state",
+
+      "name": "Complete Latent State Observation",
+
+      "description": "Observer receives both visible and hidden state variables.",
+
+      "observation_matrix": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+
+      "dimension": {
+        "input": 2,
+
+        "output": 2
+      },
+
+      "rank": 2,
+
+      "information_access": [
+        "x_t",
+        "h_t"
+      ],
+
+      "equivalence_structure": {
+        "classes": "singleton",
+
+        "meaning": "No latent ambiguity remains."
+      },
+
+      "expected_results": {
+        "hidden_state_recovery": true,
+
+        "future_prediction": true,
+
+        "trajectory_reconstruction": true
+      },
+
+      "status": "sufficient"
+    },
+
+    {
+      "interface_id": "I_intervention",
+
+      "name": "Active Causal Probe",
+
+      "description": "Observer can perturb the system and observe response changes.",
+
+      "observation_model": {
+        "equation": "y_{t+1}=O(Az_t+Bu_t)"
+      },
+
+      "control_channel": {
+        "symbol": "u_t",
+
+        "enabled": true
+      },
+
+      "information_access": [
+        "passive observations",
+        "response under perturbation"
+      ],
+
+      "latent_recovery_mechanism": {
+        "type": "causal_separation",
+
+        "description": "Different hidden states produce different responses under controlled inputs."
+      },
+
+      "expected_results": {
+        "hidden_state_recovery": "improved",
+
+        "identifiability": "higher_than_passive"
+      },
+
+      "status": "active_identification"
+    }
+  ],
+
+  "interface_comparison": {
+    "interfaces_tested": 4,
+
+    "key_dimension": "causal_information_access",
+
+    "finding": "Temporal and intervention interfaces can recover information unavailable from instantaneous observation."
+  },
+
+  "minimality": {
+    "search_objective": "Find lowest-cost interface preserving target identifiability.",
+
+    "cost_dimensions": [
+      "observation_dimension",
+      "history_length",
+      "intervention_budget"
+    ],
+
+    "expected_result": {
+      "simple_targets": "I_observation_only",
+
+      "latent_targets": "I_history_window_or_I_intervention",
+
+      "complete_state_targets": "I_full_state"
+    }
+  },
+
+  "validation": {
+    "matrix_dimensions_verified": true,
+
+    "interface_operators_defined": true,
+
+    "latent_access_levels_verified": true,
+
+    "counterexample_generation_enabled": true
+  },
+
+  "decision": {
+    "status": "READY",
+
+    "meaning": "Interfaces define the observation boundaries for hidden-state identifiability experiments."
+  },
+
+  "notes": [
+    "Hidden does not imply unknowable; identifiability depends on available causal pathways.",
+    "History converts static observation into dynamic observation.",
+    "Intervention adds information unavailable from passive observation."
+  ]
+}
