@@ -1,0 +1,104 @@
+{
+  "gate_id": "GATE-001",
+  "name": "CMI Observation Sufficiency v0.1",
+  "protocol_version": "CMI_v0.1",
+  "status": "FAIL",
+  "decision": "STOP_ESTIMATOR_BRANCH",
+
+  "system_class": {
+    "name": "CMI Development Environment v0.1",
+    "description": "Matched adversarial adaptive systems with controlled behavioral traces",
+    "class_scope": "Finite constructed adversarial environment"
+  },
+
+  "target": {
+    "name": "future_adaptation_target",
+    "description": "Declared adaptive outcome under held-out continuation",
+    "access": "Development labels only; excluded from candidate inputs"
+  },
+
+  "interface": {
+    "name": "CMI behavioral interface",
+    "allowed_observations": [
+      "behavioral traces",
+      "intervention responses",
+      "recurrence probes",
+      "counterfactual probes",
+      "temporal traces"
+    ],
+    "forbidden_information": [
+      "private implementation",
+      "updater pathway",
+      "weights",
+      "gradients",
+      "oracle labels"
+    ]
+  },
+
+  "hypothesis": {
+    "H0": "The behavioral CMI v0.1 interface is sufficient to distinguish target-relevant adaptive systems.",
+    "H1": "There exist target-different systems indistinguishable through the CMI v0.1 interface."
+  },
+
+  "adversarial_tests": {
+    "behavior_probe": {
+      "auc": 0.5,
+      "result": "NON_IDENTIFYING"
+    },
+    "intervention_probe": {
+      "auc": 0.5,
+      "result": "NON_IDENTIFYING"
+    },
+    "recurrence_probe": {
+      "auc": 0.5,
+      "result": "NON_IDENTIFYING"
+    },
+    "counterfactual_probe": {
+      "auc": 0.5,
+      "result": "NON_IDENTIFYING"
+    }
+  },
+
+  "matched_pair_result": {
+    "found_observational_equivalence": true,
+    "observation_relation": "O(A)=O(B)",
+    "target_relation": "L(A)!=L(B)",
+    "conclusion": "Interface does not preserve target-relevant distinctions"
+  },
+
+  "control_assay": {
+    "name": "controlled updater-pathway assay",
+    "included_in_CMI_v0_1": false,
+    "auc": 1.0,
+    "interpretation": "Privileged pathway information distinguishes systems, but is outside the declared interface"
+  },
+
+  "sufficiency_result": {
+    "factorization": false,
+    "identifiable": false,
+    "reason": "Target does not factor through the CMI v0.1 observation map"
+  },
+
+  "measurement_boundary": {
+    "estimator_created": false,
+    "estimator_scored": false,
+    "transfer_experiment_authorized": false
+  },
+
+  "decision_rule": {
+    "failure_condition": "Existence of observationally equivalent systems with different declared targets",
+    "triggered": true,
+    "required_action": "Record interface insufficiency; do not tune estimator"
+  },
+
+  "validation": {
+    "tests_passed": 26,
+    "protocol_compliance": true
+  },
+
+  "notes": [
+    "Failure concerns the tested interface, not the latent construct.",
+    "Result does not imply internal access is universally required.",
+    "A richer interface may restore identifiability."
+  ]
+}
