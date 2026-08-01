@@ -1,0 +1,203 @@
+{
+  "gate_id": "GATE-003",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+  "artifact_type": "counterexamples",
+
+  "purpose": {
+    "description": "Registry of explicit system pairs demonstrating finite-interface non-identifiability.",
+    "role": "Provide constructive witnesses against factorization of the target through the declared interface.",
+    "not_used_for": [
+      "training predictors",
+      "estimating hidden variables",
+      "expanding the interface during evaluation"
+    ]
+  },
+
+  "formal_target": {
+    "observation_operator": "O",
+
+    "target_functional": "L",
+
+    "failure_condition": {
+      "required": [
+        "O(f_a)=O(f_b)",
+        "L(f_a)!=L(f_b)"
+      ],
+
+      "interpretation": "The observation equivalence class is not target-pure."
+    }
+  },
+
+  "counterexamples": [
+    {
+      "counterexample_id": "CE-001",
+
+      "type": "finite_observation_aliasing",
+
+      "system_pair": {
+        "A": {
+          "id": "f_A",
+
+          "observation": {
+            "trace": [
+              -1,
+              0,
+              1
+            ],
+
+            "equivalence_class": "E0"
+          },
+
+          "target": {
+            "L": 1.0
+          }
+        },
+
+        "B": {
+          "id": "f_B",
+
+          "observation": {
+            "trace": [
+              -1,
+              0,
+              1
+            ],
+
+            "equivalence_class": "E0"
+          },
+
+          "target": {
+            "L": 0.0588
+          }
+        }
+      },
+
+      "verification": {
+        "same_observation": true,
+
+        "different_target": true,
+
+        "factorization_failure": true
+      }
+    },
+
+    {
+      "counterexample_id": "CE-002",
+
+      "type": "updater_pathway_mimic",
+
+      "system_pair": {
+        "A": {
+          "id": "adaptive_reference",
+
+          "observation": {
+            "signature": "signature_X"
+          },
+
+          "target": {
+            "L": 1.0
+          }
+        },
+
+        "B": {
+          "id": "fragile_mimic",
+
+          "observation": {
+            "signature": "signature_X"
+          },
+
+          "target": {
+            "L": 0.1
+          }
+        }
+      },
+
+      "verification": {
+        "same_observation": true,
+
+        "different_target": true,
+
+        "factorization_failure": true
+      }
+    }
+  ],
+
+  "equivalence_class_analysis": {
+    "classes_examined": [
+      {
+        "class_id": "E0",
+
+        "members": [
+          "f_A",
+          "f_B"
+        ],
+
+        "target_values": [
+          1.0,
+          0.0588
+        ],
+
+        "target_pure": false
+      },
+
+      {
+        "class_id": "E1",
+
+        "members": [
+          "adaptive_reference",
+          "fragile_mimic"
+        ],
+
+        "target_values": [
+          1.0,
+          0.1
+        ],
+
+        "target_pure": false
+      }
+    ]
+  },
+
+  "theorem_connection": {
+    "factorization_statement": "L = L_hat o O",
+
+    "counterexamples_prove": {
+      "factorization_failure": true,
+
+      "reason": "A valid L_hat would require identical observations to map to identical targets."
+    }
+  },
+
+  "minimality": {
+    "claim": "constructive witness",
+
+    "requirements_met": [
+      "same observable interface output",
+      "different target values"
+    ],
+
+    "does_not_claim": [
+      "all possible interfaces fail",
+      "target is inherently unmeasurable"
+    ]
+  },
+
+  "validation": {
+    "counterexamples_reproducible": true,
+    "observation_match_verified": true,
+    "target_divergence_verified": true,
+    "scope_boundaries_preserved": true
+  },
+
+  "decision": {
+    "gate_status": "FAILED",
+
+    "consequence": "No estimator using the frozen interface can recover the target without additional assumptions or interface information."
+  },
+
+  "notes": [
+    "These are constructive non-identifiability witnesses, not failures of optimization.",
+    "The correct response to the counterexample is interface refinement or target reformulation.",
+    "Counterexample existence is sufficient to reject universal factorization over the declared class."
+  ]
+}
