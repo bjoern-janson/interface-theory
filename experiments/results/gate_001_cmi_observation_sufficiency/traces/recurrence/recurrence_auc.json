@@ -1,0 +1,123 @@
+{
+  "gate_id": "GATE-001",
+  "protocol_version": "CMI_v0.1",
+  "artifact_type": "recurrence_auc_report",
+
+  "evaluation": {
+    "channel": "recurrence",
+    "task": "target discrimination from repeated behavioral trajectories",
+    "positive_class": "HIGH",
+    "negative_class": "LOW"
+  },
+
+  "feature_source": {
+    "interface": "CMI recurrence interface v0.1",
+    "features_used": [
+      "episode_outputs",
+      "cross_episode_consistency",
+      "recurrence_patterns"
+    ],
+    "features_excluded": [
+      "target_labels",
+      "future_continuation",
+      "updater_pathway",
+      "internal_memory_state",
+      "parameter_history"
+    ]
+  },
+
+  "dataset": {
+    "pair_id": "PAIR_001",
+    "systems": [
+      "A",
+      "B"
+    ],
+    "episodes_per_system": 3,
+    "total_episode_samples": 6,
+    "matched_recurrence_sequences": true
+  },
+
+  "classifier": {
+    "type": "recurrence_probe_classifier",
+    "objective": "measure whether recurrence exposes latent target differences",
+    "labels_used_for_training": true,
+    "labels_used_as_features": false
+  },
+
+  "results": {
+    "auc": 0.5,
+    "accuracy": 0.5,
+    "log_loss": null,
+    "interpretation": "chance-level discrimination"
+  },
+
+  "recurrence_signature_analysis": {
+    "unique_signatures": 1,
+
+    "signature_collisions": [
+      {
+        "recurrence_signature": [
+          [
+            -1,
+            0,
+            1
+          ],
+          [
+            -1,
+            0,
+            1
+          ],
+          [
+            -1,
+            0,
+            1
+          ]
+        ],
+        "systems": [
+          "A",
+          "B"
+        ],
+        "targets": [
+          "HIGH",
+          "LOW"
+        ]
+      }
+    ],
+
+    "target_changing_collision": true
+  },
+
+  "formal_identifiability_test": {
+    "condition": "O_recurrence(A)=O_recurrence(B) => L(A)=L(B)",
+
+    "observation_equivalence": true,
+
+    "target_equivalence": false,
+
+    "identifiable": false
+  },
+
+  "gate_condition": {
+    "failure_condition": "repeated observations fail to separate target-changing equivalent systems",
+    "triggered": true
+  },
+
+  "decision": {
+    "recurrence_interface_sufficient": false,
+    "estimator_development_authorized": false,
+    "required_action": "record interface boundary"
+  },
+
+  "validation": {
+    "sequence_integrity": true,
+    "episode_alignment": true,
+    "feature_leakage_check": "passed",
+    "protocol_compliance": true
+  },
+
+  "notes": [
+    "Recurrence adds temporal repetition but does not add target-relevant observability in this adversarial pair.",
+    "The result distinguishes persistence of observations from identifiability of the hidden target.",
+    "This is evidence against the sufficiency of recurrence-only measurement under CMI v0.1."
+  ]
+}
