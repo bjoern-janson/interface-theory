@@ -135,18 +135,24 @@ def main() -> None:
         "Gate 013 identifiability result changed.",
     )
     require(
-        gate_013["minimum_protocol_scalar_readout_cost"] == 3
-        and gate_013["minimum_target_relevant_scalar_readout_cost"] == 2
-        and gate_013["all_lower_protocol_cost_interfaces_failed"],
+        gate_013["minimum_protocol_scalar_readout_cost_in_frozen_ladder"] == 3
+        and gate_013["minimum_informative_probe_cost_in_frozen_readout_set"] == 2
+        and gate_013["all_evaluated_lower_protocol_cost_interfaces_in_frozen_ladder_failed"],
         "Gate 013 protocol/informative cost certificate changed.",
     )
     require(
-        gate_013["target_relevant_projection"]["identifiable"],
-        "Gate 013 informative two-readout projection changed.",
+        gate_013["target_relevant_projection"]["identifiable"]
+        and not gate_013["target_relevant_projection"]["member_of_frozen_protocol_ladder"]
+        and gate_013["target_relevant_projection"]["status"]
+        == "DERIVED_COST_ACCOUNTING_ONLY",
+        "Gate 013 informative projection scope changed.",
     )
     require(
-        gate_013["constructive_factorization"]["map"] == "L_hat(1, r, k) = (r, k)",
-        "Gate 013 constructive factorization changed.",
+        gate_013["constructive_factorization"]["map"] == "L_hat(1, r, k) = (r, k)"
+        and gate_013["target"]["alias_formulas"]["reopenability"]
+        == "1[selection_label = reversible]"
+        and not gate_013["interface_policy"]["unrestricted_scalar_encodings_tested"],
+        "Gate 013 constructive factorization or scope changed.",
     )
     audit_script = ROOT / "experiments/gate_013_reversible_network_selection/run_gate_013.py"
     generated = subprocess.run(
