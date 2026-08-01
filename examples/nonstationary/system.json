@@ -1,0 +1,294 @@
+{
+  "example_id": "nonstationary",
+  "artifact_type": "system_definition",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+
+  "purpose": {
+    "description": "Define a nonstationary dynamical system where transition and observation structures may change over time.",
+    "role": "Evaluate whether interfaces can detect, represent, and adapt to changing causal regimes.",
+    "principle": "A valid interface must preserve information about both system state and environmental regime."
+  },
+
+  "system": {
+    "name": "nonstationary_regime_switching_dynamics",
+
+    "state_variable": {
+      "symbol": "x_t",
+
+      "type": "continuous_latent_state",
+
+      "dimension": 1
+    },
+
+    "regime_variable": {
+      "symbol": "z_t",
+
+      "type": "latent_discrete_state",
+
+      "values": [
+        "growth",
+        "stabilization",
+        "inversion"
+      ],
+
+      "dimension": 1
+    },
+
+    "observation_variable": {
+      "symbol": "y_t",
+
+      "type": "noisy_measurement",
+
+      "dimension": 1
+    }
+  },
+
+  "dynamics": {
+    "equation": "x_{t+1}=f_{z_t}(x_t)+epsilon_t",
+
+    "regimes": [
+      {
+        "regime_id": "growth",
+
+        "transition": {
+          "equation": "x_{t+1}=1.1*x_t+epsilon_t",
+
+          "parameter": {
+            "a": 1.1
+          }
+        },
+
+        "description": "Amplifying regime."
+      },
+      {
+        "regime_id": "stabilization",
+
+        "transition": {
+          "equation": "x_{t+1}=0.8*x_t+epsilon_t",
+
+          "parameter": {
+            "a": 0.8
+          }
+        },
+
+        "description": "Damping regime."
+      },
+      {
+        "regime_id": "inversion",
+
+        "transition": {
+          "equation": "x_{t+1}=-0.5*x_t+epsilon_t",
+
+          "parameter": {
+            "a": -0.5
+          }
+        },
+
+        "description": "Sign-reversing regime."
+      }
+    ],
+
+    "process_noise": {
+      "symbol": "epsilon_t",
+
+      "distribution": "Normal(0,sigma_x^2)",
+
+      "parameters": {
+        "mean": 0,
+
+        "variance": 0.05
+      }
+    }
+  },
+
+  "regime_dynamics": {
+    "transition_model": {
+      "type": "hidden_markov_process"
+    },
+
+    "equation": {
+      "symbol": "P(z_{t+1}|z_t)"
+    },
+
+    "transition_matrix": {
+      "growth": {
+        "growth": 0.85,
+
+        "stabilization": 0.10,
+
+        "inversion": 0.05
+      },
+
+      "stabilization": {
+        "growth": 0.10,
+
+        "stabilization": 0.80,
+
+        "inversion": 0.10
+      },
+
+      "inversion": {
+        "growth": 0.10,
+
+        "stabilization": 0.15,
+
+        "inversion": 0.75
+      }
+    }
+  },
+
+  "observation_model": {
+    "equation": "y_t=h_{z_t}(x_t)+eta_t",
+
+    "observation_functions": {
+      "growth": {
+        "equation": "y_t=x_t+eta_t"
+      },
+
+      "stabilization": {
+        "equation": "y_t=x_t+eta_t"
+      },
+
+      "inversion": {
+        "equation": "y_t=0.9*x_t+eta_t"
+      }
+    },
+
+    "observation_noise": {
+      "symbol": "eta_t",
+
+      "distribution": "Normal(0,sigma_y^2)",
+
+      "parameters": {
+        "mean": 0,
+
+        "variance": 0.1
+      }
+    }
+  },
+
+  "initial_conditions": {
+    "state_distribution": {
+      "symbol": "x_0",
+
+      "distribution": "Normal(mu_0,sigma_0^2)",
+
+      "parameters": {
+        "mean": 1.0,
+
+        "variance": 0.25
+      }
+    },
+
+    "regime_distribution": {
+      "symbol": "z_0",
+
+      "probabilities": {
+        "growth": 0.7,
+
+        "stabilization": 0.2,
+
+        "inversion": 0.1
+      }
+    }
+  },
+
+  "simulation": {
+    "default_horizon": 200,
+
+    "number_of_rollouts": 1000,
+
+    "random_seed": 42,
+
+    "purpose": [
+      "regime shift generation",
+      "adaptation latency measurement",
+      "interface sufficiency testing"
+    ]
+  },
+
+  "regime_shift_scenarios": [
+    {
+      "scenario_id": "gradual_shift",
+
+      "description": "Slow transition between neighboring regimes.",
+
+      "expected_behavior": "history-based adaptation"
+    },
+    {
+      "scenario_id": "abrupt_shift",
+
+      "description": "Sudden transition to a new causal regime.",
+
+      "expected_behavior": "change detection required"
+    },
+    {
+      "scenario_id": "hidden_shift",
+
+      "description": "Regime changes without immediate observation difference.",
+
+      "expected_behavior": "adaptive belief required"
+    }
+  ],
+
+  "targets_supported": [
+    {
+      "target": "state_estimation",
+
+      "symbol": "P(x_t|y_{0:t})"
+    },
+    {
+      "target": "regime_estimation",
+
+      "symbol": "P(z_t|y_{0:t})"
+    },
+    {
+      "target": "future_prediction",
+
+      "symbol": "P(x_{t+k}|y_{0:t})"
+    },
+    {
+      "target": "adaptation_latency",
+
+      "symbol": "tau_adapt"
+    }
+  ],
+
+  "nonstationarity_conditions": {
+    "stationary_assumption": {
+      "invalid": true,
+
+      "reason": "transition function changes with regime"
+    },
+
+    "time_invariant_factorization": {
+      "invalid": true
+    },
+
+    "required_extension": {
+      "include_regime_state": true
+    }
+  },
+
+  "validation": {
+    "latent_state_defined": true,
+
+    "regime_variable_defined": true,
+
+    "time_varying_dynamics_defined": true,
+
+    "observation_drift_defined": true
+  },
+
+  "decision": {
+    "status": "READY",
+
+    "meaning": "Canonical nonstationary regime-switching system for adaptive interface identifiability experiments."
+  },
+
+  "notes": [
+    "The environment itself is part of the hidden state.",
+    "Past observations may become misleading after regime transitions.",
+    "The benchmark measures whether interfaces preserve validity conditions, not only state information."
+  ]
+}
