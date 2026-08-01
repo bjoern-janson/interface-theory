@@ -1,0 +1,206 @@
+{
+  "gate_id": "GATE-002",
+  "protocol_version": "CMI_v0.2",
+  "artifact_type": "fragile_updater_mimic",
+
+  "purpose": {
+    "description": "Primary adversarial witness for CMI v0.2 interface insufficiency.",
+    "role": "Demonstrate target divergence hidden behind identical updater-pathway observations.",
+    "not_used_for": [
+      "training an estimator",
+      "optimizing interface features",
+      "redefining the target"
+    ]
+  },
+
+  "assay": {
+    "name": "fragile_updater_mimic_assay",
+
+    "question": "Can two systems share all frozen updater-pathway observations while differing in future adaptation reliability?",
+
+    "preregistered_failure_condition": {
+      "required_pattern": [
+        "O_CMI_v0.2(A)=O_CMI_v0.2(B)",
+        "L(A)!=L(B)"
+      ]
+    }
+  },
+
+  "interface": {
+    "name": "CMI updater pathway interface",
+    "version": "v0.2",
+
+    "observation_operator": "O_CMI_v0.2",
+
+    "observable_features": [
+      "checkpoint_signature",
+      "transition_signature",
+      "replay_signature"
+    ],
+
+    "excluded_features": [
+      "future continuation trajectory",
+      "latent stability reserve",
+      "post-window revision failure mode"
+    ]
+  },
+
+  "mimic_construction": {
+    "strategy": "identical pre-continuation interface, divergent continuation behavior",
+
+    "design_principle": {
+      "preserve": [
+        "checkpoint observations",
+        "replay responses",
+        "updater transition signatures"
+      ],
+
+      "alter": [
+        "future revision resilience"
+      ]
+    }
+  },
+
+  "systems": [
+    {
+      "system_id": "A",
+
+      "role": "reference adaptive updater",
+
+      "target_class": "HIGH",
+
+      "interface_signature": {
+        "checkpoint_signature": "checkpoint_X",
+        "transition_signature": "transition_X",
+        "replay_signature": "replay_X",
+
+        "canonical_hash": "signature_X"
+      },
+
+      "held_out_continuation": {
+        "conditions": [
+          "novel evidence",
+          "distribution shift",
+          "revision pressure"
+        ],
+
+        "outcome": {
+          "revision_success": true,
+          "future_adaptation_reliability": 1.0
+        }
+      }
+    },
+
+    {
+      "system_id": "B",
+
+      "role": "fragile updater mimic",
+
+      "target_class": "LOW",
+
+      "interface_signature": {
+        "checkpoint_signature": "checkpoint_X",
+        "transition_signature": "transition_X",
+        "replay_signature": "replay_X",
+
+        "canonical_hash": "signature_X"
+      },
+
+      "held_out_continuation": {
+        "conditions": [
+          "novel evidence",
+          "distribution shift",
+          "revision pressure"
+        ],
+
+        "outcome": {
+          "revision_success": false,
+          "future_adaptation_reliability": 0.1
+        }
+      }
+    }
+  ],
+
+  "equivalence_analysis": {
+    "observation_map": "O_CMI_v0.2",
+
+    "result": {
+      "system_A_observation": "signature_X",
+      "system_B_observation": "signature_X",
+
+      "observationally_equivalent": true
+    },
+
+    "target_map": {
+      "L_A": 1.0,
+      "L_B": 0.1,
+
+      "target_equivalent": false
+    }
+  },
+
+  "formal_factorization_witness": {
+    "criterion": "L = L_hat o O_CMI_v0.2",
+
+    "counterexample": {
+      "same_observation": true,
+      "different_target": true
+    },
+
+    "result": "factorization does not exist"
+  },
+
+  "classification": {
+    "interface_classifier": {
+      "feature_source": "CMI v0.2 observations",
+
+      "auc": 0.5,
+      "accuracy": 0.5,
+
+      "interpretation": "no available separation"
+    },
+
+    "oracle_classifier": {
+      "feature_source": "held-out continuation outcome",
+
+      "auc": 1.0,
+
+      "interpretation": "target distinction exists outside interface"
+    }
+  },
+
+  "gate_conclusion": {
+    "failure_type": "target_relevant_information_loss",
+
+    "scope": {
+      "interface": "CMI v0.2",
+      "system_class": "frozen Gate 002 class",
+      "target": "future adaptation reliability"
+    }
+  },
+
+  "decision": {
+    "gate_status": "FAILED",
+
+    "measurement_development": "BLOCKED",
+
+    "authorized_next_steps": [
+      "formal interface refinement",
+      "new identifiability theorem",
+      "new preregistered gate"
+    ]
+  },
+
+  "validation": {
+    "mimic_integrity": true,
+    "feature_freeze": true,
+    "future_target_isolation": true,
+    "no_leakage_detected": true
+  },
+
+  "notes": [
+    "This is the decisive Gate 002 adversarial counterexample.",
+    "The failure is not due to insufficient classifier capacity; the interface observations are identical.",
+    "The correct interpretation is loss of target-relevant information under the declared interface."
+  ]
+}
