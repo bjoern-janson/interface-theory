@@ -1,0 +1,306 @@
+{
+  "example_id": "stochastic",
+  "artifact_type": "target_definitions",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+
+  "purpose": {
+    "description": "Define stochastic prediction and identification targets for probabilistic interface evaluation.",
+    "role": "Specify which distributions must factor through each candidate interface.",
+    "principle": "A stochastic interface succeeds when it preserves target-relevant probability structure."
+  },
+
+  "formal_definition": {
+    "latent_state": {
+      "symbol": "x_t"
+    },
+
+    "interface_output": {
+      "symbol": "O_I(x_t)"
+    },
+
+    "target_distribution": {
+      "symbol": "P(L|x_t)"
+    },
+
+    "factorization_condition": {
+      "statement": "exists P_hat such that P(L|x)=P_hat(L|O_I(x))",
+
+      "equivalent_condition": "P(O_I|x_a)=P(O_I|x_b) implies P(L|x_a)=P(L|x_b)"
+    }
+  },
+
+  "targets": [
+    {
+      "target_id": "T_current_state_distribution",
+
+      "name": "Posterior state estimation",
+
+      "definition": {
+        "symbol": "P(x_t|y_{0:t})"
+      },
+
+      "description": "Estimate the probability distribution over the current latent state.",
+
+      "difficulty": "medium",
+
+      "required_information": [
+        "observation history",
+        "noise model",
+        "state dynamics"
+      ],
+
+      "expected_interfaces": {
+        "I_observation": "conditional",
+
+        "I_history_window": "improves_with_samples",
+
+        "I_distribution_estimator": "conditional",
+
+        "I_belief_state": "sufficient",
+
+        "I_intervention": "improved"
+      },
+
+      "failure_modes": [
+        "measurement_noise",
+        "posterior_collapse",
+        "model_mismatch"
+      ]
+    },
+
+    {
+      "target_id": "T_future_state_distribution",
+
+      "name": "Future state distribution prediction",
+
+      "definition": {
+        "symbol": "P(x_{t+k}|y_{0:t})"
+      },
+
+      "parameters": {
+        "forecast_horizon": [
+          1,
+          5,
+          10
+        ]
+      },
+
+      "description": "Predict uncertainty over future latent states.",
+
+      "difficulty": "high",
+
+      "required_information": [
+        "current belief state",
+        "transition dynamics",
+        "process noise model"
+      ],
+
+      "expected_interfaces": {
+        "I_observation": "insufficient",
+
+        "I_history_window": "conditional",
+
+        "I_distribution_estimator": "conditional",
+
+        "I_belief_state": "sufficient",
+
+        "I_intervention": "sufficient"
+      },
+
+      "failure_modes": [
+        "transition_uncertainty",
+        "noise_accumulation"
+      ]
+    },
+
+    {
+      "target_id": "T_process_identification",
+
+      "name": "Identify stochastic transition process",
+
+      "definition": {
+        "symbol": "P(f)"
+      },
+
+      "description": "Infer the probability distribution over possible system dynamics.",
+
+      "difficulty": "very_high",
+
+      "required_information": [
+        "multiple trajectories",
+        "state variation",
+        "sufficient excitation"
+      ],
+
+      "expected_interfaces": {
+        "I_observation": "insufficient",
+
+        "I_history_window": "conditional",
+
+        "I_distribution_estimator": "conditional",
+
+        "I_belief_state": "conditional",
+
+        "I_intervention": "sufficient"
+      },
+
+      "failure_modes": [
+        "dynamics_aliasing",
+        "finite_sample_error"
+      ]
+    },
+
+    {
+      "target_id": "T_uncertainty_calibration",
+
+      "name": "Calibrated uncertainty prediction",
+
+      "definition": {
+        "symbol": "P(L in C_alpha)=alpha"
+      },
+
+      "description": "Determine whether predicted uncertainty matches empirical outcomes.",
+
+      "difficulty": "high",
+
+      "required_information": [
+        "probability representation",
+        "repeated samples"
+      ],
+
+      "expected_interfaces": {
+        "I_observation": "insufficient",
+
+        "I_history_window": "conditional",
+
+        "I_distribution_estimator": "sufficient",
+
+        "I_belief_state": "sufficient",
+
+        "I_intervention": "sufficient"
+      },
+
+      "failure_modes": [
+        "overconfidence",
+        "distribution_shift"
+      ]
+    },
+
+    {
+      "target_id": "T_hidden_process_class",
+
+      "name": "Distinguish stochastic process classes",
+
+      "definition": {
+        "symbol": "C(f)"
+      },
+
+      "description": "Determine whether observations originate from different latent stochastic generators.",
+
+      "difficulty": "very_high",
+
+      "required_information": [
+        "distributional differences",
+        "sufficient observations"
+      ],
+
+      "expected_interfaces": {
+        "I_observation": "conditional",
+
+        "I_history_window": "improves_with_window",
+
+        "I_distribution_estimator": "sufficient",
+
+        "I_belief_state": "sufficient",
+
+        "I_intervention": "sufficient"
+      },
+
+      "failure_modes": [
+        "distributional_overlap",
+        "identical_observation_statistics"
+      ]
+    }
+  ],
+
+  "target_hierarchy": {
+    "level_1": {
+      "name": "State inference",
+
+      "targets": [
+        "T_current_state_distribution"
+      ]
+    },
+
+    "level_2": {
+      "name": "Prediction",
+
+      "targets": [
+        "T_future_state_distribution"
+      ]
+    },
+
+    "level_3": {
+      "name": "System identification",
+
+      "targets": [
+        "T_process_identification",
+        "T_hidden_process_class"
+      ]
+    },
+
+    "level_4": {
+      "name": "Uncertainty quality",
+
+      "targets": [
+        "T_uncertainty_calibration"
+      ]
+    }
+  },
+
+  "identifiability_boundary": {
+    "core_question": "Does the interface preserve distinctions between latent probability distributions?",
+
+    "failure_condition": {
+      "same_observation_distribution": true,
+
+      "different_target_distribution": true
+    },
+
+    "interpretation": "Stochastic ambiguity occurs when uncertainty structures collapse."
+  },
+
+  "comparison_to_deterministic_targets": {
+    "deterministic_condition": {
+      "requirement": "L(x_a)=L(x_b)"
+    },
+
+    "stochastic_condition": {
+      "requirement": "P(L|x_a)=P(L|x_b)"
+    },
+
+    "extension": "Target equivalence becomes distribution equivalence."
+  },
+
+  "validation": {
+    "targets_defined": true,
+
+    "probabilistic_targets_defined": true,
+
+    "interface_expectations_defined": true,
+
+    "factorization_conditions_defined": true
+  },
+
+  "decision": {
+    "status": "READY",
+
+    "meaning": "Target specification for stochastic interface identifiability benchmark."
+  },
+
+  "notes": [
+    "The benchmark evaluates preservation of uncertainty, not only point prediction accuracy.",
+    "A good interface may represent ambiguity rather than eliminate it.",
+    "Stochastic identifiability requires matching probability structure between interface and target."
+  ]
+}
