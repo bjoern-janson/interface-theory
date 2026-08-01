@@ -1,0 +1,345 @@
+{
+  "example_id": "nonstationary",
+  "artifact_type": "temporal_equivalence_classes",
+  "trace_id": "temporal_equivalence_classes",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+
+  "purpose": {
+    "description": "Define temporal equivalence classes showing when observations appear identical while future causal behavior differs.",
+    "role": "Identify failures caused by collapsing states across changing regimes.",
+    "principle": "Temporal equivalence requires preserving distinctions that remain predictive after environmental change."
+  },
+
+  "formal_definition": {
+    "interface_equivalence": {
+      "condition": "O_I(x_t,z_t)=O_I(x_{t+k},z_{t+k})"
+    },
+
+    "target_equivalence": {
+      "condition": "P(L_t|x_t,z_t)=P(L_{t+k}|x_{t+k},z_{t+k})"
+    },
+
+    "valid_class": {
+      "condition": "interface_equivalence AND target_equivalence"
+    },
+
+    "invalid_class": {
+      "condition": "interface_equivalence AND NOT target_equivalence",
+
+      "meaning": "Temporal aliasing caused by nonstationarity."
+    }
+  },
+
+  "trace_context": {
+    "system": "regime_switching_dynamics",
+
+    "regimes": [
+      "growth",
+      "stabilization",
+      "inversion"
+    ],
+
+    "hidden_variable": "z_t",
+
+    "observable_variable": "y_t"
+  },
+
+  "equivalence_classes": [
+    {
+      "class_id": "TEC_001",
+
+      "name": "Same observation, different regime",
+
+      "type": "invalid",
+
+      "members": [
+        {
+          "time": 49,
+
+          "state": {
+            "x": 8.4
+          },
+
+          "regime": "growth",
+
+          "observation": 8.36
+        },
+        {
+          "time": 50,
+
+          "state": {
+            "x": 8.3
+          },
+
+          "regime": "stabilization",
+
+          "observation": 8.28
+        }
+      ],
+
+      "interface_view": {
+        "I_observation": {
+          "equivalent": true
+        },
+
+        "I_history_window": {
+          "equivalent": "depends_on_window"
+        },
+
+        "I_adaptive_belief": {
+          "equivalent": false
+        }
+      },
+
+      "future_divergence": {
+        "growth_prediction": "increase",
+
+        "stabilization_prediction": "decrease"
+      },
+
+      "failure_type": "hidden_regime_aliasing"
+    },
+
+    {
+      "class_id": "TEC_002",
+
+      "name": "Historical similarity after drift",
+
+      "type": "invalid",
+
+      "members": [
+        {
+          "time": 25,
+
+          "regime": "stabilization",
+
+          "trend": "decay"
+        },
+        {
+          "time": 80,
+
+          "regime": "weak_inversion",
+
+          "trend": "decay"
+        }
+      ],
+
+      "interface_view": {
+        "history_pattern": "similar"
+      },
+
+      "future_difference": {
+        "early_case": "approaches_zero",
+
+        "late_case": "changes_direction"
+      },
+
+      "failure_type": "historical_contamination"
+    },
+
+    {
+      "class_id": "TEC_003",
+
+      "name": "Stationary model equivalence",
+
+      "type": "invalid",
+
+      "members": [
+        {
+          "time_range": [
+            0,
+            49
+          ],
+
+          "learned_model": "growth"
+        },
+        {
+          "time_range": [
+            50,
+            99
+          ],
+
+          "true_model": "stabilization"
+        }
+      ],
+
+      "interface_view": {
+        "I_stationary_model": {
+          "same_model_assumption": true
+        }
+      },
+
+      "target_view": {
+        "transition_function": {
+          "same": false
+        }
+      },
+
+      "failure_type": "model_obsolescence"
+    },
+
+    {
+      "class_id": "TEC_004",
+
+      "name": "Gradual drift ambiguity",
+
+      "type": "conditional",
+
+      "members": [
+        {
+          "time": 30,
+
+          "coefficient": 0.5,
+
+          "regime": "transition"
+        },
+        {
+          "time": 60,
+
+          "coefficient": 0.0,
+
+          "regime": "boundary"
+        }
+      ],
+
+      "interface_view": {
+        "I_change_detector": {
+          confidence": "low"
+        }
+      },
+
+      "resolution": {
+        "requires": [
+          "longer_history",
+          "active_intervention",
+          "uncertainty_tracking"
+        ]
+      },
+
+      "failure_type": "weak_shift_signal"
+    },
+
+    {
+      "class_id": "TEC_005",
+
+      "name": "Novel regime equivalence",
+
+      "type": "invalid",
+
+      "members": [
+        {
+          "regime": "known_growth",
+
+          "representation": "high_probability"
+        },
+        {
+          "regime": "unknown_inversion",
+
+          "representation": "same_observation"
+        }
+      ],
+
+      "interface_view": {
+        "known_model": "same"
+      },
+
+      "actual_dynamics": {
+        "different": true
+      },
+
+      "failure_type": "unmodeled_regime"
+    }
+  ],
+
+  "interface_partition_analysis": {
+    "I_observation": {
+      "partition": "observation_values",
+
+      "problem": "merges causal regimes"
+    },
+
+    "I_history_window": {
+      "partition": "recent_sequences",
+
+      "problem": "history may contain obsolete dynamics"
+    },
+
+    "I_stationary_model": {
+      "partition": "fixed_transition_models",
+
+      "problem": "cannot represent transition validity"
+    },
+
+    "I_change_detector": {
+      "partition": "regime_probability",
+
+      "advantage": "preserves model-change information"
+    },
+
+    "I_adaptive_belief": {
+      "partition": "joint_state_regime_distribution",
+
+      "advantage": "preserves uncertainty"
+    },
+
+    "I_intervention": {
+      "partition": "causal_response_models",
+
+      "advantage": "actively separates regimes"
+    }
+  },
+
+  "minimal_separating_information": {
+    "state_only": {
+      "sufficient": false,
+
+      "reason": "same state can have different futures"
+    },
+
+    "state_plus_history": {
+      "sufficient": "conditional",
+
+      "reason": "depends on transition speed"
+    },
+
+    "state_plus_regime": {
+      "sufficient": true
+    },
+
+    "state_plus_regime_uncertainty": {
+      "sufficient": true,
+
+      "preferred": true
+    }
+  },
+
+  "summary": {
+    "total_classes": 5,
+
+    "invalid_classes": 4,
+
+    "conditional_classes": 1,
+
+    "core_failure": "Temporal equivalence does not imply causal equivalence in nonstationary systems."
+  },
+
+  "validation": {
+    "equivalence_classes_defined": true,
+
+    "temporal_aliasing_cases_present": true,
+
+    "adaptive_boundaries_identified": true
+  },
+
+  "decision": {
+    "status": "READY",
+
+    "meaning": "Temporal equivalence structure for nonstationary identifiability benchmark."
+  },
+
+  "notes": [
+    "Nonstationary systems create moving equivalence classes.",
+    "A representation can be sufficient at one time and insufficient later.",
+    "Adaptive intelligence requires tracking the conditions under which representations remain valid."
+  ]
+}
