@@ -97,9 +97,20 @@ Mechanisms do not define targets, interfaces, or evidence of factorization.
 
 The frozen ledger establishes conditional results for deterministic nonlinear
 responses, fixed latent state, known delay, known stationary readout noise,
-their controlled composition, and known linear drift. The next admissible
-theoretical work is a new Gate 1 contract, such as a temporal-rank theorem or
-a restricted unknown-drift class.
+their controlled composition, and known linear drift. Gate 013 additionally
+records a complete finite audit for four labeled operational records in
+\(F_{RS}\). Direct target/readout aliases make the two informative probes
+jointly identifying; this is reproducible interface composition by construction,
+not a simulated authority-network result. It authorizes a separate frozen
+**estimation** protocol only as a noisy two-bit decoding study.
+
+Before Gate 3 or Gate 4, the class must expand so policy labels and operational
+outcomes can dissociate. Predeclared adversaries should include reversible
+policies that fail to reopen, deletion followed by successful relearning,
+propagating labels with downstream cancellation, and independent labels with
+common-cause downstream response. That expansion requires a new Gate 1
+contract. New unrelated theoretical work likewise requires its own contract,
+such as a temporal-rank theorem or a restricted unknown-drift class.
 
 ## Not authorized by the current evidence
 

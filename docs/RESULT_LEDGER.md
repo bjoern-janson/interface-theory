@@ -30,6 +30,7 @@ otherwise.
 | \(F_S\): \(F_0\) plus known stationary binary readout noise | \(\{e=-1\}\times\{r_1,r_2\}\), 92 repetitions per scalar | \((2,2,1,0,92,\mathrm{Bernoulli};\delta=0.05)\) | Exact finite-sample decoding is unavailable; 92 repetitions per scalar give maximum target-decoding error 0.046459. | [FS record](EVIDENCE_INDEX.md#fs-stochastic-readout-noise) |
 | \(F_{HD}\): fixed latent state plus fixed one-step delay | \(\{-1,0,1\}\times\{r_\Sigma\}\times\{\lambda=1\}\) | \((3,1,3,1,1,\mathrm{exact})\) | The lifted hidden-state interface is the unique minimum at lag one. No supra-compositional cost or lower-cost synergy appears in this ladder. | [FHD record](EVIDENCE_INDEX.md#fhd-hidden-state--delay) |
 | \(F_N\): closed known-linear-drift response class | \(\{t=0,1\}\times\{e=-1\}\times\{r_1,r_2\}\) | \((4,2,1,1,1,\mathrm{exact})\) | One pre-target slice fails; two slices identify the held-out \(t=2\) coefficient vector. Among 150 interfaces, 26 identify; none below scalar cost four does. | [FN record](EVIDENCE_INDEX.md#fn-known-linear-drift) |
+| \(F_{RS}\): four-record operational label class | \(\{\text{baseline},\text{reversal recovery},\text{downstream flow}\}\) | \(C_{\mathrm{protocol}}=3;\ C_{\mathrm{informative}}=2\) within the declared readout vocabulary | Each individual probe is insufficient for the joint target. The combined protocol factors by direct label/readout aliases. The complete finite audit and deterministic generator are committed. | [FRS record](EVIDENCE_INDEX.md#frs-reversible-network-selection) |
 
 ## Interpretation limits
 
@@ -43,11 +44,16 @@ otherwise.
 - The \(F_0\) count of seven identifies a minimum **cost** tier. It does not,
   without a complete committed refinement relation, establish a unique
   refinement-minimal interface or a total sufficient-interface count.
+- The \(F_{RS}\) row contains four labeled operational records, not simulated
+  suppression, recurrence, graph, redistribution, or propagation dynamics.
+  Protocol cost three includes a mandatory constant baseline. Informative cost
+  two is minimal only over the two predeclared binary probes; unrestricted
+  scalar encodings are outside the audit.
 - No row opens estimator development without a separate frozen estimation
   protocol.
 
 ## Current decision
 
-Theoretical pruning is complete for these declared classes. Measurement
-development remains closed until a newly declared target passes a
-factorization gate under a useful interface and system class.
+Theoretical pruning is complete for the original interface classes. The
+\(F_{RS}\) target has passed only its scoped factorization gate; a separate
+frozen estimation protocol is required before measurement development begins.

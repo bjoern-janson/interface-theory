@@ -13,6 +13,7 @@ generator.
 - **FROZEN_SUMMARY_RECORD** — a scoped conclusion and its source artifact are
   retained, but the repository does not contain a complete raw audit table or
   generation script.
+- **COMPLETE_REPRODUCIBLE_AUDIT** — a complete finite candidate audit and a deterministic generator are committed; the integrity check regenerates and compares the audit.
 - **INVALIDATED_LEGACY** — a former design sketch has been replaced by a
   tombstone. It is non-evidential even if its Git history contains a passing
   or verified field.
@@ -30,6 +31,7 @@ generator.
 | FS stochastic readout noise | [source](../experiments/results/gate_010_stochastic_identifiability/confidence_results.json) | `60accc59a9fb31554c11188deb0e7a3699ac6035` | **FROZEN_SUMMARY_RECORD.** 92 repetitions per scalar; 184 binary queries; maximum decoding error 0.046459. Summary record only. Raw candidate table: not committed. Generator: not committed. |
 | FHD hidden state plus delay | [source](../experiments/results/gate_011_hd_composition/composition_search.json) | `da90ee5d7f68c6840e44e7925727917851733659` | **FROZEN_SUMMARY_RECORD.** 100 candidates; 13 identifying; unique cost-three minimum at lag one. Summary record only. Raw candidate table: not committed. Generator: not committed. |
 | FN known linear drift | [source](../experiments/results/gate_012_nonstationary_identifiability/temporal_design_results.json) | `6f6217d44ec18785688c39cf3707c78a97f6f640` | **FROZEN_SUMMARY_RECORD.** 150 candidates; 26 identifying; seven minimum-cost candidates at scalar cost four. Summary record only. Raw candidate table: not committed. Generator: not committed. |
+| FRS operational reopenability/flow composition | [audit](../experiments/results/gate_013_reversible_network_selection/factorization_audit.json) and [generator](../experiments/gate_013_reversible_network_selection/run_gate_013.py) | audit `6a86d4f7c4b2bd06f73c83e44f42d8814020e240`; generator `98c24ee0b19bf74210221446167a39e8dabdb322` | **COMPLETE_REPRODUCIBLE_AUDIT.** Four labeled records and all four frozen protocol interfaces are enumerated. The validator regenerates the direct-alias audit. Protocol cost is three; derived informative cost is two only within the declared binary readout vocabulary. |
 
 ## Stable evidence anchors
 
@@ -63,6 +65,12 @@ Frozen ledger row for the combined fixed latent-state and one-step-delay class.
 
 Frozen ledger row for the closed known-linear-drift class.
 
+<a id="frs-reversible-network-selection"></a>
+### FRS reversible network selection
+
+Complete reproducible finite-class audit for operational reopenability/flow
+interface composition by direct label/readout aliases.
+
 ## Corrections and limitations
 
 - The nonlinear \(F_0\) ledger result is distinct from the illustrative
@@ -74,13 +82,14 @@ Frozen ledger row for the closed known-linear-drift class.
 - The archived delay, hidden-state, stochastic, and nonstationary example JSON
   files are **INVALIDATED_LEGACY** tombstones. Their former self-certifying
   fields were removed.
-- The GitHub Actions integrity workflow validates repository consistency only;
-  it does not regenerate the missing candidate-level audits. No raw-audit
-  generator is currently committed.
+- The GitHub Actions integrity workflow validates repository consistency and
+  regenerates the Gate 013 complete audit. It does not regenerate the missing
+  candidate-level audits for the earlier summary-only records.
 
 ## Required before independent replication claims
 
-A future replication-quality update must add, for each frozen result:
+A future replication-quality update must add, for each remaining
+summary-only frozen result:
 
 1. the complete candidate table or equivalence-class audit;
 2. the generating command or deterministic script;

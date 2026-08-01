@@ -1,0 +1,520 @@
+{
+  "gate_id": "GATE-013",
+  "protocol_version": "OPERATIONAL_REOPENABILITY_FLOW_v0.1",
+  "execution_status": "EXECUTED",
+  "identifiability_result": "IDENTIFIABLE_IN_DECLARED_FINITE_CLASS",
+  "system_class": {
+    "name": "F_RS",
+    "members": [
+      "delete_independent",
+      "delete_propagating",
+      "reversible_independent",
+      "reversible_propagating"
+    ],
+    "assumptions": [
+      "Four labeled operational records forming a two-by-two Cartesian product.",
+      "No suppression, recurrence, authority redistribution, graph edge, propagation, or relearning dynamics are simulated.",
+      "The labels directly determine the target bits and are excluded from the allowed interface."
+    ]
+  },
+  "target": {
+    "name": "L_RS",
+    "components": [
+      "reopenability",
+      "authority_flow"
+    ],
+    "definition": "(R_reopen, K_flow) as declared in the Gate 013 contract.",
+    "alias_formulas": {
+      "reopenability": "1[selection_label = reversible]",
+      "authority_flow": "1[topology_label = propagating]"
+    }
+  },
+  "interface_policy": {
+    "allowed_readouts": [
+      "baseline",
+      "reversal_recovery",
+      "downstream_flow"
+    ],
+    "excluded_access": [
+      "selection-policy flag",
+      "topology-policy flag",
+      "authority weights",
+      "edge list",
+      "architecture label"
+    ],
+    "projection_formulas": {
+      "reversal_recovery": "O_R = R_reopen",
+      "downstream_flow": "O_K = K_flow"
+    },
+    "frozen_ladder_requires_baseline_control": true,
+    "unrestricted_scalar_encodings_tested": false
+  },
+  "interfaces": [
+    {
+      "readouts": [
+        "baseline"
+      ],
+      "scalar_readout_cost": 1,
+      "identifiable": false,
+      "observation_classes": [
+        {
+          "observation": [
+            1
+          ],
+          "systems": [
+            "delete_independent",
+            "delete_propagating",
+            "reversible_independent",
+            "reversible_propagating"
+          ],
+          "targets": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ]
+          ]
+        }
+      ],
+      "counterexample_witnesses": [
+        {
+          "observation": [
+            1
+          ],
+          "system_a": "delete_independent",
+          "system_b": "delete_propagating",
+          "target_a": [
+            0,
+            0
+          ],
+          "target_b": [
+            0,
+            1
+          ]
+        },
+        {
+          "observation": [
+            1
+          ],
+          "system_a": "delete_independent",
+          "system_b": "reversible_independent",
+          "target_a": [
+            0,
+            0
+          ],
+          "target_b": [
+            1,
+            0
+          ]
+        },
+        {
+          "observation": [
+            1
+          ],
+          "system_a": "delete_independent",
+          "system_b": "reversible_propagating",
+          "target_a": [
+            0,
+            0
+          ],
+          "target_b": [
+            1,
+            1
+          ]
+        },
+        {
+          "observation": [
+            1
+          ],
+          "system_a": "delete_propagating",
+          "system_b": "reversible_independent",
+          "target_a": [
+            0,
+            1
+          ],
+          "target_b": [
+            1,
+            0
+          ]
+        },
+        {
+          "observation": [
+            1
+          ],
+          "system_a": "delete_propagating",
+          "system_b": "reversible_propagating",
+          "target_a": [
+            0,
+            1
+          ],
+          "target_b": [
+            1,
+            1
+          ]
+        },
+        {
+          "observation": [
+            1
+          ],
+          "system_a": "reversible_independent",
+          "system_b": "reversible_propagating",
+          "target_a": [
+            1,
+            0
+          ],
+          "target_b": [
+            1,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "readouts": [
+        "baseline",
+        "reversal_recovery"
+      ],
+      "scalar_readout_cost": 2,
+      "identifiable": false,
+      "observation_classes": [
+        {
+          "observation": [
+            1,
+            0
+          ],
+          "systems": [
+            "delete_independent",
+            "delete_propagating"
+          ],
+          "targets": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        {
+          "observation": [
+            1,
+            1
+          ],
+          "systems": [
+            "reversible_independent",
+            "reversible_propagating"
+          ],
+          "targets": [
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ]
+          ]
+        }
+      ],
+      "counterexample_witnesses": [
+        {
+          "observation": [
+            1,
+            0
+          ],
+          "system_a": "delete_independent",
+          "system_b": "delete_propagating",
+          "target_a": [
+            0,
+            0
+          ],
+          "target_b": [
+            0,
+            1
+          ]
+        },
+        {
+          "observation": [
+            1,
+            1
+          ],
+          "system_a": "reversible_independent",
+          "system_b": "reversible_propagating",
+          "target_a": [
+            1,
+            0
+          ],
+          "target_b": [
+            1,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "readouts": [
+        "baseline",
+        "downstream_flow"
+      ],
+      "scalar_readout_cost": 2,
+      "identifiable": false,
+      "observation_classes": [
+        {
+          "observation": [
+            1,
+            0
+          ],
+          "systems": [
+            "delete_independent",
+            "reversible_independent"
+          ],
+          "targets": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ]
+        },
+        {
+          "observation": [
+            1,
+            1
+          ],
+          "systems": [
+            "delete_propagating",
+            "reversible_propagating"
+          ],
+          "targets": [
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              1
+            ]
+          ]
+        }
+      ],
+      "counterexample_witnesses": [
+        {
+          "observation": [
+            1,
+            0
+          ],
+          "system_a": "delete_independent",
+          "system_b": "reversible_independent",
+          "target_a": [
+            0,
+            0
+          ],
+          "target_b": [
+            1,
+            0
+          ]
+        },
+        {
+          "observation": [
+            1,
+            1
+          ],
+          "system_a": "delete_propagating",
+          "system_b": "reversible_propagating",
+          "target_a": [
+            0,
+            1
+          ],
+          "target_b": [
+            1,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "readouts": [
+        "baseline",
+        "reversal_recovery",
+        "downstream_flow"
+      ],
+      "scalar_readout_cost": 3,
+      "identifiable": true,
+      "observation_classes": [
+        {
+          "observation": [
+            1,
+            0,
+            0
+          ],
+          "systems": [
+            "delete_independent"
+          ],
+          "targets": [
+            [
+              0,
+              0
+            ]
+          ]
+        },
+        {
+          "observation": [
+            1,
+            0,
+            1
+          ],
+          "systems": [
+            "delete_propagating"
+          ],
+          "targets": [
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        {
+          "observation": [
+            1,
+            1,
+            0
+          ],
+          "systems": [
+            "reversible_independent"
+          ],
+          "targets": [
+            [
+              1,
+              0
+            ]
+          ]
+        },
+        {
+          "observation": [
+            1,
+            1,
+            1
+          ],
+          "systems": [
+            "reversible_propagating"
+          ],
+          "targets": [
+            [
+              1,
+              1
+            ]
+          ]
+        }
+      ],
+      "counterexample_witnesses": []
+    }
+  ],
+  "minimum_identifying_interfaces": [
+    [
+      "baseline",
+      "reversal_recovery",
+      "downstream_flow"
+    ]
+  ],
+  "decision": "RECORD_GATE_1_ONLY; estimation, predictive validity, and mechanism claims remain closed.",
+  "target_relevant_projection": {
+    "readouts": [
+      "reversal_recovery",
+      "downstream_flow"
+    ],
+    "scalar_readout_cost": 2,
+    "identifiable": true,
+    "observation_classes": [
+      {
+        "observation": [
+          0,
+          0
+        ],
+        "systems": [
+          "delete_independent"
+        ],
+        "targets": [
+          [
+            0,
+            0
+          ]
+        ]
+      },
+      {
+        "observation": [
+          0,
+          1
+        ],
+        "systems": [
+          "delete_propagating"
+        ],
+        "targets": [
+          [
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "observation": [
+          1,
+          0
+        ],
+        "systems": [
+          "reversible_independent"
+        ],
+        "targets": [
+          [
+            1,
+            0
+          ]
+        ]
+      },
+      {
+        "observation": [
+          1,
+          1
+        ],
+        "systems": [
+          "reversible_propagating"
+        ],
+        "targets": [
+          [
+            1,
+            1
+          ]
+        ]
+      }
+    ],
+    "counterexample_witnesses": [],
+    "status": "DERIVED_COST_ACCOUNTING_ONLY",
+    "member_of_frozen_protocol_ladder": false
+  },
+  "mandatory_protocol_controls": [
+    "baseline"
+  ],
+  "constructive_factorization": {
+    "map": "L_hat(1, r, k) = (r, k)",
+    "scope": "Direct label and readout aliases establish operational interface composition by design; not discovery of an adaptive-system invariant.",
+    "cost_scope": "The cost-two informative minimum is only over the two predeclared binary probe coordinates; unrestricted scalar encodings were not tested."
+  },
+  "minimum_protocol_scalar_readout_cost_in_frozen_ladder": 3,
+  "minimum_informative_probe_cost_in_frozen_readout_set": 2,
+  "all_evaluated_lower_protocol_cost_interfaces_in_frozen_ladder_failed": true
+}

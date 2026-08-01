@@ -29,6 +29,19 @@ canonical in the evidence index establish a current frozen result.
 | Gate 011 — hidden-plus-delay composition | \(F_{HD}\) | Unique minimum has three scalar observations at lag one; no supra-compositional penalty or lower-cost synergy in the frozen class. | Record scoped composition |
 | Gate 012 — nonstationary identifiability | \(F_N\) | Under known closed linear drift, two pre-target slices identify the \(t=2\) target; no interface below scalar cost four succeeds. | Record scoped result |
 
+## Target-specific factorization pilot
+
+| Gate | Declared class and target | Scientific result | Decision |
+|---|---|---|---|
+| Gate 013 — operational reopenability and flow composition | Four labeled records in \(F_{RS}\), \(L_{RS}=(R_{\mathrm{reopen}},K_{\mathrm{flow}})\) | Individual probes are non-identifying for the joint target. Direct label/readout aliases make the combined mandatory-baseline protocol identifying at protocol cost three; the derived informative projection costs two within the declared binary probes. | Record Gate 1 only; estimation, predictive validity, and intervention remain closed. |
+
+The complete contract, deterministic generator, and all counterexample witnesses
+are committed under [Gate 013](gate_013_reversible_network_selection/README.md).
+This is a deliberately finite operational composition by construction. The
+generator simulates no suppression, recurrence, graph edges, authority
+redistribution, propagation, or relearning, and establishes no result about
+general authority dynamics, diversity preservation, or adaptive intelligence.
+
 ## Legacy Gate 005 and Gate 007 audit records
 
 The old Gate 005 and Gate 007 machine-readable audit files are retained only as
