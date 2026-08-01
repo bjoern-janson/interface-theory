@@ -1,0 +1,120 @@
+{
+  "gate_id": "GATE-001",
+  "protocol_version": "CMI_v0.1",
+  "artifact_type": "oracle_separation_report",
+
+  "evaluation": {
+    "purpose": "boundary control verification",
+    "question": "Do the adversarially matched systems differ when excluded updater-pathway information is available?",
+    "role": "confirm distinction exists outside tested interface"
+  },
+
+  "interface_comparison": {
+    "tested_interface": {
+      "name": "CMI behavioral interface",
+      "channels": [
+        "behavior",
+        "intervention_response",
+        "recurrence",
+        "counterfactual"
+      ],
+      "result": "NON_IDENTIFYING"
+    },
+
+    "oracle_interface": {
+      "name": "controlled updater pathway assay",
+      "channels": [
+        "internal_revision_state",
+        "updater_transition_path",
+        "hidden_update_signature"
+      ],
+      "result": "IDENTIFYING"
+    }
+  },
+
+  "systems": {
+    "system_A": {
+      "target_class": "HIGH",
+      "oracle_signature": "revision_path_A",
+      "future_adaptation_target": "HIGH"
+    },
+
+    "system_B": {
+      "target_class": "LOW",
+      "oracle_signature": "revision_path_B",
+      "future_adaptation_target": "LOW"
+    }
+  },
+
+  "separation_analysis": {
+    "feature_source": {
+      "interface": "oracle updater pathway",
+      "features": [
+        "internal_revision_signature",
+        "update_transition_pattern"
+      ],
+      "excluded_from_CMI": true
+    },
+
+    "classifier": {
+      "type": "oracle_pathway_classifier",
+      "target_labels_used_for_training": true,
+      "target_labels_used_as_features": false
+    },
+
+    "results": {
+      "auc": 1.0,
+      "accuracy": 1.0,
+      "interpretation": "perfect separation"
+    }
+  },
+
+  "contrast_with_CMI": {
+    "behavioral_interface_auc": 0.5,
+    "intervention_interface_auc": 0.5,
+    "recurrence_interface_auc": 0.5,
+    "counterfactual_interface_auc": 0.5,
+
+    "oracle_interface_auc": 1.0
+  },
+
+  "formal_interpretation": {
+    "claim_supported": "excluded information contains target-relevant distinctions",
+
+    "does_not_support": [
+      "CMI estimator validity",
+      "universal necessity of internal access",
+      "construct validity of target",
+      "new measurement development"
+    ]
+  },
+
+  "boundary_statement": {
+    "result": "INTERFACE_BOUNDARY_CONFIRMED",
+
+    "formal_summary": [
+      "O_CMI(A)=O_CMI(B)",
+      "O_oracle(A)!=O_oracle(B)",
+      "L(A)!=L(B)"
+    ]
+  },
+
+  "decision": {
+    "gate_status": "FAILED",
+    "failure_type": "behavioral_interface_insufficiency",
+    "estimator_branch": "CLOSED"
+  },
+
+  "validation": {
+    "oracle_access_declared": true,
+    "oracle_data_isolation": true,
+    "CMI_channels_unchanged": true,
+    "protocol_compliance": true
+  },
+
+  "notes": [
+    "The oracle assay is included only to distinguish interface failure from system identity.",
+    "The correct conclusion is that the tested interface loses a target-relevant distinction.",
+    "The next valid step is interface theory, not estimator repair."
+  ]
+}
