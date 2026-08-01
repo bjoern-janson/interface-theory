@@ -1,0 +1,267 @@
+{
+  "example_id": "stochastic",
+  "artifact_type": "probabilistic_equivalence_classes",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+
+  "purpose": {
+    "description": "Construct stochastic equivalence classes by grouping latent processes with indistinguishable interface-level probability structures.",
+    "role": "Measure whether an interface preserves target-relevant distinctions.",
+    "principle": "Two latent processes belong to the same equivalence class when the interface cannot distinguish their observation distributions."
+  },
+
+  "formal_definition": {
+    "interface_equivalence": {
+      "condition": "x_A ~_I x_B iff P(O_I|x_A)=P(O_I|x_B)"
+    },
+
+    "target_preservation": {
+      "condition": "x_A ~_I x_B implies P(L|x_A)=P(L|x_B)"
+    },
+
+    "failure_condition": {
+      "condition": "x_A ~_I x_B and P(L|x_A)!=P(L|x_B)",
+
+      "meaning": "Interface-induced stochastic aliasing"
+    }
+  },
+
+  "equivalence_classes": [
+    {
+      "class_id": "EQ_single_observation_001",
+
+      "interface": "I_observation",
+
+      "operator": {
+        "equation": "O(x_t)=y_t"
+      },
+
+      "members": [
+        {
+          "process_id": "stochastic_process_A",
+
+          "generator": {
+            "transition_parameter": 1.1,
+
+            "process_noise": "Normal(0,0.05)"
+          }
+        },
+        {
+          "process_id": "stochastic_process_B",
+
+          "generator": {
+            "transition_parameter": 1.05,
+
+            "process_noise": "Normal(0,0.1)"
+          }
+        }
+      ],
+
+      "observation_distribution": {
+        "relationship": "overlapping",
+
+        "similarity": "high"
+      },
+
+      "target_distributions": {
+        "T_process_identification": {
+          "A": "different",
+
+          "B": "different"
+        }
+      },
+
+      "equivalence_valid": true,
+
+      "target_preserving": false,
+
+      "failure_type": "distributional_aliasing"
+    },
+
+    {
+      "class_id": "EQ_history_window_k5_001",
+
+      "interface": "I_history_window_k5",
+
+      "operator": {
+        "equation": "O(x_t)=(y_{t-4},...,y_t)"
+      },
+
+      "members": [
+        "stochastic_process_A",
+        "stochastic_process_B"
+      ],
+
+      "observation_distribution": {
+        "relationship": "partially_overlapping",
+
+        "similarity": "medium"
+      },
+
+      "target_discrimination": {
+        "T_hidden_process_class": "partial",
+
+        "T_process_identification": "insufficient"
+      },
+
+      "equivalence_valid": "approximate",
+
+      "failure_type": "finite_history_ambiguity"
+    },
+
+    {
+      "class_id": "EQ_history_window_k50_001",
+
+      "interface": "I_history_window_k50",
+
+      "operator": {
+        "equation": "O(x_t)=(y_{t-49},...,y_t)"
+      },
+
+      "members": [
+        "stochastic_process_A",
+        "stochastic_process_B"
+      ],
+
+      "observation_distribution": {
+        "relationship": "separated",
+
+        "similarity": "low"
+      },
+
+      "target_discrimination": {
+        "T_hidden_process_class": "successful",
+
+        "T_process_identification": "improved"
+      },
+
+      "equivalence_valid": false,
+
+      "failure_type": null
+    },
+
+    {
+      "class_id": "EQ_distribution_interface_001",
+
+      "interface": "I_distribution_estimator",
+
+      "operator": {
+        "equation": "O(x)=P_hat(y|x)"
+      },
+
+      "members": [
+        "stochastic_process_A"
+      ],
+
+      "observation_distribution": {
+        "relationship": "unique"
+      },
+
+      "target_preserving": true,
+
+      "factorization": true,
+
+      "result": "identified"
+    },
+
+    {
+      "class_id": "EQ_belief_state_001",
+
+      "interface": "I_belief_state",
+
+      "operator": {
+        "equation": "O(x_t)=P(x_t|y_{0:t})"
+      },
+
+      "members": [
+        "stochastic_process_A"
+      ],
+
+      "observation_distribution": {
+        "relationship": "unique_under_model"
+      },
+
+      "target_preserving": true,
+
+      "factorization": true,
+
+      "result": "identified_under_assumptions"
+    }
+  ],
+
+  "class_transition_analysis": {
+    "increasing_interface_information": [
+      {
+        "interface": "I_observation",
+
+        "equivalence_class_size": 2,
+
+        "ambiguity": "high"
+      },
+      {
+        "interface": "I_history_window",
+
+        "equivalence_class_size": 2,
+
+        "ambiguity": "decreasing"
+      },
+      {
+        "interface": "I_distribution_estimator",
+
+        "equivalence_class_size": 1,
+
+        "ambiguity": "low"
+      },
+      {
+        "interface": "I_belief_state",
+
+        "equivalence_class_size": 1,
+
+        "ambiguity": "low_under_model"
+      }
+    ]
+  },
+
+  "information_boundary": {
+    "core_result": "Interfaces induce partitions over latent stochastic processes.",
+
+    "weak_interface": {
+      "effect": "merges distinct probability generators"
+    },
+
+    "sufficient_interface": {
+      "effect": "preserves target-relevant distinctions"
+    }
+  },
+
+  "comparison_to_deterministic_equivalence": {
+    "deterministic": {
+      "equivalence": "O(x_A)=O(x_B)"
+    },
+
+    "stochastic": {
+      "equivalence": "P(O|x_A)=P(O|x_B)"
+    },
+
+    "extension": "Equivalence classes become distributions over observations rather than single observations."
+  },
+
+  "validation": {
+    "classes_generated": true,
+
+    "interface_partitions_verified": true,
+
+    "target_preservation_checked": true
+  },
+
+  "decision": {
+    "status": "PASSED",
+
+    "meaning": "Probabilistic equivalence classes successfully characterize stochastic interface boundaries."
+  },
+
+  "notes": [
+    "A stochastic interface defines a partition over possible generators.",
+    "The goal is not perfect state recovery but preservation of target-relevant distinctions.",
+    "Equivalence collapse is the fundamental failure mode of insufficient interfaces."
+  ]
+}
