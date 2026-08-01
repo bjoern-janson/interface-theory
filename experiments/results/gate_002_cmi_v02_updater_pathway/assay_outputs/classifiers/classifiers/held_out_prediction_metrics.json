@@ -1,0 +1,140 @@
+{
+  "gate_id": "GATE-002",
+  "protocol_version": "CMI_v0.2",
+  "artifact_type": "held_out_prediction_metrics",
+
+  "purpose": {
+    "description": "Evaluate held-out target prediction using only frozen CMI v0.2 interface observations.",
+    "role": "Downstream predictive diagnostic after interface factorization analysis.",
+    "not_used_for": [
+      "creating the target definition",
+      "repairing interface insufficiency",
+      "opening estimator development"
+    ]
+  },
+
+  "prediction_task": {
+    "target": {
+      "symbol": "L",
+      "name": "future_adaptation_target"
+    },
+
+    "input": {
+      "source": "O_CMI_v0.2",
+
+      "features": [
+        "checkpoint_signature",
+        "transition_signature",
+        "replay_signature"
+      ]
+    },
+
+    "evaluation": {
+      "protocol": "held_out_continuation",
+      "target_available_only_after_observation": true
+    }
+  },
+
+  "models": [
+    {
+      "model_id": "baseline_interface_predictor",
+
+      "description": "Predictor using frozen updater-pathway observations only.",
+
+      "features": [
+        "checkpoint_signature",
+        "transition_signature",
+        "replay_signature"
+      ],
+
+      "results": {
+        "auc": 0.5,
+        "accuracy": 0.5,
+
+        "log_loss": 0.6931471805599453,
+
+        "interpretation": "No predictive information beyond chance."
+      }
+    },
+
+    {
+      "model_id": "oracle_target_predictor",
+
+      "description": "Oracle diagnostic using inaccessible future information.",
+
+      "features": [
+        "held_out_continuation_outcome"
+      ],
+
+      "results": {
+        "auc": 1.0,
+        "accuracy": 1.0,
+
+        "log_loss": 0.0,
+
+        "interpretation": "Target distinction exists but is not contained in interface observations."
+      }
+    }
+  ],
+
+  "incremental_information_test": {
+    "comparison": {
+      "p0": "p(L | baseline adaptive metrics)",
+      "p1": "p(L | baseline adaptive metrics, CMI_v0.2)"
+    },
+
+    "result": {
+      "held_out_improvement": false,
+
+      "delta_log_loss": 0.0,
+
+      "delta_auc": 0.0
+    },
+
+    "interpretation": "CMI v0.2 adds no usable predictive information for the declared target under this interface."
+  },
+
+  "factorization_relation": {
+    "criterion": "L = L_hat o O_CMI_v0.2",
+
+    "predictive_failure_consistent_with": [
+      "observational equivalence class contains multiple target values"
+    ],
+
+    "not_equivalent_to": [
+      "target does not exist",
+      "richer interfaces cannot identify target"
+    ]
+  },
+
+  "error_analysis": {
+    "dominant_failure_mode": "information loss at interface boundary",
+
+    "not_attributed_to": [
+      "model capacity",
+      "optimization failure",
+      "insufficient classifier complexity"
+    ]
+  },
+
+  "validation": {
+    "held_out_split_respected": true,
+    "feature_freeze_verified": true,
+    "target_leakage_check": "passed",
+    "metrics_recomputed": true
+  },
+
+  "decision": {
+    "predictive_gate_status": "FAILED",
+
+    "interpretation": "No incremental predictive validity is demonstrated for the frozen CMI v0.2 interface.",
+
+    "next_allowed_step": "interface refinement or new identifiability gate"
+  },
+
+  "notes": [
+    "This artifact records predictive consequences of the failed factorization condition.",
+    "The causal ordering remains: interface sufficiency before prediction, prediction before intervention.",
+    "A richer observation operator could change the result; this is not a universal impossibility claim."
+  ]
+}
