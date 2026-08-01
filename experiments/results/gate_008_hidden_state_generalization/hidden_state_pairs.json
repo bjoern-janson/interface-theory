@@ -31,5 +31,12 @@
     ],
     "target_relation": "different"
   },
-  "decision": "Search the frozen behavioral interface ladder; do not begin estimator development."
+  "decision": "Search the frozen behavioral interface ladder; do not begin estimator development.",
+  "evidence_class": "FROZEN_SUMMARY_RECORD",
+  "reproducibility": {
+    "status": "SUMMARY_RECORD_ONLY",
+    "raw_candidate_audit": "NOT_COMMITTED",
+    "generation_script": "NOT_COMMITTED",
+    "correction_note": "This artifact records the frozen conclusion after prior incompatible or invented summary material was removed. It is not a complete independently reproducible candidate-level audit."
+  }
 }
