@@ -1,0 +1,186 @@
+{
+  "gate_id": "GATE-006",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+  "artifact_type": "boundary_audit",
+
+  "purpose": {
+    "description": "Audit the scope boundaries between linear rank-based identifiability and nonlinear factorization-based identifiability.",
+    "role": "Verify that nonlinear claims remain limited to the declared class, interface, and target.",
+    "not_used_for": [
+      "establishing universal nonlinear impossibility",
+      "substituting local analysis for global proofs",
+      "claiming all adaptive systems are non-identifiable"
+    ]
+  },
+
+  "formal_scope": {
+    "system_class": {
+      "symbol": "F_NL",
+
+      "description": "Declared nonlinear system family."
+    },
+
+    "observation_operator": {
+      "symbol": "O",
+
+      "description": "Behavioral interface mapping systems to observation distributions or trajectories."
+    },
+
+    "target": {
+      "symbol": "L",
+
+      "description": "Declared nonlinear target functional."
+    }
+  },
+
+  "core_criterion": {
+    "global_identifiability": {
+      "condition": "O(f_a)=O(f_b) => L(f_a)=L(f_b)",
+
+      "equivalent_statement": "exists L_hat such that L = L_hat o O on O(F)"
+    },
+
+    "local_identifiability": {
+      "condition": "ker(DO_f) subseteq ker(DL_f)",
+
+      "scope": "Only valid in locally linearized neighborhoods."
+    }
+  },
+
+  "boundary_checks": [
+    {
+      "boundary_id": "B-001",
+
+      "claim": "Linear rank conditions imply nonlinear identifiability",
+
+      "status": "REJECTED",
+
+      "reason": "Nonlinear observation equivalence can exist outside linear null-space structure."
+    },
+
+    {
+      "boundary_id": "B-002",
+
+      "claim": "Failure of one nonlinear interface proves universal impossibility",
+
+      "status": "REJECTED",
+
+      "reason": "A richer interface may restore factorization."
+    },
+
+    {
+      "boundary_id": "B-003",
+
+      "claim": "Local Jacobian sufficiency proves global identifiability",
+
+      "status": "REJECTED",
+
+      "reason": "Local tangent information may miss global nonlinear aliases."
+    },
+
+    {
+      "boundary_id": "B-004",
+
+      "claim": "Local Jacobian failure proves global impossibility",
+
+      "status": "REJECTED",
+
+      "reason": "Higher-order or nonlocal observations may separate systems."
+    }
+  ],
+
+  "audit_results": {
+    "global_factorization_test": {
+      "performed": true,
+
+      "result": "failed",
+
+      "reason": "Constructed nonlinear observationally equivalent target-divergent pairs exist."
+    },
+
+    "local_linearization_test": {
+      "performed": true,
+
+      "result": "insufficient",
+
+      "reason": "Derivative-level information does not characterize full nonlinear behavior."
+    }
+  },
+
+  "failure_modes": {
+    "identified": [
+      {
+        "name": "nonlinear_aliasing",
+
+        "description": "Different nonlinear mechanisms collapse to identical observed behavior."
+      },
+      {
+        "name": "hidden_global_modes",
+
+        "description": "Locally indistinguishable systems diverge outside observed region."
+      },
+      {
+        "name": "trajectory_intersection",
+
+        "description": "Distinct evolution laws share observed prefixes but differ in future continuation."
+      }
+    ]
+  },
+
+  "comparison_table": {
+    "linear_case": {
+      "criterion": "phi(T) in rowspan(X_T)",
+
+      "object": "parameter-space subspace coverage"
+    },
+
+    "nonlinear_case": {
+      "criterion": "O(f_a)=O(f_b) implies L(f_a)=L(f_b)",
+
+      "object": "target purity of observation equivalence classes"
+    },
+
+    "local_nonlinear_case": {
+      "criterion": "ker(DO_f) subseteq ker(DL_f)",
+
+      "object": "infinitesimal target-preserving directions"
+    }
+  },
+
+  "scope_statement": {
+    "established": [
+      "the tested nonlinear interface fails factorization over the declared class",
+      "linear rank criteria cannot be blindly extended to nonlinear systems"
+    ],
+
+    "not_established": [
+      "nonlinear identifiability is impossible",
+      "no minimal nonlinear interface exists",
+      "no approximate nonlinear estimator can succeed"
+    ]
+  },
+
+  "validation": {
+    "scope_review": "passed",
+    "overclaim_check": "passed",
+    "linear_nonlinear_boundary_verified": true
+  },
+
+  "decision": {
+    "gate_status": "BOUNDARY_CONFIRMED",
+
+    "meaning": "The nonlinear extension preserves the general factorization framework while rejecting inappropriate linear shortcuts.",
+
+    "next_authorized_steps": [
+      "nonlinear interface search",
+      "local-to-global identifiability analysis",
+      "approximate nonlinear factorization bounds"
+    ]
+  },
+
+  "notes": [
+    "The central object remains the observation map, not the estimator.",
+    "Nonlinear systems require equivalence-class reasoning rather than only matrix rank.",
+    "The boundary audit prevents accidental inflation of restricted results into universal laws."
+  ]
+}
