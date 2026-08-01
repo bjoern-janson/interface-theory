@@ -10,5 +10,12 @@
   "first_budget_meeting_error_threshold": 92,
   "error_threshold": 0.05,
   "error_at_first_passing_budget": 0.046459,
-  "interpretation": "The artifact records the frozen threshold result, not a general learning or calibration curve."
+  "interpretation": "The artifact records the frozen threshold result, not a general learning or calibration curve.",
+  "evidence_class": "FROZEN_SUMMARY_RECORD",
+  "reproducibility": {
+    "status": "SUMMARY_RECORD_ONLY",
+    "raw_candidate_audit": "NOT_COMMITTED",
+    "generation_script": "NOT_COMMITTED",
+    "correction_note": "This artifact records the frozen conclusion after prior incompatible or invented summary material was removed. It is not a complete independently reproducible candidate-level audit."
+  }
 }
