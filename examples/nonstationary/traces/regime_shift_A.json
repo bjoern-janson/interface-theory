@@ -1,0 +1,351 @@
+{
+  "example_id": "nonstationary",
+  "artifact_type": "trace",
+  "trace_id": "regime_shift_A",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+
+  "purpose": {
+    "description": "Provide a canonical abrupt regime transition trace for evaluating adaptive interface behavior.",
+    "role": "Test whether interfaces detect and recover from a hidden change in system dynamics.",
+    "principle": "The same latent state trajectory can imply different futures before and after a regime transition."
+  },
+
+  "scenario": {
+    "name": "abrupt_growth_to_stabilization_shift",
+
+    "type": "abrupt_regime_change",
+
+    "description": "System begins in an amplifying regime and transitions into a damping regime without directly revealing the change."
+  },
+
+  "system": {
+    "state_variable": "x_t",
+
+    "regime_variable": "z_t",
+
+    "observation_variable": "y_t",
+
+    "transition_equations": {
+      "growth": "x_{t+1}=1.1*x_t+epsilon_t",
+
+      "stabilization": "x_{t+1}=0.8*x_t+epsilon_t"
+    },
+
+    "observation_equation": {
+      "all_regimes": "y_t=x_t+eta_t"
+    }
+  },
+
+  "initial_conditions": {
+    "time": 0,
+
+    "state": {
+      "value": 1.0
+    },
+
+    "regime": {
+      "value": "growth"
+    }
+  },
+
+  "events": [
+    {
+      "time": 0,
+
+      "event": "initialization",
+
+      "latent_state": {
+        "x": 1.0
+      },
+
+      "regime": "growth",
+
+      "observation": {
+        "y": 1.02
+      }
+    },
+
+    {
+      "time": 10,
+
+      "event": "pre_shift_stable_prediction",
+
+      "regime": "growth",
+
+      "model_expectation": {
+        "next_state": "increase"
+      },
+
+      "observed_behavior": {
+        "consistent": true
+      }
+    },
+
+    {
+      "time": 50,
+
+      "event": "regime_transition",
+
+      "previous_regime": "growth",
+
+      "new_regime": "stabilization",
+
+      "transition_visibility": "hidden",
+
+      "direct_signal": false
+    },
+
+    {
+      "time": 51,
+
+      "event": "first_post_shift_prediction",
+
+      "active_regime": "stabilization",
+
+      "stationary_model_prediction": {
+        "expected_transition": "growth"
+      },
+
+      "true_transition": {
+        "expected_transition": "stabilization"
+      },
+
+      "prediction_divergence": true
+    },
+
+    {
+      "time": 60,
+
+      "event": "persistent_model_error",
+
+      "description": "Stationary interfaces continue applying pre-shift assumptions.",
+
+      "effects": [
+        "increasing prediction error",
+        "incorrect confidence",
+        "slow recovery"
+      ]
+    },
+
+    {
+      "time": 80,
+
+      "event": "adaptive_recovery",
+
+      "description": "Adaptive interfaces identify that previous dynamics are no longer valid.",
+
+      "successful_interfaces": [
+        "I_change_detector",
+        "I_adaptive_belief"
+      ]
+    }
+  ],
+
+  "trace": {
+    "length": 100,
+
+    "sampling_interval": 1,
+
+    "segments": [
+      {
+        "segment_id": "pre_shift",
+
+        "time_range": [
+          0,
+          49
+        ],
+
+        "regime": "growth",
+
+        "dynamics": {
+          "a": 1.1
+        },
+
+        "interface_expectation": {
+          "stationary_model": "valid"
+        }
+      },
+      {
+        "segment_id": "post_shift",
+
+        "time_range": [
+          50,
+          99
+        ],
+
+        "regime": "stabilization",
+
+        "dynamics": {
+          "a": 0.8
+        },
+
+        "interface_expectation": {
+          "stationary_model": "invalid",
+
+          "adaptive_model": "valid"
+        }
+      }
+    ]
+  },
+
+  "observations": [
+    {
+      "time": 0,
+
+      "x": 1.0,
+
+      "z": "growth",
+
+      "y": 1.02
+    },
+    {
+      "time": 10,
+
+      "x": 2.6,
+
+      "z": "growth",
+
+      "y": 2.58
+    },
+    {
+      "time": 25,
+
+      "x": 4.9,
+
+      "z": "growth",
+
+      "y": 4.94
+    },
+    {
+      "time": 49,
+
+      "x": 8.4,
+
+      "z": "growth",
+
+      "y": 8.36
+    },
+    {
+      "time": 50,
+
+      "x": 8.3,
+
+      "z": "stabilization",
+
+      "y": 8.28
+    },
+    {
+      "time": 60,
+
+      "x": 6.2,
+
+      "z": "stabilization",
+
+      "y": 6.24
+    },
+    {
+      "time": 80,
+
+      "x": 3.9,
+
+      "z": "stabilization",
+
+      "y": 3.87
+    },
+    {
+      "time": 99,
+
+      "x": 2.1,
+
+      "z": "stabilization",
+
+      "y": 2.13
+    }
+  ],
+
+  "interface_evaluation": {
+    "I_observation": {
+      "result": "failure",
+
+      "reason": "Current observations do not identify regime transition."
+    },
+
+    "I_history_window": {
+      "result": "conditional",
+
+      "reason": "Detection depends on window length."
+    },
+
+    "I_stationary_model": {
+      "result": "failure",
+
+      "reason": "Assumes unchanged transition dynamics."
+    },
+
+    "I_change_detector": {
+      "result": "success",
+
+      "reason": "Detects distribution shift."
+    },
+
+    "I_adaptive_belief": {
+      "result": "success",
+
+      "reason": "Maintains uncertainty over active regime."
+    },
+
+    "I_intervention": {
+      "result": "success",
+
+      "reason": "Can identify altered causal response."
+    }
+  },
+
+  "metrics": {
+    "shift_time": 50,
+
+    "detection_target": 60,
+
+    "adaptation_target": 80,
+
+    "expected_adaptation_latency": 30
+  },
+
+  "equivalence_classes": {
+    "pre_shift": {
+      "class": "growth_dynamics"
+    },
+
+    "post_shift": {
+      "class": "stabilization_dynamics"
+    },
+
+    "failure_case": {
+      "observation_similarity": true,
+
+      "causal_similarity": false
+    }
+  },
+
+  "validation": {
+    "regime_change_present": true,
+
+    "hidden_transition_present": true,
+
+    "prediction_failure_testable": true,
+
+    "adaptation_latency_measurable": true
+  },
+
+  "decision": {
+    "status": "READY",
+
+    "meaning": "Canonical abrupt regime shift trace for nonstationary interface evaluation."
+  },
+
+  "notes": [
+    "The transition changes the generating process while leaving the observation channel unchanged.",
+    "A sufficient adaptive interface must infer that the old mapping is no longer valid.",
+    "This trace isolates validity tracking from simple state estimation."
+  ]
+}
