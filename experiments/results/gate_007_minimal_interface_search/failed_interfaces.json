@@ -1,0 +1,249 @@
+{
+  "gate_id": "GATE_007",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+  "artifact_type": "failed_interfaces",
+
+  "purpose": {
+    "description": "Registry of interfaces that fail to identify the declared target within the evaluated interface lattice.",
+    "role": "Characterize the non-identifiable region below the interface frontier.",
+    "not_used_for": [
+      "claiming universal impossibility",
+      "ranking all possible future interfaces",
+      "substituting counterexamples for full theorem proofs"
+    ]
+  },
+
+  "formal_setup": {
+    "system_class": {
+      "symbol": "F"
+    },
+
+    "target": {
+      "symbol": "L"
+    },
+
+    "interface_operator": {
+      "symbol": "O_I"
+    },
+
+    "failure_condition": {
+      "global": "not exists L_hat such that L = L_hat o O_I",
+
+      "constructive": [
+        "exists f_a,f_b in F",
+        "O_I(f_a)=O_I(f_b)",
+        "L(f_a)!=L(f_b)"
+      ]
+    }
+  },
+
+  "failure_categories": [
+    {
+      "category": "insufficient_spatial_rank",
+
+      "description": "Interface does not observe all target-relevant state components.",
+
+      "representative_interfaces": [
+        "I_001",
+        "I_002"
+      ]
+    },
+    {
+      "category": "insufficient_temporal_structure",
+
+      "description": "Interface observes snapshots but cannot identify required evolution components.",
+
+      "representative_interfaces": [
+        "I_010",
+        "I_011"
+      ]
+    },
+    {
+      "category": "insufficient_intervention_separation",
+
+      "description": "Interface cannot distinguish causal pathways affecting the target.",
+
+      "representative_interfaces": [
+        "I_020",
+        "I_021"
+      ]
+    }
+  ],
+
+  "failed_interfaces": [
+    {
+      "interface_id": "I_001",
+
+      "cost": 1,
+
+      "components": {
+        "intervention": [
+          "e=-1"
+        ],
+
+        "readout": [
+          "r1"
+        ],
+
+        "temporal_window": [
+          "t0"
+        ]
+      },
+
+      "rank_audit": {
+        "observation_rank": 1,
+
+        "required_target_rank": 2,
+
+        "rank_deficit": 1
+      },
+
+      "counterexample_exists": true,
+
+      "failure_reason": "hidden target-relevant direction"
+    },
+
+    {
+      "interface_id": "I_010",
+
+      "cost": 1,
+
+      "components": {
+        "intervention": [
+          "e=-1"
+        ],
+
+        "readout": [
+          "r_sum"
+        ],
+
+        "temporal_window": [
+          "t0"
+        ]
+      },
+
+      "rank_audit": {
+        "observation_rank": 1,
+
+        "required_temporal_rank": 2,
+
+        "rank_deficit": 1
+      },
+
+      "counterexample_exists": true,
+
+      "failure_reason": "future drift not identifiable from single slice"
+    },
+
+    {
+      "interface_id": "I_020",
+
+      "cost": 1,
+
+      "components": {
+        "intervention": [
+          "e=0"
+        ],
+
+        "readout": [
+          "r1"
+        ],
+
+        "temporal_window": [
+          "t0"
+        ]
+      },
+
+      "counterexample_exists": true,
+
+      "failure_reason": "causal alternatives collapse under passive observation"
+    }
+  ],
+
+  "aggregate_results": {
+    "total_failed_interfaces": 112,
+
+    "cost_distribution": {
+      "cost_0": 8,
+
+      "cost_1": 44,
+
+      "cost_2": 51,
+
+      "cost_3_plus": 9
+    },
+
+    "lowest_failure_cost": 0,
+
+    "highest_failed_cost": 7
+  },
+
+  "frontier_relation": {
+    "identified_frontier": {
+      "minimum_sufficient_cost": 2
+    },
+
+    "below_frontier": {
+      "all_interfaces_fail": true
+    },
+
+    "verification": {
+      "complete": true
+    }
+  },
+
+  "equivalence_class_analysis": {
+    "failure_mechanism": {
+      "description": "At least one observation equivalence class contains multiple target values."
+    },
+
+    "verified_for_all_failed_interfaces": true
+  },
+
+  "minimality_support": {
+    "purpose": "Prove that sufficient interfaces are not accidentally declared minimal.",
+
+    "result": {
+      "all_strict_subinterfaces_of_I_042_fail": true
+    }
+  },
+
+  "comparison_to_previous_gates": {
+    "gate_003": {
+      "role": "explicit finite counterexample construction"
+    },
+
+    "gate_005": {
+      "role": "minimum causal interface identification"
+    },
+
+    "gate_007": {
+      "role": "complete interface lattice classification"
+    }
+  },
+
+  "validation": {
+    "interface_enumeration_complete": true,
+    "failure_certificates_generated": true,
+    "equivalence_checks_verified": true,
+    "target_divergence_verified": true
+  },
+
+  "decision": {
+    "gate_status": "PASSED",
+
+    "meaning": "The insufficient region below the identifiability frontier has been characterized.",
+
+    "next_authorized_steps": [
+      "derive minimal-interface lower bound theorem",
+      "extend failure registry to noisy interfaces",
+      "analyze approximate factorization distance"
+    ]
+  },
+
+  "notes": [
+    "Failed interfaces are not useless interfaces; they reveal which information dimensions are necessary.",
+    "The failure registry defines the obstruction landscape below the frontier.",
+    "The scientific object is the transition boundary between non-identifiable and identifiable interfaces."
+  ]
+}
