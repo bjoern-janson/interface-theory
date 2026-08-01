@@ -1,0 +1,348 @@
+{
+  "example_id": "nonstationary",
+  "artifact_type": "target_definitions",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+
+  "purpose": {
+    "description": "Define evaluation targets for identifying and adapting to changing causal regimes.",
+    "role": "Specify what information must be preserved by an interface in a nonstationary environment.",
+    "principle": "A sufficient interface must preserve distinctions required for correct prediction under changing dynamics."
+  },
+
+  "formal_definition": {
+    "latent_state": {
+      "symbol": "x_t"
+    },
+
+    "regime_state": {
+      "symbol": "z_t"
+    },
+
+    "target_distribution": {
+      "symbol": "P(L_t|x_t,z_t)"
+    },
+
+    "nonstationary_factorization_condition": {
+      "statement": "exists P_hat such that P(L_t|x_t,z_t)=P_hat(L_t|O_I(x_t))",
+
+      "required_extension": "O_I must preserve regime-relevant information."
+    },
+
+    "failure_condition": {
+      "statement": "O_I(x_t)=O_I(x_{t+k}) and P(L_t)!=P(L_{t+k})",
+
+      "meaning": "Interface cannot distinguish valid and obsolete causal assumptions."
+    }
+  },
+
+  "targets": [
+    {
+      "target_id": "T_current_state_estimation",
+
+      "name": "Current latent state estimation",
+
+      "definition": {
+        "symbol": "P(x_t|y_{0:t})"
+      },
+
+      "description": "Estimate the current hidden state despite changing dynamics.",
+
+      "difficulty": "medium",
+
+      "required_information": [
+        "recent observations",
+        "current regime information",
+        "uncertainty estimate"
+      ],
+
+      "expected_interfaces": {
+        "I_observation": "conditional",
+
+        "I_history_window": "improved",
+
+        "I_adaptive_belief": "sufficient",
+
+        "I_intervention": "sufficient"
+      },
+
+      "failure_modes": [
+        "state_aliasing",
+        "incorrect_transition_assumption"
+      ]
+    },
+
+    {
+      "target_id": "T_regime_identification",
+
+      "name": "Hidden regime identification",
+
+      "definition": {
+        "symbol": "P(z_t|y_{0:t})"
+      },
+
+      "description": "Determine which causal regime currently generates system behavior.",
+
+      "difficulty": "high",
+
+      "required_information": [
+        "temporal evidence",
+        "distribution shift signal",
+        "causal structure"
+      ],
+
+      "expected_interfaces": {
+        "I_observation": "insufficient",
+
+        "I_history_window": "conditional",
+
+        "I_change_detector": "sufficient",
+
+        "I_adaptive_belief": "sufficient",
+
+        "I_intervention": "sufficient"
+      },
+
+      "failure_modes": [
+        "hidden_shift",
+        "weak_signal",
+        "false_stationarity"
+      ]
+    },
+
+    {
+      "target_id": "T_future_prediction_under_shift",
+
+      "name": "Prediction after environmental change",
+
+      "definition": {
+        "symbol": "P(x_{t+k}|y_{0:t})"
+      },
+
+      "description": "Predict future states when the transition function may change.",
+
+      "difficulty": "very_high",
+
+      "required_information": [
+        "current regime",
+        "transition uncertainty",
+        "adaptation mechanism"
+      ],
+
+      "expected_interfaces": {
+        "I_stationary_model": "fails_after_shift",
+
+        "I_history_window": "conditional",
+
+        "I_change_detector": "improved",
+
+        "I_adaptive_belief": "sufficient",
+
+        "I_intervention": "sufficient"
+      },
+
+      "failure_modes": [
+        "model_obsolescence",
+        "stale_history",
+        "incorrect_generalization"
+      ]
+    },
+
+    {
+      "target_id": "T_adaptation_latency",
+
+      "name": "Regime adaptation speed",
+
+      "definition": {
+        "symbol": "tau_adapt"
+      },
+
+      "description": "Measure the delay between environmental change and correct internal adaptation.",
+
+      "difficulty": "high",
+
+      "metric": {
+        "equation": "tau_adapt=t_detect-t_shift"
+      },
+
+      "required_information": [
+        "change detection",
+        "performance recovery tracking"
+      ],
+
+      "expected_interfaces": {
+        "I_observation": "poor",
+
+        "I_history_window": "window_dependent",
+
+        "I_change_detector": "low",
+
+        "I_adaptive_belief": "lowest",
+
+        "I_intervention": "low"
+      },
+
+      "failure_modes": [
+        "delayed_detection",
+        "slow_model_update"
+      ]
+    },
+
+    {
+      "target_id": "T_model_validity_estimation",
+
+      "name": "Estimate whether current assumptions remain valid",
+
+      "definition": {
+        "symbol": "P(M_t|y_{0:t})"
+      },
+
+      "description": "Determine confidence that the current predictive model still applies.",
+
+      "difficulty": "very_high",
+
+      "required_information": [
+        "prediction error history",
+        "distribution monitoring",
+        "alternative hypotheses"
+      ],
+
+      "expected_interfaces": {
+        "I_stationary_model": "insufficient",
+
+        "I_change_detector": "sufficient",
+
+        "I_adaptive_belief": "sufficient"
+      },
+
+      "failure_modes": [
+        "silent_model_failure",
+        "overconfidence"
+      ]
+    },
+
+    {
+      "target_id": "T_counterfactual_regime_response",
+
+      "name": "Predict response under alternate interventions",
+
+      "definition": {
+        "symbol": "P(x_{t+1}|do(u),z_t)"
+      },
+
+      "description": "Determine causal behavior under active probing while the environment changes.",
+
+      "difficulty": "very_high",
+
+      "required_information": [
+        "causal dynamics",
+        "regime state",
+        "intervention response"
+      ],
+
+      "expected_interfaces": {
+        "I_observation": "insufficient",
+
+        "I_history_window": "insufficient",
+
+        "I_intervention": "sufficient",
+
+        "I_adaptive_belief": "conditional"
+      },
+
+      "failure_modes": [
+        "causal_aliasing",
+        "unobserved_regime_dependence"
+      ]
+    }
+  ],
+
+  "target_hierarchy": {
+    "level_1": {
+      "name": "State tracking",
+
+      "targets": [
+        "T_current_state_estimation"
+      ]
+    },
+
+    "level_2": {
+      "name": "Environmental awareness",
+
+      "targets": [
+        "T_regime_identification",
+        "T_model_validity_estimation"
+      ]
+    },
+
+    "level_3": {
+      "name": "Adaptive prediction",
+
+      "targets": [
+        "T_future_prediction_under_shift",
+        "T_adaptation_latency"
+      ]
+    },
+
+    "level_4": {
+      "name": "Causal adaptation",
+
+      "targets": [
+        "T_counterfactual_regime_response"
+      ]
+    }
+  },
+
+  "boundary_analysis": {
+    "stationary_target": {
+      "assumption": "P(L|x)=constant over time"
+    },
+
+    "nonstationary_target": {
+      "assumption": "P(L|x,z,t) may change"
+    },
+
+    "core_extension": "The interface must preserve information about changing validity conditions."
+  },
+
+  "comparison_to_previous_benchmarks": {
+    "linear": {
+      "challenge": "representation sufficiency"
+    },
+
+    "hidden_state": {
+      "challenge": "latent variable access"
+    },
+
+    "delay": {
+      "challenge": "temporal alignment"
+    },
+
+    "stochastic": {
+      "challenge": "distribution preservation"
+    },
+
+    "nonstationary": {
+      "challenge": "adaptive validity preservation"
+    }
+  },
+
+  "validation": {
+    "targets_defined": true,
+
+    "adaptation_metrics_defined": true,
+
+    "regime_sensitive_targets_defined": true
+  },
+
+  "decision": {
+    "status": "READY",
+
+    "meaning": "Target specification for nonstationary interface identifiability benchmark."
+  },
+
+  "notes": [
+    "The benchmark evaluates whether an interface knows when its own assumptions fail.",
+    "Prediction accuracy alone is insufficient; adaptation speed and validity estimation matter.",
+    "A robust interface preserves information about both the world and changes in the world."
+  ]
+}
