@@ -13,9 +13,16 @@
       "r2"
     ]
   },
-  "confidence_threshold": 0.05,
   "repetitions_per_scalar": 92,
   "total_binary_queries": 184,
   "maximum_target_decoding_error": 0.046459,
-  "decision": "Bounded finite-sample recovery only; no estimator gate."
+  "decision": "Bounded finite-sample recovery only; no estimator gate.",
+  "error_tolerance": 0.05,
+  "evidence_class": "FROZEN_SUMMARY_RECORD",
+  "reproducibility": {
+    "status": "SUMMARY_RECORD_ONLY",
+    "raw_candidate_audit": "NOT_COMMITTED",
+    "generation_script": "NOT_COMMITTED",
+    "correction_note": "This artifact records the frozen conclusion after prior incompatible or invented summary material was removed. It is not a complete independently reproducible candidate-level audit."
+  }
 }
