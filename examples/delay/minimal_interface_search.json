@@ -1,0 +1,306 @@
+{
+  "example_id": "delay",
+  "artifact_type": "minimal_interface_search",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+
+  "purpose": {
+    "description": "Search for the smallest interface sufficient for each delayed-observation target.",
+    "role": "Determine the minimum causal access required to overcome temporal displacement.",
+    "principle": "Prefer the lowest-complexity interface that preserves target factorization."
+  },
+
+  "formal_problem": {
+    "objective": "minimize interface complexity subject to target identifiability",
+
+    "optimization": {
+      "argmin": "C(I)",
+
+      "constraint": "L = L_hat o O_I"
+    },
+
+    "failure_condition": {
+      "statement": "exists x_a,x_b where O_I(x_a)=O_I(x_b) and L(x_a)!=L(x_b)"
+    }
+  },
+
+  "search_space": {
+    "candidate_interfaces": [
+      "I_delayed_observation",
+      "I_delay_compensated",
+      "I_history_window_1",
+      "I_history_window_2",
+      "I_history_window_5",
+      "I_history_window_10",
+      "I_predictive_model",
+      "I_intervention"
+    ],
+
+    "complexity_dimensions": {
+      "observation_dimension": true,
+
+      "memory": true,
+
+      "model_dependency": true,
+
+      "control_dependency": true,
+
+      "computation_cost": true
+    }
+  },
+
+  "targets": [
+    {
+      "target_id": "T_delayed_state",
+
+      "description": "Recover the state corresponding to the delayed observation.",
+
+      "search_results": [
+        {
+          "interface": "I_delayed_observation",
+
+          "complexity_rank": 1,
+
+          "factorization": true,
+
+          "selected": true
+        }
+      ],
+
+      "minimal_interface": {
+        "id": "I_delayed_observation",
+
+        "reason": "Target is directly contained in the observation."
+      }
+    },
+
+    {
+      "target_id": "T_current_state",
+
+      "description": "Recover current state despite delay.",
+
+      "search_results": [
+        {
+          "interface": "I_delayed_observation",
+
+          "complexity_rank": 1,
+
+          "factorization": false
+        },
+        {
+          "interface": "I_delay_compensated",
+
+          "complexity_rank": 2,
+
+          "factorization": "conditional"
+        },
+        {
+          "interface": "I_history_window_2",
+
+          "complexity_rank": 3,
+
+          "factorization": "conditional"
+        },
+        {
+          "interface": "I_predictive_model",
+
+          "complexity_rank": 5,
+
+          "factorization": true
+        }
+      ],
+
+      "minimal_interface": {
+        "id": "I_delay_compensated",
+
+        "reason": "Delay metadata plus valid dynamics are sufficient."
+      },
+
+      "assumptions": [
+        "known transition dynamics"
+      ]
+    },
+
+    {
+      "target_id": "T_future_state",
+
+      "description": "Predict future state after recovering temporal alignment.",
+
+      "search_results": [
+        {
+          "interface": "I_delayed_observation",
+
+          "complexity_rank": 1,
+
+          "factorization": false
+        },
+        {
+          "interface": "I_delay_compensated",
+
+          "complexity_rank": 2,
+
+          "factorization": "conditional"
+        },
+        {
+          "interface": "I_predictive_model",
+
+          "complexity_rank": 5,
+
+          "factorization": true
+        }
+      ],
+
+      "minimal_interface": {
+        "id": "I_predictive_model",
+
+        "reason": "Future prediction requires both alignment and dynamics."
+      },
+
+      "assumptions": [
+        "transition model available"
+      ]
+    },
+
+    {
+      "target_id": "T_state_transition",
+
+      "description": "Identify the causal transition mechanism.",
+
+      "search_results": [
+        {
+          "interface": "I_delayed_observation",
+
+          "complexity_rank": 1,
+
+          "factorization": false
+        },
+        {
+          "interface": "I_history_window_5",
+
+          "complexity_rank": 3,
+
+          "factorization": "conditional"
+        },
+        {
+          "interface": "I_intervention",
+
+          "complexity_rank": 6,
+
+          "factorization": true
+        }
+      ],
+
+      "minimal_interface": {
+        "id": "I_history_window_5",
+
+        "reason": "Temporal variation exposes transition structure."
+      },
+
+      "assumptions": [
+        "sufficient excitation",
+        "stationary dynamics"
+      ]
+    },
+
+    {
+      "target_id": "T_decision_optimal_action",
+
+      "description": "Choose correct action under delayed feedback.",
+
+      "search_results": [
+        {
+          "interface": "I_delayed_observation",
+
+          "complexity_rank": 1,
+
+          "factorization": false
+        },
+        {
+          "interface": "I_predictive_model",
+
+          "complexity_rank": 5,
+
+          "factorization": true
+        },
+        {
+          "interface": "I_intervention",
+
+          "complexity_rank": 6,
+
+          "factorization": true
+        }
+      ],
+
+      "minimal_interface": {
+        "id": "I_predictive_model",
+
+        "reason": "Decision requires present-state estimation before action."
+      }
+    }
+  ],
+
+  "global_results": {
+    "minimality_pattern": {
+      "observation_only": "insufficient_for_present_targets",
+
+      "metadata": "reduces temporal ambiguity",
+
+      "history": "provides implicit temporal alignment",
+
+      "model": "provides predictive compensation",
+
+      "intervention": "provides causal identification"
+    },
+
+    "main_boundary": {
+      "description": "The minimal interface depends on whether the target concerns past, present, future, or causal mechanism."
+    }
+  },
+
+  "ranking": [
+    {
+      "interface": "I_delayed_observation",
+
+      "capability": "past_only"
+    },
+    {
+      "interface": "I_delay_compensated",
+
+      "capability": "present_with_assumptions"
+    },
+    {
+      "interface": "I_history_window",
+
+      "capability": "present_by_temporal_signature"
+    },
+    {
+      "interface": "I_predictive_model",
+
+      "capability": "present_and_future_prediction"
+    },
+    {
+      "interface": "I_intervention",
+
+      "capability": "causal_structure_discovery"
+    }
+  ],
+
+  "validation": {
+    "search_completed": true,
+
+    "factorization_constraints_checked": true,
+
+    "minimal_candidates_identified": true
+  },
+
+  "decision": {
+    "status": "PASSED",
+
+    "meaning": "Minimal interfaces for delayed identifiability have been characterized."
+  },
+
+  "notes": [
+    "Delay does not destroy information; it changes the interface required to use it.",
+    "The minimal sufficient interface is target-dependent.",
+    "Predictive compensation is a form of temporal interface expansion."
+  ]
+}
