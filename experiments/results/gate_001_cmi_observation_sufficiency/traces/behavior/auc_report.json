@@ -1,0 +1,90 @@
+{
+  "gate_id": "GATE-001",
+  "protocol_version": "CMI_v0.1",
+  "artifact_type": "auc_report",
+
+  "evaluation": {
+    "channel": "behavior",
+    "task": "target discrimination from behavioral observations",
+    "positive_class": "HIGH",
+    "negative_class": "LOW"
+  },
+
+  "feature_source": {
+    "interface": "CMI behavioral interface v0.1",
+    "features_used": [
+      "behavior_trace_outputs"
+    ],
+    "features_excluded": [
+      "target_labels",
+      "future_continuation",
+      "updater_pathway",
+      "private_state",
+      "implementation_details"
+    ]
+  },
+
+  "dataset": {
+    "pair_id": "PAIR_001",
+    "systems": [
+      "A",
+      "B"
+    ],
+    "samples": 2,
+    "matched_observation_groups": 1
+  },
+
+  "classifier": {
+    "type": "interface_probe_classifier",
+    "purpose": "measurement of channel separability",
+    "training": {
+      "uses_target_labels": true,
+      "uses_target_labels_as_input_features": false
+    }
+  },
+
+  "result": {
+    "auc": 0.5,
+    "accuracy": 0.5,
+    "log_loss": null,
+    "confidence_interval": null,
+    "interpretation": "chance-level separation"
+  },
+
+  "separability_analysis": {
+    "unique_behavioral_signatures": 1,
+    "target_classes_present": 2,
+    "signature_collision": true,
+    "collision_type": "target-changing observational equivalence"
+  },
+
+  "formal_result": {
+    "observation_relation": "O_behavior(A)=O_behavior(B)",
+    "target_relation": "L(A)!=L(B)",
+    "identifiable": false
+  },
+
+  "gate_condition": {
+    "failure_condition": "AUC does not exceed chance because target classes are behaviorally indistinguishable",
+    "triggered": true
+  },
+
+  "decision": {
+    "channel_status": "FAILED",
+    "estimator_authorized": false,
+    "action": "retain as interface-boundary evidence"
+  },
+
+  "validation": {
+    "protocol_compliance": true,
+    "feature_leakage_check": "passed",
+    "label_separation_check": "passed",
+    "trace_reproducibility": "passed"
+  },
+
+  "notes": [
+    "AUC=0.50 is interpreted structurally, not statistically, because the matched pair was intentionally constructed to test identifiability.",
+    "The result does not indicate random system behavior; it indicates that the selected observation channel collapses the target distinction.",
+    "A richer interface may restore separability."
+  ]
+}
