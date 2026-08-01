@@ -1,0 +1,132 @@
+{
+  "gate_id": "GATE-001",
+  "protocol_version": "CMI_v0.1",
+  "artifact_type": "counterfactual_auc_report",
+
+  "evaluation": {
+    "channel": "counterfactual",
+    "task": "target discrimination from externally generated counterfactual branches",
+    "positive_class": "HIGH",
+    "negative_class": "LOW"
+  },
+
+  "feature_source": {
+    "interface": "CMI counterfactual interface v0.1",
+    "features_used": [
+      "counterfactual_conditions",
+      "branch_response_trajectories",
+      "cross-branch consistency"
+    ],
+    "features_excluded": [
+      "target_definition",
+      "future_adaptation_value",
+      "internal updater state",
+      "latent parameters",
+      "causal implementation path"
+    ]
+  },
+
+  "dataset": {
+    "pair_id": "PAIR_001",
+    "systems": [
+      "A",
+      "B"
+    ],
+    "branches_per_system": 2,
+    "total_counterfactual_samples": 4,
+    "matched_branch_design": true
+  },
+
+  "classifier": {
+    "type": "counterfactual_probe_classifier",
+    "objective": "measure counterfactual response separability",
+    "labels_used_for_evaluation": true,
+    "labels_used_as_features": false
+  },
+
+  "results": {
+    "auc": 0.5,
+    "accuracy": 0.5,
+    "ranking_consistency": false,
+    "interpretation": "chance-level discrimination"
+  },
+
+  "counterfactual_separability": {
+    "unique_response_surfaces": 1,
+
+    "collision_summary": [
+      {
+        "counterfactual_signature": [
+          {
+            "condition": [
+              -1,
+              1,
+              0
+            ],
+            "response": [
+              -1,
+              1,
+              0
+            ]
+          },
+          {
+            "condition": [
+              1,
+              -1,
+              0
+            ],
+            "response": [
+              1,
+              -1,
+              0
+            ]
+          }
+        ],
+        "systems": [
+          "A",
+          "B"
+        ],
+        "targets": [
+          "HIGH",
+          "LOW"
+        ]
+      }
+    ],
+
+    "target_changing_collision": true
+  },
+
+  "formal_identifiability_test": {
+    "condition": "O_counterfactual(A)=O_counterfactual(B) => L(A)=L(B)",
+
+    "observation_equivalence": true,
+
+    "target_equivalence": false,
+
+    "identifiable": false
+  },
+
+  "gate_condition": {
+    "failure_condition": "counterfactual branches fail to separate target-changing observationally equivalent systems",
+    "triggered": true
+  },
+
+  "decision": {
+    "counterfactual_interface_sufficient": false,
+    "estimator_development_authorized": false,
+    "next_allowed_step": "interface refinement or proof of non-identifiability"
+  },
+
+  "validation": {
+    "branch_replay": true,
+    "counterfactual_integrity": true,
+    "feature_leakage_check": "passed",
+    "protocol_compliance": true
+  },
+
+  "notes": [
+    "Counterfactual branching increases the explored input space but does not guarantee target identifiability.",
+    "The failure demonstrates that a richer behavioral surface can still collapse distinct target values.",
+    "Result is scoped to the frozen CMI v0.1 interface and adversarial matched pair."
+  ]
+}
