@@ -31,7 +31,7 @@ generator.
 | FS stochastic readout noise | [source](../experiments/results/gate_010_stochastic_identifiability/confidence_results.json) | `60accc59a9fb31554c11188deb0e7a3699ac6035` | **FROZEN_SUMMARY_RECORD.** 92 repetitions per scalar; 184 binary queries; maximum decoding error 0.046459. Summary record only. Raw candidate table: not committed. Generator: not committed. |
 | FHD hidden state plus delay | [source](../experiments/results/gate_011_hd_composition/composition_search.json) | `da90ee5d7f68c6840e44e7925727917851733659` | **FROZEN_SUMMARY_RECORD.** 100 candidates; 13 identifying; unique cost-three minimum at lag one. Summary record only. Raw candidate table: not committed. Generator: not committed. |
 | FN known linear drift | [source](../experiments/results/gate_012_nonstationary_identifiability/temporal_design_results.json) | `6f6217d44ec18785688c39cf3707c78a97f6f640` | **FROZEN_SUMMARY_RECORD.** 150 candidates; 26 identifying; seven minimum-cost candidates at scalar cost four. Summary record only. Raw candidate table: not committed. Generator: not committed. |
-| FRS reversible network selection | [audit](../experiments/results/gate_013_reversible_network_selection/factorization_audit.json) and [generator](../experiments/gate_013_reversible_network_selection/run_gate_013.py) | audit `d0c20a96240959adf331650875d92be6bda72741`; generator `4fe8a2148791bdeb4c51c13cdd644b955c75c063` | **COMPLETE_REPRODUCIBLE_AUDIT.** Four systems and all four frozen interfaces are enumerated. The integrity validator regenerates and compares the complete audit. Scope is the declared deterministic operational class only. |
+| FRS operational reopenability/flow composition | [audit](../experiments/results/gate_013_reversible_network_selection/factorization_audit.json) and [generator](../experiments/gate_013_reversible_network_selection/run_gate_013.py) | audit `6a86d4f7c4b2bd06f73c83e44f42d8814020e240`; generator `2759d15f1af37a0c60e22c875fb0f79e2ef4a77a` | **COMPLETE_REPRODUCIBLE_AUDIT.** Four labeled records and all four frozen protocol interfaces are enumerated. The validator regenerates the direct-alias audit. Protocol cost is three; derived informative cost is two only within the declared binary readout vocabulary. |
 
 ## Stable evidence anchors
 
@@ -68,8 +68,8 @@ Frozen ledger row for the closed known-linear-drift class.
 <a id="frs-reversible-network-selection"></a>
 ### FRS reversible network selection
 
-Complete reproducible finite-class audit for the target-specific reversible
-selection and observable authority-flow pilot.
+Complete reproducible finite-class audit for operational reopenability/flow
+interface composition by direct label/readout aliases.
 
 ## Corrections and limitations
 
