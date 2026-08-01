@@ -1,0 +1,318 @@
+{
+  "example_id": "F0_linear",
+  "artifact_type": "equivalence_classes",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+
+  "purpose": {
+    "description": "Enumerate observation equivalence classes induced by candidate interfaces and evaluate whether those classes preserve target identity.",
+    "role": "Make explicit the partition of state space created by each observation boundary.",
+    "principle": "A sufficient interface produces observation classes contained within target equivalence classes."
+  },
+
+  "formal_definition": {
+    "observation_equivalence": {
+      "condition": "x_a ~_O x_b iff O(x_a)=O(x_b)"
+    },
+
+    "target_equivalence": {
+      "condition": "x_a ~_L x_b iff L(x_a)=L(x_b)"
+    },
+
+    "factorization_requirement": {
+      "statement": "Observation partition must refine target partition.",
+
+      "formal": "x_a~_O x_b => x_a~_L x_b"
+    }
+  },
+
+  "system": {
+    "state_space": "R^2",
+
+    "reference_states": [
+      {
+        "id": "system_A",
+
+        "state": [
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "id": "system_B",
+
+        "state": [
+          1.0,
+          1.0
+        ]
+      }
+    ],
+
+    "target": "T_future_position"
+  },
+
+  "interfaces": [
+    {
+      "interface_id": "I_full_state",
+
+      "observation_matrix": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+
+      "partition": {
+        "class_count": 2,
+
+        "classes": [
+          {
+            "class_id": "O1",
+
+            "members": [
+              "system_A"
+            ],
+
+            "observation": [
+              1.0,
+              0.0
+            ]
+          },
+          {
+            "class_id": "O2",
+
+            "members": [
+              "system_B"
+            ],
+
+            "observation": [
+              1.0,
+              1.0
+            ]
+          }
+        ]
+      },
+
+      "target_purity": {
+        "status": "pure",
+
+        "reason": "No distinct states are collapsed."
+      },
+
+      "factorization": true
+    },
+
+    {
+      "interface_id": "I_position_only",
+
+      "observation_matrix": [
+        [
+          1.0,
+          0.0
+        ]
+      ],
+
+      "partition": {
+        "class_count": 1,
+
+        "classes": [
+          {
+            "class_id": "O1",
+
+            "members": [
+              "system_A",
+              "system_B"
+            ],
+
+            "observation": [
+              1.0
+            ]
+          }
+        ]
+      },
+
+      "target_values": {
+        "members": {
+          "system_A": 1.0,
+
+          "system_B": 1.81902
+        }
+      },
+
+      "target_purity": {
+        "status": "impure",
+
+        "reason": "One observation class contains multiple target values."
+      },
+
+      "factorization": false
+    },
+
+    {
+      "interface_id": "I_hidden_dimension",
+
+      "observation_matrix": [
+        [
+          0.0,
+          1.0
+        ]
+      ],
+
+      "partition": {
+        "class_count": 2,
+
+        "classes": [
+          {
+            "class_id": "O1",
+
+            "members": [
+              "system_A"
+            ],
+
+            "observation": [
+              0.0
+            ]
+          },
+          {
+            "class_id": "O2",
+
+            "members": [
+              "system_B"
+            ],
+
+            "observation": [
+              1.0
+            ]
+          }
+        ]
+      },
+
+      "target_purity": {
+        "status": "locally_pure",
+
+        "reason": "Reference states are separated, but interface fails for general target search."
+      },
+
+      "factorization": {
+        "status": "target_dependent",
+
+        "note": "Insufficient for targets requiring x_1."
+      }
+    },
+
+    {
+      "interface_id": "I_scalar_projection",
+
+      "observation_matrix": [
+        [
+          1.0,
+          1.0
+        ]
+      ],
+
+      "partition": {
+        "class_count": 2,
+
+        "classes": [
+          {
+            "class_id": "O1",
+
+            "members": [
+              "system_A"
+            ],
+
+            "observation": [
+              1.0
+            ]
+          },
+          {
+            "class_id": "O2",
+
+            "members": [
+              "system_B"
+            ],
+
+            "observation": [
+              2.0
+            ]
+          }
+        ]
+      },
+
+      "target_purity": {
+        "status": "target_dependent",
+
+        "reason": "Reference pair is separated but other collisions exist in state space."
+      },
+
+      "factorization": false
+    }
+  ],
+
+  "partition_analysis": {
+    "finding": "Interface quality is determined by the induced partition, not raw observation dimension.",
+
+    "example": {
+      "I_position_only": {
+        "dimension": 1,
+
+        "problem": "collapses target-distinct states"
+      },
+
+      "I_full_state": {
+        "dimension": 2,
+
+        "property": "preserves all state distinctions"
+      }
+    }
+  },
+
+  "counterexample_signature": {
+    "interface": "I_position_only",
+
+    "class": {
+      "members": [
+        "system_A",
+        "system_B"
+      ],
+
+      "observation": [
+        1.0
+      ]
+    },
+
+    "target_divergence": {
+      "values": [
+        1.0,
+        1.81902
+      ]
+    },
+
+    "failure": "observation equivalence does not imply target equivalence"
+  },
+
+  "validation": {
+    "partitions_computed": true,
+
+    "target_labels_computed": true,
+
+    "purity_checks_complete": true,
+
+    "factorization_boundary_verified": true
+  },
+
+  "decision": {
+    "status": "PASSED",
+
+    "meaning": "Equivalence class analysis confirms that interface sufficiency is a partition refinement problem."
+  },
+
+  "notes": [
+    "Observation interfaces should be evaluated by the distinctions they preserve.",
+    "Low-dimensional interfaces are not inherently insufficient; they fail only when their induced partition merges target-distinct states.",
+    "This partition view generalizes beyond linear systems."
+  ]
+}
