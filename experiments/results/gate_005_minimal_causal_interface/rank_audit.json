@@ -1,0 +1,216 @@
+{
+  "gate_id": "GATE-005",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+  "artifact_type": "rank_audit",
+
+  "purpose": {
+    "description": "Audit the information rank of candidate interfaces relative to target-relevant system directions.",
+    "role": "Verify that minimal interfaces span all observable directions required for target factorization.",
+    "not_used_for": [
+      "discovering the target",
+      "estimating latent mechanisms",
+      "claiming universal interface optimality"
+    ]
+  },
+
+  "formal_setup": {
+    "system_class": {
+      "symbol": "F"
+    },
+
+    "target": {
+      "symbol": "L",
+
+      "representation": "target functional over system parameter space"
+    },
+
+    "interface_operator": {
+      "symbol": "O_I",
+
+      "representation": "linearized observation/intervention map for candidate interface I"
+    },
+
+    "criterion": {
+      "linear_form": "ker(O_I) subseteq ker(L)",
+
+      "equivalent_form": "L lies in rowspace(O_I)"
+    }
+  },
+
+  "candidate_interfaces": [
+    {
+      "interface_id": "I_042",
+
+      "description": "Minimum discovered interface",
+
+      "components": {
+        "intervention": [
+          "e=-1"
+        ],
+
+        "readout": [
+          "r1",
+          "r2"
+        ],
+
+        "temporal_window": [
+          "t0"
+        ]
+      },
+
+      "matrix_audit": {
+        "observation_matrix_rank": 2,
+
+        "target_space_dimension": 2,
+
+        "target_rowspace_membership": true
+      },
+
+      "null_space_analysis": {
+        "null_dimension": 0,
+
+        "target_relevant_hidden_modes": 0
+      },
+
+      "result": {
+        "identifiable": true
+      }
+    },
+
+    {
+      "interface_id": "I_001",
+
+      "description": "Single scalar observation baseline",
+
+      "components": {
+        "intervention": [
+          "e=-1"
+        ],
+
+        "readout": [
+          "r1"
+        ],
+
+        "temporal_window": [
+          "t0"
+        ]
+      },
+
+      "matrix_audit": {
+        "observation_matrix_rank": 1,
+
+        "target_space_dimension": 2,
+
+        "target_rowspace_membership": false
+      },
+
+      "null_space_analysis": {
+        "null_dimension": 1,
+
+        "target_relevant_hidden_modes": 1
+      },
+
+      "result": {
+        "identifiable": false
+      }
+    }
+  ],
+
+  "rank_comparison": {
+    "required_target_rank": 2,
+
+    "minimum_sufficient_rank": 2,
+
+    "minimum_interface_rank": 2,
+
+    "rank_gap": 0
+  },
+
+  "spatial_rank": {
+    "description": "Readout coverage across target-relevant dimensions",
+
+    "required": 2,
+
+    "observed_by_minimum_interface": 2,
+
+    "status": "sufficient"
+  },
+
+  "intervention_rank": {
+    "description": "Ability of interventions to separate causal pathways",
+
+    "required": 1,
+
+    "observed_by_minimum_interface": 1,
+
+    "status": "sufficient"
+  },
+
+  "temporal_rank": {
+    "description": "Temporal basis needed for the declared target",
+
+    "required": 1,
+
+    "observed_by_minimum_interface": 1,
+
+    "status": "sufficient"
+  },
+
+  "factorization_check": {
+    "minimum_interface": "I_042",
+
+    "result": {
+      "exists_L_hat": true
+    },
+
+    "statement": "The target functional factors through the minimum interface observation map."
+  },
+
+  "minimality_confirmation": {
+    "all_lower_rank_interfaces_checked": true,
+
+    "result": {
+      "every_lower_rank_interface_fails": true
+    },
+
+    "reason": "Each lower-rank interface contains at least one target-changing null-space direction."
+  },
+
+  "theorem_connection": {
+    "supports": [
+      "minimal interface rank lower bound",
+      "target-relative observability condition"
+    ],
+
+    "does_not_establish": [
+      "universal rank law",
+      "nonlinear global identifiability",
+      "stochastic robustness"
+    ]
+  },
+
+  "validation": {
+    "rank_calculation": "passed",
+    "null_space_audit": "passed",
+    "target_projection_check": "passed",
+    "minimality_check": "passed"
+  },
+
+  "decision": {
+    "gate_status": "PASSED",
+
+    "meaning": "The minimum interface reaches the required information rank for the declared target.",
+
+    "next_authorized_step": [
+      "derive formal minimal-interface lower bound",
+      "extend rank audit to nonlinear/local Jacobian case",
+      "introduce approximate identifiability"
+    ]
+  },
+
+  "notes": [
+    "Rank is not an absolute property of an interface; it is evaluated relative to the declared target.",
+    "A full reconstruction of the system is unnecessary if all target-relevant directions are covered.",
+    "The audit supports the transition from identifiability testing to interface complexity theory."
+  ]
+}
