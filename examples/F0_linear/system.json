@@ -1,0 +1,25 @@
+{
+  "system_id": "F0_linear",
+
+  "class": "linear_dynamical_system",
+
+  "state": {
+    "symbol": "x_t",
+    "dimension": 2
+  },
+
+  "dynamics": {
+    "equation": "x_{t+1}=Ax_t",
+
+    "matrix": [
+      [1.0, 0.2],
+      [0.0, 0.9]
+    ]
+  },
+
+  "observation": {
+    "general_form": "y_t=Cx_t"
+  },
+
+  "description": "Minimal linear system for testing interface sufficiency."
+}
