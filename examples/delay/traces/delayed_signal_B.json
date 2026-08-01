@@ -1,0 +1,252 @@
+{
+  "example_id": "delay",
+  "artifact_type": "trajectory_trace",
+  "trace_id": "delayed_signal_B",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+
+  "purpose": {
+    "description": "Provide an alternative trajectory that shares delayed observations with another trajectory while diverging in current-state targets.",
+    "role": "Generate temporal aliasing counterexamples.",
+    "usage": [
+      "factorization checks",
+      "observation equivalence tests",
+      "target divergence analysis"
+    ]
+  },
+
+  "system": {
+    "state_variable": "x_t",
+
+    "dynamics": {
+      "equation": "x_{t+1}=1.2x_t",
+
+      "transition_factor": 1.2
+    },
+
+    "delay": {
+      "symbol": "tau",
+
+      "value": 2
+    },
+
+    "observation_model": {
+      "equation": "y_t=x_{t-2}"
+    }
+  },
+
+  "initial_conditions": {
+    "history": {
+      "x_-2": 1.0,
+
+      "x_-1": 1.4
+    },
+
+    "initial_current_state": {
+      "x_0": 1.96
+    }
+  },
+
+  "trajectory": [
+    {
+      "time": -2,
+
+      "state": 1.0,
+
+      "observation": null
+    },
+    {
+      "time": -1,
+
+      "state": 1.4,
+
+      "observation": null
+    },
+    {
+      "time": 0,
+
+      "state": 1.96,
+
+      "observation": 1.0
+    },
+    {
+      "time": 1,
+
+      "state": 2.352,
+
+      "observation": 1.4
+    },
+    {
+      "time": 2,
+
+      "state": 2.8224,
+
+      "observation": 1.96
+    },
+    {
+      "time": 3,
+
+      "state": 3.38688,
+
+      "observation": 2.352
+    },
+    {
+      "time": 4,
+
+      "state": 4.064256,
+
+      "observation": 2.8224
+    },
+    {
+      "time": 5,
+
+      "state": 4.8771072,
+
+      "observation": 3.38688
+    },
+    {
+      "time": 6,
+
+      "state": 5.85252864,
+
+      "observation": 4.064256
+    },
+    {
+      "time": 7,
+
+      "state": 7.023034368,
+
+      "observation": 4.8771072
+    },
+    {
+      "time": 8,
+
+      "state": 8.4276412416,
+
+      "observation": 5.85252864
+    },
+    {
+      "time": 9,
+
+      "state": 10.11316948992,
+
+      "observation": 7.023034368
+    },
+    {
+      "time": 10,
+
+      "state": 12.135803387904,
+
+      "observation": 8.4276412416
+    }
+  ],
+
+  "streams": {
+    "true_state_stream": [
+      1.96,
+      2.352,
+      2.8224,
+      3.38688,
+      4.064256,
+      4.8771072,
+      5.85252864,
+      7.023034368,
+      8.4276412416,
+      10.11316948992,
+      12.135803387904
+    ],
+
+    "delayed_observation_stream": [
+      1.0,
+      1.4,
+      1.96,
+      2.352,
+      2.8224,
+      3.38688,
+      4.064256,
+      4.8771072,
+      5.85252864,
+      7.023034368,
+      8.4276412416
+    ]
+  },
+
+  "comparison_target": {
+    "paired_trace": "delayed_signal_A",
+
+    "shared_observation_condition": {
+      "enabled": true,
+
+      "required": "same delayed observation, different current state"
+    },
+
+    "target_divergence": {
+      "at_time": 0,
+
+      "trace_A_current_state": 1.44,
+
+      "trace_B_current_state": 1.96,
+
+      "difference": 0.52
+    }
+  },
+
+  "alignment_analysis": {
+    "offset": 2,
+
+    "represented_state": "t-2",
+
+    "current_state_visibility": false,
+
+    "failure_mode": "temporal_aliasing"
+  },
+
+  "interface_views": {
+    "I_delayed_observation": {
+      "observation_equivalence_with_A": true,
+
+      "target_equivalence_with_A": false
+    },
+
+    "I_history_window": {
+      "separability": "depends_on_window_length"
+    },
+
+    "I_predictive_model": {
+      "separability": "requires_correct_dynamics"
+    }
+  },
+
+  "identifiability_signature": {
+    "raw_observation": {
+      "same_as_delayed_signal_A": true
+    },
+
+    "current_state": {
+      "same_as_delayed_signal_A": false
+    },
+
+    "future_trajectory": {
+      "same_as_delayed_signal_A": false
+    }
+  },
+
+  "validation": {
+    "trajectory_generated": true,
+
+    "delay_alignment_verified": true,
+
+    "counterexample_condition_satisfied": true
+  },
+
+  "decision": {
+    "status": "READY",
+
+    "meaning": "Adversarial delayed trajectory demonstrating temporal non-identifiability."
+  },
+
+  "notes": [
+    "This trajectory intentionally differs from delayed_signal_A before the delay boundary.",
+    "A delayed-only observer cannot distinguish the two trajectories at the current decision point.",
+    "The example demonstrates that identical observations can imply different causal futures."
+  ]
+}
