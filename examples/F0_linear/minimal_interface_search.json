@@ -1,0 +1,20 @@
+{
+  "search_space": {
+    "interfaces_tested": 16
+  },
+
+  "result": {
+    "minimum_sufficient_interface": "I_full_state",
+
+    "cost": 2
+  },
+
+  "failure_condition": {
+    "exists": "x_a,x_b",
+
+    "such_that": [
+      "O(x_a)=O(x_b)",
+      "L(x_a)!=L(x_b)"
+    ]
+  }
+}
