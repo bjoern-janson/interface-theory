@@ -1,0 +1,194 @@
+{
+  "gate_id": "GATE-001",
+  "protocol_version": "CMI_v0.1",
+  "artifact_type": "intervention_trajectories",
+
+  "evaluation": {
+    "channel": "intervention_response",
+    "task": "test whether controlled behavioral interventions reveal target-relevant differences",
+    "interface_layer": "interventional_behavior"
+  },
+
+  "interface": {
+    "name": "CMI behavioral intervention interface",
+    "version": "v0.1",
+    "allowed_access": [
+      "external intervention",
+      "observable response"
+    ],
+    "forbidden_access": [
+      "updater pathway",
+      "internal state",
+      "parameters",
+      "gradients"
+    ]
+  },
+
+  "systems": [
+    {
+      "system_id": "A",
+      "target_class": "HIGH",
+
+      "interventions": [
+        {
+          "intervention_id": "I1",
+          "condition": {
+            "type": "controlled_behavioral_perturbation",
+            "input_sequence": [
+              -1,
+              0,
+              1
+            ]
+          },
+          "response_trajectory": [
+            -1,
+            0,
+            1
+          ]
+        },
+
+        {
+          "intervention_id": "I2",
+          "condition": {
+            "type": "alternate_probe",
+            "input_sequence": [
+              1,
+              0,
+              -1
+            ]
+          },
+          "response_trajectory": [
+            1,
+            0,
+            -1
+          ]
+        }
+      ]
+    },
+
+    {
+      "system_id": "B",
+      "target_class": "LOW",
+
+      "interventions": [
+        {
+          "intervention_id": "I1",
+          "condition": {
+            "type": "controlled_behavioral_perturbation",
+            "input_sequence": [
+              -1,
+              0,
+              1
+            ]
+          },
+          "response_trajectory": [
+            -1,
+            0,
+            1
+          ]
+        },
+
+        {
+          "intervention_id": "I2",
+          "condition": {
+            "type": "alternate_probe",
+            "input_sequence": [
+              1,
+              0,
+              -1
+            ]
+          },
+          "response_trajectory": [
+            1,
+            0,
+            -1
+          ]
+        }
+      ]
+    }
+  ],
+
+  "trajectory_comparison": {
+    "matched_interventions": [
+      "I1",
+      "I2"
+    ],
+
+    "results": [
+      {
+        "intervention_id": "I1",
+        "system_A_response": [
+          -1,
+          0,
+          1
+        ],
+        "system_B_response": [
+          -1,
+          0,
+          1
+        ],
+        "equal": true
+      },
+
+      {
+        "intervention_id": "I2",
+        "system_A_response": [
+          1,
+          0,
+          -1
+        ],
+        "system_B_response": [
+          1,
+          0,
+          -1
+        ],
+        "equal": true
+      }
+    ]
+  },
+
+  "classification_test": {
+    "task": "predict target class from intervention responses",
+    "features": [
+      "intervention_condition",
+      "observed_response_trajectory"
+    ],
+
+    "result": {
+      "auc": 0.5,
+      "accuracy": 0.5,
+      "above_chance": false
+    }
+  },
+
+  "identifiability_analysis": {
+    "observation_map": "O_intervention",
+    "equivalence": {
+      "system_A": "system_B",
+      "relation": "O_intervention(A)=O_intervention(B)"
+    },
+
+    "target_difference": {
+      "relation": "L(A)!=L(B)",
+      "present": true
+    }
+  },
+
+  "decision": {
+    "intervention_channel_sufficient": false,
+    "gate_status": "FAILED",
+    "estimator_development": "BLOCKED"
+  },
+
+  "validation": {
+    "intervention_replay": "passed",
+    "trajectory_consistency": "passed",
+    "no_internal_access_used": true
+  },
+
+  "notes": [
+    "Intervention expands the observation process but remains within the declared CMI v0.1 interface.",
+    "The matched pair remains indistinguishable under controlled external perturbations.",
+    "This result narrows the failure to interface coverage rather than passive observation alone."
+  ]
+}
