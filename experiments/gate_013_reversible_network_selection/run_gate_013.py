@@ -20,34 +20,32 @@ from typing import Callable
 
 
 @dataclass(frozen=True)
-class System:
-    """A finite authority-regulated three-mechanism system.
+class OperationalRecord:
+    """One member of the two-label operational Cartesian product.
 
-    The selection field determines whether a suppressed candidate is retained
-    and can regain influence after a regime reversal. The topology field
-    determines whether a contradiction at node 1 changes node 3's externally
-    observed response. The policy flags are not in the allowed interface.
+    This is not a simulated mechanism graph. The labels directly determine the
+    declared target bits and are excluded from the allowed interface.
     """
 
     system_id: str
-    selection: str  # delete | reversible
-    topology: str  # independent | propagating
+    selection_label: str  # delete | reversible
+    topology_label: str  # independent | propagating
 
 
-SYSTEMS = (
-    System("delete_independent", "delete", "independent"),
-    System("delete_propagating", "delete", "propagating"),
-    System("reversible_independent", "reversible", "independent"),
-    System("reversible_propagating", "reversible", "propagating"),
+RECORDS = (
+    OperationalRecord("delete_independent", "delete", "independent"),
+    OperationalRecord("delete_propagating", "delete", "propagating"),
+    OperationalRecord("reversible_independent", "reversible", "independent"),
+    OperationalRecord("reversible_propagating", "reversible", "propagating"),
 )
 
 
-def target(system: System) -> tuple[int, int]:
+def target(system: OperationalRecord) -> tuple[int, int]:
     """Return (reopenability, authority_flow)."""
 
     return (
-        int(system.selection == "reversible"),
-        int(system.topology == "propagating"),
+        int(system.selection_label == "reversible"),
+        int(system.topology_label == "propagating"),
     )
 
 
@@ -57,32 +55,32 @@ def baseline_readout(_: System) -> int:
     return 1
 
 
-def reversal_recovery_readout(system: System) -> int:
+def reversal_recovery_readout(system: OperationalRecord) -> int:
     """Post-suppression phase-B recovery after a reversal intervention."""
 
     return target(system)[0]
 
 
-def downstream_flow_readout(system: System) -> int:
+def downstream_flow_readout(system: OperationalRecord) -> int:
     """Effect at node 3 of do(evidence at node 1 = contradiction)."""
 
     return target(system)[1]
 
 
-READOUTS: dict[str, Callable[[System], int]] = {
+READOUTS: dict[str, Callable[[OperationalRecord], int]] = {
     "baseline": baseline_readout,
     "reversal_recovery": reversal_recovery_readout,
     "downstream_flow": downstream_flow_readout,
 }
 
 
-def observation(system: System, readouts: tuple[str, ...]) -> tuple[int, ...]:
+def observation(system: OperationalRecord, readouts: tuple[str, ...]) -> tuple[int, ...]:
     return tuple(READOUTS[name](system) for name in readouts)
 
 
 def audit_interface(readouts: tuple[str, ...]) -> dict:
-    partitions: dict[tuple[int, ...], list[System]] = {}
-    for system in SYSTEMS:
+    partitions: dict[tuple[int, ...], list[OperationalRecord]] = {}
+    for system in RECORDS:
         partitions.setdefault(observation(system, readouts), []).append(system)
 
     witnesses = []
@@ -139,25 +137,35 @@ def run_audit() -> dict:
 
     return {
         "gate_id": "GATE-013",
-        "protocol_version": "REVERSIBLE_NETWORK_SELECTION_v0.1",
+        "protocol_version": "OPERATIONAL_REOPENABILITY_FLOW_v0.1",
         "execution_status": "EXECUTED",
         "identifiability_result": "IDENTIFIABLE_IN_DECLARED_FINITE_CLASS",
         "system_class": {
             "name": "F_RS",
-            "members": [system.system_id for system in SYSTEMS],
+            "members": [system.system_id for system in RECORDS],
             "assumptions": [
-                "Three candidate mechanisms with fixed directed dependency semantics.",
-                "Deterministic phase-A suppression followed by a post-suppression phase-B reversal intervention.",
-                "No hidden state, noise, drift, rewiring, or learning beyond declared policies.",
+                "Four labeled operational records forming a two-by-two Cartesian product.",
+                "No suppression, recurrence, authority redistribution, graph edge, propagation, or relearning dynamics are simulated.",
+                "The labels directly determine the target bits and are excluded from the allowed interface.",
             ],
         },
         "target": {
             "name": "L_RS",
             "components": ["reopenability", "authority_flow"],
             "definition": "(R_reopen, K_flow) as declared in the Gate 013 contract.",
+            "alias_formulas": {
+                "reopenability": "1[selection_label = reversible]",
+                "authority_flow": "1[topology_label = propagating]",
+            },
         },
         "interface_policy": {
             "allowed_readouts": list(READOUTS),
+            "projection_formulas": {
+                "reversal_recovery": "O_R = R_reopen",
+                "downstream_flow": "O_K = K_flow",
+            },
+            "frozen_ladder_requires_baseline_control": True,
+            "unrestricted_scalar_encodings_tested": False,
             "excluded_access": [
                 "selection-policy flag",
                 "topology-policy flag",
@@ -167,21 +175,26 @@ def run_audit() -> dict:
             ],
         },
         "interfaces": results,
-        "target_relevant_projection": informative_projection,
-        "minimum_protocol_scalar_readout_cost": minimum_cost,
-        "minimum_target_relevant_scalar_readout_cost": informative_projection[
+        "target_relevant_projection": {
+            **informative_projection,
+            "status": "DERIVED_COST_ACCOUNTING_ONLY",
+            "member_of_frozen_protocol_ladder": False,
+        },
+        "minimum_protocol_scalar_readout_cost_in_frozen_ladder": minimum_cost,
+        "minimum_informative_probe_cost_in_frozen_readout_set": informative_projection[
             "scalar_readout_cost"
         ],
         "mandatory_protocol_controls": ["baseline"],
         "minimum_identifying_interfaces": minima,
-        "all_lower_protocol_cost_interfaces_failed": all(
+        "all_evaluated_lower_protocol_cost_interfaces_in_frozen_ladder_failed": all(
             not record["identifiable"]
             for record in results
             if record["scalar_readout_cost"] < minimum_cost
         ),
         "constructive_factorization": {
             "map": "L_hat(1, r, k) = (r, k)",
-            "scope": "Operational interface composition by design; not discovery of an adaptive-system invariant.",
+            "scope": "Direct label and readout aliases establish operational interface composition by design; not discovery of an adaptive-system invariant.",
+            "cost_scope": "The cost-two informative minimum is only over the two predeclared binary probe coordinates; unrestricted scalar encodings were not tested.",
         },
         "decision": "RECORD_GATE_1_ONLY; estimation, predictive validity, and mechanism claims remain closed.",
     }
