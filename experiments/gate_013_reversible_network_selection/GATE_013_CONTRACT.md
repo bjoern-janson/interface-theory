@@ -27,9 +27,10 @@ The finite class has four members:
 | reversible_propagating | retain a suppressed alternative so it can regain influence | local evidence changes a downstream behavioral response |
 
 Phase A supplies evidence favoring mechanism 1 and suppressing mechanism 2.
-Phase B is a held-out reversal in which mechanism 2 becomes useful. A local
-contradiction is separately applied to mechanism 1, and the externally visible
-behavioral consequence at mechanism 3 is read.
+Phase B is a post-suppression reversal intervention, not a held-out predictive
+test. Mechanism 2 becomes useful after not being favored during phase A. A
+local contradiction is separately applied to mechanism 1, and the externally
+visible behavioral consequence at mechanism 3 is read.
 
 The selection-policy flag, topology flag, authority weights, edge list, and
 architecture label are excluded from the interface.
@@ -59,8 +60,43 @@ The allowed behavioral readouts are:
 | reversal_recovery | phase-B recovery after phase-A suppression and reversal |
 | downstream_flow | node-3 behavioral response after a local contradiction at node 1 |
 
-The frozen ladder is the baseline alone, baseline plus each individual probe,
-and baseline plus both probes. A scalar readout is one interface resource.
+The frozen ladder requires the constant baseline control in every active
+protocol: baseline alone, baseline plus each individual probe, and baseline
+plus both probes. A scalar readout is one protocol resource.
+
+## Cost accounting
+
+The minimum identifying member of the frozen mandatory-baseline ladder has
+protocol cost three:
+
+\[
+C_{\mathrm{protocol}}^*=3.
+\]
+
+The baseline is constant over \(F_{RS}\) and contains no target information.
+Removing that mandatory control leaves the target-relevant projection
+
+\[
+O_{\mathrm{informative}}=(\text{reversal recovery},\text{downstream flow}),
+\qquad C_{\mathrm{target\text{-}relevant}}^*=2.
+\]
+
+The cost-three result is therefore a property of the frozen protocol ladder,
+not a claim that three informative scalar readouts are necessary.
+
+## Constructive scope
+
+In this operational class, the two target components are defined from the same
+counterfactual responses returned by the two informative probes. Consequently,
+
+\[
+\widehat L(1,r,k)=(r,k).
+\]
+
+Factorization is constructively true by design once both probes are available.
+The gate demonstrates reproducible interface composition, not discovery of a
+nontrivial adaptive-system invariant. A scientifically stronger class must
+allow policy labels and operational outcomes to dissociate.
 
 ## Pass/fail rule
 
