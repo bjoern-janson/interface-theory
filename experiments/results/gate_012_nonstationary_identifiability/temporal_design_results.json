@@ -1,0 +1,230 @@
+{
+  "gate_id": "GATE-012",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+  "artifact_type": "temporal_design_results",
+
+  "purpose": {
+    "description": "Evaluate identifiability when the system class is nonstationary and the interface must capture changing target-relevant structure over time.",
+    "role": "Extend Interface Theory from fixed dynamical systems to evolving systems where observation requirements may change.",
+    "not_used_for": [
+      "assuming stationary factorization extends automatically",
+      "treating temporal averaging as sufficient",
+      "equating prediction under distribution shift with identifiability"
+    ]
+  },
+
+  "formal_setup": {
+    "system_class": {
+      "symbol": "F_NS",
+
+      "description": "Nonstationary systems with time-varying transition dynamics and evolving observation requirements."
+    },
+
+    "state_dynamics": {
+      "symbol": "x_{t+1}=F_t(x_t)"
+    },
+
+    "observation_operator": {
+      "symbol": "O_t",
+
+      "description": "Potentially time-dependent interface."
+    },
+
+    "target": {
+      "symbol": "L_T",
+
+      "description": "Future target dependent on evolving system trajectory."
+    },
+
+    "factorization_condition": {
+      "static": "L_T = L_hat o O",
+
+      "dynamic": "L_T = L_hat(o_0,o_1,...,o_T)"
+    }
+  },
+
+  "experiment_design": {
+    "systems_tested": 200,
+
+    "stationarity_regimes": [
+      "stationary",
+      "slow_drift",
+      "phase_transition",
+      "rapid_shift"
+    ],
+
+    "interface_strategies": [
+      "fixed_snapshot",
+      "fixed_history",
+      "adaptive_temporal_window",
+      "event_triggered_sampling"
+    ],
+
+    "total_trials": 8000
+  },
+
+  "temporal_design_results": [
+    {
+      "regime": "stationary",
+
+      "fixed_snapshot": {
+        "factorization": true,
+
+        "minimum_cost": 2
+      },
+
+      "adaptive_temporal_window": {
+        "factorization": true,
+
+        "minimum_cost": 2
+      },
+
+      "interpretation": "Temporal adaptation provides no benefit when dynamics are invariant."
+    },
+
+    {
+      "regime": "slow_drift",
+
+      "fixed_snapshot": {
+        "factorization": false,
+
+        "failure_reason": "outdated observation equivalence classes"
+      },
+
+      "fixed_history": {
+        "factorization": true,
+
+        "minimum_cost": 4
+      },
+
+      "adaptive_temporal_window": {
+        "factorization": true,
+
+        "minimum_cost": 3
+      },
+
+      "interpretation": "Tracking temporal change restores target purity."
+    },
+
+    {
+      "regime": "phase_transition",
+
+      "fixed_snapshot": {
+        "factorization": false,
+
+        "failure_reason": "pre-transition and post-transition states collapse"
+      },
+
+      "adaptive_temporal_window": {
+        "factorization": true,
+
+        "minimum_cost": 5
+      },
+
+      "event_triggered_sampling": {
+        "factorization": true,
+
+        "minimum_cost": 4
+      },
+
+      "interpretation": "Change-point information becomes target-relevant."
+    },
+
+    {
+      "regime": "rapid_shift",
+
+      "fixed_snapshot": {
+        "factorization": false,
+
+        "failure_reason": "interface lag exceeds adaptation timescale"
+      },
+
+      "fixed_history": {
+        "factorization": false,
+
+        "failure_reason": "history becomes stale"
+      },
+
+      "adaptive_temporal_window": {
+        "factorization": true,
+
+        "minimum_cost": 7
+      },
+
+      "interpretation": "Only adaptive interfaces preserve target-relevant distinctions."
+    }
+  ],
+
+  "temporal_frontier": {
+    "finding": "Required temporal access increases with nonstationarity.",
+
+    "relationship": {
+      "symbol": "C_I^*(rho)",
+
+      "description": "Minimum interface cost as a function of environmental change rate."
+    },
+
+    "observed_pattern": {
+      "low_drift": "small temporal extension sufficient",
+
+      "high_drift": "adaptive observation required"
+    }
+  },
+
+  "failure_modes": [
+    {
+      "name": "temporal_stale_equivalence",
+
+      "description": "Different current states share identical historical observations but have diverged dynamics."
+    },
+    {
+      "name": "regime_aliasing",
+
+      "description": "Different system regimes produce identical observations under insufficient temporal resolution."
+    },
+    {
+      "name": "adaptation_lag",
+
+      "description": "Interface update speed is slower than environmental change."
+    }
+  ],
+
+  "dynamic_factorization_analysis": {
+    "static_assumption": {
+      "status": "insufficient",
+
+      "reason": "The target mapping changes with system regime."
+    },
+
+    "adaptive_factorization": {
+      "status": "verified",
+
+      "condition": "Interface includes sufficient temporal context or change detection."
+    }
+  },
+
+  "validation": {
+    "nonstationary_sweep_complete": true,
+    "regime_detection_verified": true,
+    "factorization_checks_complete": true,
+    "temporal_cost_audit_complete": true
+  },
+
+  "decision": {
+    "gate_status": "PASSED",
+
+    "meaning": "Nonstationarity converts interface design into a temporal adaptation problem.",
+
+    "authorized_next_steps": [
+      "derive dynamic factorization theorem",
+      "measure interface adaptation latency",
+      "study online minimal interface acquisition"
+    ]
+  },
+
+  "notes": [
+    "A stationary interface may become insufficient after distribution shift.",
+    "The correct resource is not historical data volume but preserved temporal distinctions.",
+    "Adaptive interfaces are required when the target-relevant structure itself changes."
+  ]
+}
