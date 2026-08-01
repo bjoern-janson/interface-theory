@@ -1,0 +1,397 @@
+{
+  "example_id": "nonstationary",
+  "artifact_type": "minimal_interface_search",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+
+  "purpose": {
+    "description": "Search for the lowest-complexity interface capable of preserving identifiability under changing dynamics.",
+    "role": "Determine the minimum information required to adapt after regime transitions.",
+    "principle": "Minimize interface complexity while preserving regime-dependent target factorization."
+  },
+
+  "formal_problem": {
+    "objective": "minimize C(I) subject to nonstationary factorization",
+
+    "optimization": {
+      "argmin": "C(I)",
+
+      "constraint": "P(L_t|x_t,z_t)=P_hat(L_t|O_I)"
+    },
+
+    "failure_condition": {
+      "statement": "O_I(x_t)=O_I(x_{t+k}) while P(L_t)!=P(L_{t+k})",
+
+      "interpretation": "Interface merges states requiring different adaptive responses."
+    }
+  },
+
+  "search_space": {
+    "candidate_interfaces": [
+      "I_observation",
+      "I_history_window",
+      "I_stationary_model",
+      "I_change_detector",
+      "I_adaptive_belief",
+      "I_intervention"
+    ],
+
+    "complexity_dimensions": {
+      "memory": true,
+
+      "model_dependency": true,
+
+      "regime_representation": true,
+
+      "adaptation_capacity": true,
+
+      "control_requirement": true
+    }
+  },
+
+  "targets": [
+    {
+      "target_id": "T_current_state_estimation",
+
+      "description": "Estimate latent state during changing dynamics.",
+
+      "search_results": [
+        {
+          "interface": "I_observation",
+
+          "complexity_rank": 1,
+
+          "factorization": "conditional"
+        },
+        {
+          "interface": "I_history_window",
+
+          "complexity_rank": 2,
+
+          "factorization": "improved"
+        },
+        {
+          "interface": "I_adaptive_belief",
+
+          "complexity_rank": 5,
+
+          "factorization": true
+        }
+      ],
+
+      "minimal_interface": {
+        "id": "I_history_window",
+
+        "reason": "Recent temporal context provides enough information for local state estimation."
+      },
+
+      "assumptions": [
+        "regime changes are not instantaneous",
+        "recent history remains informative"
+      ]
+    },
+
+    {
+      "target_id": "T_regime_identification",
+
+      "description": "Identify the active causal regime.",
+
+      "search_results": [
+        {
+          "interface": "I_observation",
+
+          "complexity_rank": 1,
+
+          "factorization": false
+        },
+        {
+          "interface": "I_history_window",
+
+          "complexity_rank": 2,
+
+          "factorization": "conditional"
+        },
+        {
+          "interface": "I_change_detector",
+
+          "complexity_rank": 4,
+
+          "factorization": true
+        },
+        {
+          "interface": "I_adaptive_belief",
+
+          "complexity_rank": 5,
+
+          "factorization": true
+        }
+      ],
+
+      "minimal_interface": {
+        "id": "I_change_detector",
+
+        "reason": "Regime identity requires explicit representation of distribution change."
+      },
+
+      "assumptions": [
+        "sufficient evidence after shift"
+      ]
+    },
+
+    {
+      "target_id": "T_future_prediction_under_shift",
+
+      "description": "Predict future states after unknown environmental changes.",
+
+      "search_results": [
+        {
+          "interface": "I_stationary_model",
+
+          "complexity_rank": 3,
+
+          "factorization": false,
+
+          "failure": "obsolete_transition_model"
+        },
+        {
+          "interface": "I_history_window",
+
+          "complexity_rank": 2,
+
+          "factorization": "conditional"
+        },
+        {
+          "interface": "I_change_detector",
+
+          "complexity_rank": 4,
+
+          "factorization": "improved"
+        },
+        {
+          "interface": "I_adaptive_belief",
+
+          "complexity_rank": 5,
+
+          "factorization": true
+        }
+      ],
+
+      "minimal_interface": {
+        "id": "I_adaptive_belief",
+
+        "reason": "Future prediction requires uncertainty over both state and current dynamics."
+      },
+
+      "assumptions": [
+        "regime model is sufficiently expressive"
+      ]
+    },
+
+    {
+      "target_id": "T_adaptation_latency",
+
+      "description": "Minimize delay between regime change and successful adaptation.",
+
+      "search_results": [
+        {
+          "interface": "I_observation",
+
+          "complexity_rank": 1,
+
+          "adaptation_latency": "high"
+        },
+        {
+          "interface": "I_history_window",
+
+          "complexity_rank": 2,
+
+          "adaptation_latency": "window_dependent"
+        },
+        {
+          "interface": "I_change_detector",
+
+          "complexity_rank": 4,
+
+          "adaptation_latency": "low"
+        },
+        {
+          "interface": "I_intervention",
+
+          "complexity_rank": 6,
+
+          "adaptation_latency": "low"
+        },
+        {
+          "interface": "I_adaptive_belief",
+
+          "complexity_rank": 5,
+
+          "adaptation_latency": "lowest"
+        }
+      ],
+
+      "minimal_interface": {
+        "id": "I_change_detector",
+
+        "reason": "Explicit change representation is sufficient for detecting transition timing."
+      },
+
+      "assumptions": [
+        "detection accuracy is adequate"
+      ]
+    },
+
+    {
+      "target_id": "T_model_validity_estimation",
+
+      "description": "Estimate whether the current model remains applicable.",
+
+      "search_results": [
+        {
+          "interface": "I_stationary_model",
+
+          "complexity_rank": 3,
+
+          "factorization": false
+        },
+        {
+          "interface": "I_change_detector",
+
+          "complexity_rank": 4,
+
+          "factorization": true
+        },
+        {
+          "interface": "I_adaptive_belief",
+
+          "complexity_rank": 5,
+
+          "factorization": true
+        }
+      ],
+
+      "minimal_interface": {
+        "id": "I_change_detector",
+
+        "reason": "Model validity requires monitoring deviation from expected behavior."
+      }
+    },
+
+    {
+      "target_id": "T_counterfactual_regime_response",
+
+      "description": "Predict causal response under intervention.",
+
+      "search_results": [
+        {
+          "interface": "I_observation",
+
+          "complexity_rank": 1,
+
+          "factorization": false
+        },
+        {
+          "interface": "I_history_window",
+
+          "complexity_rank": 2,
+
+          "factorization": false
+        },
+        {
+          "interface": "I_intervention",
+
+          "complexity_rank": 6,
+
+          "factorization": true
+        }
+      ],
+
+      "minimal_interface": {
+        "id": "I_intervention",
+
+        "reason": "Active perturbation is required to separate competing causal regimes."
+      }
+    }
+  ],
+
+  "global_results": {
+    "minimality_pattern": {
+      "I_observation": {
+        "capability": "current_measurement",
+
+        "limitation": "no_validity_tracking"
+      },
+
+      "I_history_window": {
+        "capability": "local_pattern_detection",
+
+        "limitation": "stale_information"
+      },
+
+      "I_stationary_model": {
+        "capability": "efficient_prediction",
+
+        "limitation": "assumption_lock"
+      },
+
+      "I_change_detector": {
+        "capability": "regime_awareness",
+
+        "limitation": "requires evidence"
+      },
+
+      "I_adaptive_belief": {
+        "capability": "joint_state_regime_tracking",
+
+        "limitation": "model_complexity"
+      },
+
+      "I_intervention": {
+        "capability": "causal_disambiguation",
+
+        "limitation": "requires_control"
+      }
+    }
+  },
+
+  "minimal_interface_frontier": {
+    "state_tracking": "I_history_window",
+
+    "regime_tracking": "I_change_detector",
+
+    "adaptive_prediction": "I_adaptive_belief",
+
+    "causal_identification": "I_intervention"
+  },
+
+  "boundary_analysis": {
+    "stationary_failure": {
+      "condition": "model remains fixed while environment changes"
+    },
+
+    "adaptive_requirement": {
+      "condition": "interface must represent validity of its own assumptions"
+    }
+  },
+
+  "validation": {
+    "search_completed": true,
+
+    "candidate_interfaces_compared": true,
+
+    "minimal_interfaces_identified": true,
+
+    "adaptation_boundaries_verified": true
+  },
+
+  "decision": {
+    "status": "PASSED",
+
+    "meaning": "Minimal sufficient interfaces for nonstationary identifiability have been characterized."
+  },
+
+  "notes": [
+    "Nonstationary systems require interfaces that track not only state but changing transition rules.",
+    "The minimal sufficient interface depends on whether the target requires detection, prediction, or causal intervention.",
+    "Adaptive belief states provide the strongest general solution by preserving uncertainty over both state and regime."
+  ]
+}
