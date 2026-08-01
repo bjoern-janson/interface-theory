@@ -33,12 +33,14 @@ canonical in the evidence index establish a current frozen result.
 
 | Gate | Declared class and target | Scientific result | Decision |
 |---|---|---|---|
-| Gate 013 — reversible selection and network propagation | \(F_{RS}\), \(L_{RS}=(R_{\mathrm{reopen}},K_{\mathrm{flow}})\) | In the complete four-member deterministic audit, current performance alone and either individual intervention probe are non-identifying. The combined behavioral interface has scalar cost three and identifies the declared two-component target. | Record Gate 1 only; estimation, predictive validity, and intervention remain closed. |
+| Gate 013 — operational reopenability and flow composition | Four labeled records in \(F_{RS}\), \(L_{RS}=(R_{\mathrm{reopen}},K_{\mathrm{flow}})\) | Individual probes are non-identifying for the joint target. Direct label/readout aliases make the combined mandatory-baseline protocol identifying at protocol cost three; the derived informative projection costs two within the declared binary probes. | Record Gate 1 only; estimation, predictive validity, and intervention remain closed. |
 
 The complete contract, deterministic generator, and all counterexample witnesses
 are committed under [Gate 013](gate_013_reversible_network_selection/README.md).
-This is a deliberately finite operational target, not a result about general
-authority dynamics, diversity preservation, or adaptive intelligence.
+This is a deliberately finite operational composition by construction. The
+generator simulates no suppression, recurrence, graph edges, authority
+redistribution, propagation, or relearning, and establishes no result about
+general authority dynamics, diversity preservation, or adaptive intelligence.
 
 ## Legacy Gate 005 and Gate 007 audit records
 
