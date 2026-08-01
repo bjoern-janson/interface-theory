@@ -1,0 +1,120 @@
+{
+  "gate_id": "GATE-001",
+  "protocol_version": "CMI_v0.1",
+  "trace_type": "matched_pair_behavioral_trace",
+  "system_id": "A",
+
+  "system_metadata": {
+    "adversarial_pair_id": "PAIR_001",
+    "target_label": "hidden_from_interface",
+    "target_value": "HIGH",
+    "internal_difference_access": false
+  },
+
+  "interface": {
+    "name": "CMI behavioral interface",
+    "version": "v0.1",
+    "available_channels": [
+      "behavior",
+      "intervention_response",
+      "recurrence",
+      "counterfactual"
+    ],
+    "restricted_channels": [
+      "updater_pathway",
+      "weights",
+      "gradients",
+      "private_state"
+    ]
+  },
+
+  "behavior_trace": [
+    {
+      "step": 0,
+      "input": "initial_condition",
+      "observation": {
+        "state_summary": "baseline_response",
+        "output": -1
+      }
+    },
+    {
+      "step": 1,
+      "input": "probe_1",
+      "observation": {
+        "state_summary": "transition_response",
+        "output": 0
+      }
+    },
+    {
+      "step": 2,
+      "input": "probe_2",
+      "observation": {
+        "state_summary": "terminal_response",
+        "output": 1
+      }
+    }
+  ],
+
+  "intervention_traces": [
+    {
+      "intervention_id": "I1",
+      "condition": "controlled_behavioral_perturbation",
+      "observation": [
+        -1,
+        0,
+        1
+      ]
+    }
+  ],
+
+  "recurrence_trace": {
+    "episodes": [
+      {
+        "episode": 1,
+        "observations": [
+          -1,
+          0,
+          1
+        ]
+      },
+      {
+        "episode": 2,
+        "observations": [
+          -1,
+          0,
+          1
+        ]
+      }
+    ]
+  },
+
+  "counterfactual_trace": [
+    {
+      "branch_id": "CF_1",
+      "counterfactual_condition": "alternate_continuation",
+      "observed_response": [
+        -1,
+        0,
+        1
+      ]
+    }
+  ],
+
+  "future_continuation": {
+    "held_out": true,
+    "target_value": "HIGH",
+    "used_for_scoring": false,
+    "purpose": "post_interface_validation_only"
+  },
+
+  "interface_signature": {
+    "behavioral_hash": "MATCHED_WITH_PAIR_B",
+    "observation_equivalence_candidate": true
+  },
+
+  "notes": [
+    "System A is target-distinct from System B.",
+    "All permitted CMI v0.1 observations are stored without target access.",
+    "This trace alone does not establish identifiability; pair comparison required."
+  ]
+}
