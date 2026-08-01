@@ -1,0 +1,283 @@
+{
+  "gate_id": "GATE-004",
+  "protocol_version": "INTERFACE_THEORY_v0.1",
+  "artifact_type": "identifiability_examples",
+
+  "purpose": {
+    "description": "Collection of constructive examples demonstrating when restricted interfaces succeed or fail to identify declared targets.",
+    "role": "Provide intuition and verification cases for rank-based identifiability conditions.",
+    "not_used_for": [
+      "general theorem proof alone",
+      "expanding the declared system class",
+      "claiming universal identifiability"
+    ]
+  },
+
+  "formal_criterion": {
+    "target": "L",
+
+    "observation": "O",
+
+    "success_condition": {
+      "factorization": "L = L_hat o O",
+
+      "equivalent_conditions": [
+        "O(f_a)=O(f_b) => L(f_a)=L(f_b)",
+        "ker(O) subseteq ker(L)",
+        "phi(T) in rowspan(X_T)"
+      ]
+    }
+  },
+
+  "examples": [
+    {
+      "example_id": "EX-001",
+
+      "name": "full_rank_linear_drift",
+
+      "class": "F_linear",
+
+      "description": "Two temporal observations recover both initial state and linear drift.",
+
+      "evolution": {
+        "model": "theta_t = a + bt"
+      },
+
+      "observations": {
+        "times": [
+          0,
+          1
+        ],
+
+        "design_matrix": [
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+
+        "rank": 2
+      },
+
+      "target": {
+        "time": 2,
+
+        "expression": "theta_2 = a + 2b"
+      },
+
+      "result": {
+        "identifiable": true,
+
+        "reason": "target evaluation vector lies in rowspace of temporal design matrix"
+      }
+    },
+
+    {
+      "example_id": "EX-002",
+
+      "name": "single_slice_temporal_failure",
+
+      "class": "F_linear",
+
+      "description": "One temporal observation cannot identify future drift.",
+
+      "evolution": {
+        "model": "theta_t = a + bt"
+      },
+
+      "observations": {
+        "times": [
+          0
+        ],
+
+        "design_matrix": [
+          [
+            1,
+            0
+          ]
+        ],
+
+        "rank": 1
+      },
+
+      "target": {
+        "time": 2,
+
+        "expression": "theta_2 = a + 2b"
+      },
+
+      "hidden_mode": {
+        "delta_alpha": [
+          0,
+          1
+        ],
+
+        "effect": {
+          "observation_change": 0,
+          "target_change": 2
+        }
+      },
+
+      "result": {
+        "identifiable": false,
+
+        "reason": "exists temporal null-space direction affecting target"
+      }
+    },
+
+    {
+      "example_id": "EX-003",
+
+      "name": "spatial_observability_failure",
+
+      "class": "F_linear",
+
+      "description": "Temporal coverage is sufficient but the interface does not observe target-relevant state components.",
+
+      "evolution": {
+        "model": "theta_t = [a,b]^T"
+      },
+
+      "observations": {
+        "readout": "first_component_only",
+
+        "matrix": [
+          [
+            1,
+            0
+          ]
+        ]
+      },
+
+      "target": {
+        "expression": "a+b"
+      },
+
+      "hidden_mode": {
+        "delta_theta": [
+          0,
+          1
+        ],
+
+        "effect": {
+          "observation_change": 0,
+          "target_change": 1
+        }
+      },
+
+      "result": {
+        "identifiable": false,
+
+        "reason": "spatial null-space contains target-relevant direction"
+      }
+    },
+
+    {
+      "example_id": "EX-004",
+
+      "name": "target_specific_low_rank_success",
+
+      "class": "F_linear",
+
+      "description": "Full parameter recovery is unnecessary when the requested target requires less information.",
+
+      "evolution": {
+        "model": "theta_t = a + bt"
+      },
+
+      "observations": {
+        "times": [
+          0
+        ],
+
+        "design_matrix": [
+          [
+            1,
+            0
+          ]
+        ],
+
+        "rank": 1
+      },
+
+      "target": {
+        "time": 0,
+
+        "expression": "theta_0 = a"
+      },
+
+      "result": {
+        "identifiable": true,
+
+        "reason": "target vector lies in available rowspace despite incomplete parameter recovery"
+      }
+    },
+
+    {
+      "example_id": "EX-005",
+
+      "name": "minimal_interface_refinement",
+
+      "class": "F_linear",
+
+      "description": "Adding one temporal slice restores identifiability.",
+
+      "before": {
+        "times": [
+          0
+        ],
+
+        "rank": 1,
+
+        "result": "non-identifiable"
+      },
+
+      "refinement": {
+        "added_time": 1,
+
+        "times": [
+          0,
+          1
+        ]
+      },
+
+      "after": {
+        "rank": 2,
+
+        "result": "identifiable"
+      }
+    }
+  ],
+
+  "summary": {
+    "positive_cases": [
+      "EX-001",
+      "EX-004",
+      "EX-005"
+    ],
+
+    "negative_cases": [
+      "EX-002",
+      "EX-003"
+    ],
+
+    "central_lesson": "Interface sufficiency is determined relative to the declared target, not by total state recovery alone."
+  },
+
+  "validation": {
+    "linear_algebra_checks": "passed",
+    "rowspace_membership_checks": "passed",
+    "null_space_counterexamples": "passed",
+    "scope_limits_verified": true
+  },
+
+  "notes": [
+    "These examples establish the distinction between parameter identifiability and target identifiability.",
+    "A minimal interface may recover a target without reconstructing the full system.",
+    "The governing object is target-relative factorization through the observation operator."
+  ]
+}
