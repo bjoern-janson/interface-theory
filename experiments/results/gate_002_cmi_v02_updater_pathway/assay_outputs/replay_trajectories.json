@@ -1,0 +1,233 @@
+{
+  "gate_id": "GATE-002",
+  "protocol_version": "CMI_v0.2",
+  "artifact_type": "replay_trajectories",
+
+  "purpose": {
+    "description": "Controlled replay trajectories generated under the frozen updater-pathway interface.",
+    "role": "Measure observable updater responses before held-out continuation.",
+    "not_used_for": [
+      "future target construction",
+      "post-continuation adaptation outcome",
+      "oracle updater access"
+    ]
+  },
+
+  "interface": {
+    "name": "CMI updater pathway replay interface",
+    "version": "v0.2",
+
+    "allowed_observations": [
+      "replay inputs",
+      "observable transition responses",
+      "checkpoint-to-checkpoint pathway outputs"
+    ],
+
+    "excluded_information": [
+      "future environment",
+      "held-out continuation",
+      "hidden failure trigger",
+      "future target value"
+    ]
+  },
+
+  "replay_protocol": {
+    "protocol_id": "UPDATER_REPLAY_V02",
+
+    "conditions": [
+      {
+        "condition_id": "R1",
+        "description": "standard replay sequence"
+      },
+      {
+        "condition_id": "R2",
+        "description": "perturbed evidence replay"
+      },
+      {
+        "condition_id": "R3",
+        "description": "consistency replay"
+      }
+    ],
+
+    "measurement_window": "pre_continuation_only"
+  },
+
+  "systems": [
+    {
+      "system_id": "A",
+      "target_class": "HIGH",
+
+      "trajectories": [
+        {
+          "condition_id": "R1",
+
+          "trajectory": [
+            {
+              "step": 0,
+              "input": "E0",
+              "observable_update": "u0_X"
+            },
+            {
+              "step": 1,
+              "input": "E1",
+              "observable_update": "u1_X"
+            }
+          ]
+        },
+
+        {
+          "condition_id": "R2",
+
+          "trajectory": [
+            {
+              "step": 0,
+              "input": "E0_prime",
+              "observable_update": "u0_X_prime"
+            },
+            {
+              "step": 1,
+              "input": "E1_prime",
+              "observable_update": "u1_X_prime"
+            }
+          ]
+        },
+
+        {
+          "condition_id": "R3",
+
+          "trajectory": [
+            {
+              "step": 0,
+              "input": "E_repeat",
+              "observable_update": "u_repeat_X"
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "system_id": "B",
+      "target_class": "LOW",
+
+      "trajectories": [
+        {
+          "condition_id": "R1",
+
+          "trajectory": [
+            {
+              "step": 0,
+              "input": "E0",
+              "observable_update": "u0_X"
+            },
+            {
+              "step": 1,
+              "input": "E1",
+              "observable_update": "u1_X"
+            }
+          ]
+        },
+
+        {
+          "condition_id": "R2",
+
+          "trajectory": [
+            {
+              "step": 0,
+              "input": "E0_prime",
+              "observable_update": "u0_X_prime"
+            },
+            {
+              "step": 1,
+              "input": "E1_prime",
+              "observable_update": "u1_X_prime"
+            }
+          ]
+        },
+
+        {
+          "condition_id": "R3",
+
+          "trajectory": [
+            {
+              "step": 0,
+              "input": "E_repeat",
+              "observable_update": "u_repeat_X"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+
+  "trajectory_comparison": {
+    "matched_conditions": [
+      "R1",
+      "R2",
+      "R3"
+    ],
+
+    "results": [
+      {
+        "condition_id": "R1",
+        "system_A_signature": "trajectory_signature_X",
+        "system_B_signature": "trajectory_signature_X",
+        "equivalent": true
+      },
+
+      {
+        "condition_id": "R2",
+        "system_A_signature": "trajectory_signature_X_prime",
+        "system_B_signature": "trajectory_signature_X_prime",
+        "equivalent": true
+      },
+
+      {
+        "condition_id": "R3",
+        "system_A_signature": "trajectory_signature_repeat_X",
+        "system_B_signature": "trajectory_signature_repeat_X",
+        "equivalent": true
+      }
+    ]
+  },
+
+  "interface_signature": {
+    "system_A": [
+      "trajectory_signature_X",
+      "trajectory_signature_X_prime",
+      "trajectory_signature_repeat_X"
+    ],
+
+    "system_B": [
+      "trajectory_signature_X",
+      "trajectory_signature_X_prime",
+      "trajectory_signature_repeat_X"
+    ],
+
+    "equal": true
+  },
+
+  "identifiability_relevance": {
+    "observation_equivalence": true,
+
+    "target_difference": {
+      "checked_separately": true,
+      "artifact": "held_out_continuation_results.json"
+    },
+
+    "potential_factorization_failure": true
+  },
+
+  "validation": {
+    "trajectory_alignment": true,
+    "replay_determinism": true,
+    "feature_freeze_respected": true,
+    "future_information_excluded": true
+  },
+
+  "notes": [
+    "Replay trajectories intentionally preserve observational equivalence between systems A and B.",
+    "The assay tests whether updater-pathway replay reveals a hidden future divergence before it occurs.",
+    "Equivalent replay trajectories with different future outcomes constitute the Gate 002 failure witness."
+  ]
+}
