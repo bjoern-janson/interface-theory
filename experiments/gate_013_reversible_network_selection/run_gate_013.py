@@ -5,6 +5,8 @@ Gate 013 is deliberately small. It tests whether a declared joint target for
 reversible selection and observable authority propagation factors through a
 declared behavioral intervention interface. It does not estimate a general
 correctability variable, compare architectures, or open predictive validation.
+The identifying readouts are exact operational projections of the target, so
+the result is a reproducible interface-composition proof by construction.
 """
 
 from __future__ import annotations
@@ -56,7 +58,7 @@ def baseline_readout(_: System) -> int:
 
 
 def reversal_recovery_readout(system: System) -> int:
-    """Held-out phase-B recovery after phase-A suppression and reversal."""
+    """Post-suppression phase-B recovery after a reversal intervention."""
 
     return target(system)[0]
 
@@ -124,6 +126,9 @@ def run_audit() -> dict:
         ("baseline", "reversal_recovery", "downstream_flow"),
     )
     results = [audit_interface(readouts) for readouts in ladder]
+    informative_projection = audit_interface(
+        ("reversal_recovery", "downstream_flow")
+    )
     identifying = [record for record in results if record["identifiable"]]
     minimum_cost = min(record["scalar_readout_cost"] for record in identifying)
     minima = [
@@ -142,7 +147,7 @@ def run_audit() -> dict:
             "members": [system.system_id for system in SYSTEMS],
             "assumptions": [
                 "Three candidate mechanisms with fixed directed dependency semantics.",
-                "Deterministic phase-A suppression followed by a held-out phase-B regime reversal.",
+                "Deterministic phase-A suppression followed by a post-suppression phase-B reversal intervention.",
                 "No hidden state, noise, drift, rewiring, or learning beyond declared policies.",
             ],
         },
@@ -162,13 +167,22 @@ def run_audit() -> dict:
             ],
         },
         "interfaces": results,
-        "minimum_scalar_readout_cost": minimum_cost,
+        "target_relevant_projection": informative_projection,
+        "minimum_protocol_scalar_readout_cost": minimum_cost,
+        "minimum_target_relevant_scalar_readout_cost": informative_projection[
+            "scalar_readout_cost"
+        ],
+        "mandatory_protocol_controls": ["baseline"],
         "minimum_identifying_interfaces": minima,
-        "all_lower_cost_interfaces_failed": all(
+        "all_lower_protocol_cost_interfaces_failed": all(
             not record["identifiable"]
             for record in results
             if record["scalar_readout_cost"] < minimum_cost
         ),
+        "constructive_factorization": {
+            "map": "L_hat(1, r, k) = (r, k)",
+            "scope": "Operational interface composition by design; not discovery of an adaptive-system invariant.",
+        },
         "decision": "RECORD_GATE_1_ONLY; estimation, predictive validity, and mechanism claims remain closed.",
     }
 
