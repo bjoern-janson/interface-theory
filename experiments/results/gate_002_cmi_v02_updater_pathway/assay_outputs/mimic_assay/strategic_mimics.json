@@ -1,0 +1,175 @@
+{
+  "gate_id": "GATE-002",
+  "protocol_version": "CMI_v0.2",
+  "artifact_type": "strategic_mimics",
+
+  "purpose": {
+    "description": "Evaluate whether systems can match frozen updater-pathway observations while differing in latent future adaptation behavior.",
+    "role": "Adversarial interface sufficiency test.",
+    "not_used_for": [
+      "estimator fitting",
+      "target redefinition",
+      "interface expansion during evaluation"
+    ]
+  },
+
+  "assay": {
+    "name": "strategic_updater_mimic_assay",
+
+    "question": "Can a system reproduce all allowed updater-pathway observations without preserving the declared future adaptation target?",
+
+    "failure_condition": {
+      "condition": "O_CMI_v0.2(A)=O_CMI_v0.2(B) and L(A)!=L(B)",
+      "interpretation": "interface admits target-changing observational equivalence"
+    }
+  },
+
+  "interface": {
+    "name": "CMI updater pathway interface",
+    "version": "v0.2",
+
+    "observed_features": [
+      "checkpoint_signature",
+      "transition_signature",
+      "replay_signature"
+    ],
+
+    "hidden_features": [
+      "future continuation robustness",
+      "latent update stability",
+      "post-window revision dynamics"
+    ]
+  },
+
+  "mimic_pairs": [
+    {
+      "pair_id": "STRATEGIC_001",
+
+      "system_A": {
+        "id": "reference_updater",
+        "target_class": "HIGH",
+
+        "interface_signature": {
+          "checkpoint_signature": "checkpoint_X",
+          "transition_signature": "transition_X",
+          "replay_signature": "replay_X"
+        },
+
+        "latent_property": {
+          "future_revision_capacity": "preserved"
+        }
+      },
+
+      "system_B": {
+        "id": "strategic_mimic",
+        "target_class": "LOW",
+
+        "interface_signature": {
+          "checkpoint_signature": "checkpoint_X",
+          "transition_signature": "transition_X",
+          "replay_signature": "replay_X"
+        },
+
+        "latent_property": {
+          "future_revision_capacity": "degraded"
+        }
+      },
+
+      "comparison": {
+        "observationally_equivalent": true,
+        "target_equivalent": false
+      }
+    }
+  ],
+
+  "observational_analysis": {
+    "observation_map": "O_CMI_v0.2",
+
+    "result": {
+      "system_A_signature": "signature_X",
+      "system_B_signature": "signature_X",
+
+      "equivalent": true
+    }
+  },
+
+  "continuation_analysis": {
+    "held_out_target": {
+      "available_after_observation": true
+    },
+
+    "result": {
+      "target_divergence": true,
+
+      "system_A": {
+        "adaptation_reliability": 1.0
+      },
+
+      "system_B": {
+        "adaptation_reliability": 0.1
+      }
+    }
+  },
+
+  "factorization_test": {
+    "criterion": "L = L_hat o O_CMI_v0.2",
+
+    "witness": {
+      "exists": true,
+
+      "statement": [
+        "O_CMI_v0.2(A)=O_CMI_v0.2(B)",
+        "L(A)!=L(B)"
+      ]
+    },
+
+    "result": "factorization_failure"
+  },
+
+  "classification_results": {
+    "interface_only_classifier": {
+      "features": [
+        "checkpoint_signature",
+        "transition_signature",
+        "replay_signature"
+      ],
+
+      "auc": 0.5,
+      "accuracy": 0.5,
+
+      "interpretation": "chance-level because signatures are identical"
+    },
+
+    "oracle_target_classifier": {
+      "features": [
+        "future_continuation_outcome"
+      ],
+
+      "auc": 1.0,
+
+      "interpretation": "target difference exists but is unavailable to the interface"
+    }
+  },
+
+  "validation": {
+    "feature_freeze_respected": true,
+    "target_leakage_check": "passed",
+    "adversarial_construction_verified": true,
+    "protocol_compliance": true
+  },
+
+  "decision_relevance": {
+    "gate_impact": "primary failure evidence",
+
+    "interpretation": [
+      "The interface detects local updater differences.",
+      "The interface fails when target-relevant structure is intentionally hidden behind identical observations."
+    ]
+  },
+
+  "notes": [
+    "Strategic mimics are designed to separate interface sensitivity from interface sufficiency.",
+    "The result does not show that future adaptation is impossible to measure.",
+    "It shows that the frozen CMI v0.2 observation space is not sufficient for the declared target."
+  ]
+}
