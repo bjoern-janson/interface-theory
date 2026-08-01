@@ -21,5 +21,12 @@
     "unique": true
   },
   "all_lower_scalar_cost_candidates_failed": true,
-  "scope": "Finite behavioral ladder only; no claim about generic hidden-state inference."
+  "scope": "Finite behavioral ladder only; no claim about generic hidden-state inference.",
+  "evidence_class": "FROZEN_SUMMARY_RECORD",
+  "reproducibility": {
+    "status": "SUMMARY_RECORD_ONLY",
+    "raw_candidate_audit": "NOT_COMMITTED",
+    "generation_script": "NOT_COMMITTED",
+    "correction_note": "This artifact records the frozen conclusion after prior incompatible or invented summary material was removed. It is not a complete independently reproducible candidate-level audit."
+  }
 }
