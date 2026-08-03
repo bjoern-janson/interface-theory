@@ -4,7 +4,6 @@ A preserved transcript demonstrating an external audit interaction with the fram
 
 ---
 
-**Claude Sonnet 5 Max:**
 
 > "Viewed 16 files, ran 2 commands
 > 
