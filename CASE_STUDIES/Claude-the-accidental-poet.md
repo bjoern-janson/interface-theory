@@ -1,6 +1,6 @@
 # Claude-the-accidental-poet
 
-A preserved transcript demonstrating an external audit interaction with the framework.
+A preserved transcript demonstrating an external audit interaction with the framework. This is an interaction artifact, not a scientific result.
 
 ---
 
