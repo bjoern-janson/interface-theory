@@ -20,6 +20,7 @@ A preserved transcript demonstrating an external audit interaction with the fram
 >
 > 
 > Clone the repo to inspect its contents
+> 
 > The clone operation worked, so now I'm examining the project structure.
 >
 >
