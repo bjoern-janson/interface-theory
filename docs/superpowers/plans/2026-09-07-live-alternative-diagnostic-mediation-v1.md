@@ -2,40 +2,39 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Implement the frozen `LIVE_ALTERNATIVE_DIAGNOSTIC_MEDIATION_V1` finite assay machinery without executing the scientific assay, while preserving the design’s causal separation between isolated marginal access and temporary joint relation computation.
+**Goal:** Implement the frozen `LIVE_ALTERNATIVE_DIAGNOSTIC_MEDIATION_V1` finite-assay machinery without executing the scientific assay, while preserving the causal contrast between isolated marginal access and temporary joint relation computation.
 
-**Architecture:** The implementation is a small, deterministic Python 3.12 research-assay package under `experiments/research_seeds/live_alternative_diagnostic_mediation_v1/`. World definitions and frozen constants live in `protocol.py`; the causal intervention lives in `mediation.py`; episode composition, resource accounting, validation, and result aggregation live in `assay.py`; `run_v1.py` exposes two explicitly separated modes: structural validation and scientific execution. Unit tests and CI exercise only component behavior and `--validate-contract`; they must never invoke the full frozen V1 execution path during implementation.
+**Architecture:** Add a small deterministic Python 3.12 package under `experiments/research_seeds/live_alternative_diagnostic_mediation_v1/`. `protocol.py` owns the frozen world/model objects; `mediation.py` owns the only C0/C1 causal difference; `assay.py` owns common external evidence, resolution, budgeting, validation, and the separately gated full assay; `run_v1.py` separates structural validation from scientific execution. Unit tests and CI exercise components and `--validate-contract` only. They must not invoke the full frozen V1 execution path.
 
-**Tech Stack:** Python 3.12 standard library only (`dataclasses`, `enum`, `argparse`, `json`, `unittest`, `subprocess`, `pathlib`), Git, existing `scripts/validate_frozen_record.py`, GitHub Actions.
+**Tech Stack:** Python 3.12 standard library only (`dataclasses`, `enum`, `argparse`, `json`, `unittest`, `pathlib`), Git, existing `scripts/validate_frozen_record.py`, GitHub Actions.
 
 **Spec:** `docs/superpowers/specs/2026-09-07-live-alternative-diagnostic-mediation-v1-design.md`
 
 ## Global Constraints
 
-- The approved design commit is `1f646397d76b04c96afa22815bc78957b561c81b` on `design/live-alternative-diagnostic-mediation-v1`.
-- At execution time, create `impl/live-alternative-diagnostic-mediation-v1` from the exact approved plan commit; do not implement directly on the parent research branch.
-- `LIVE_ALTERNATIVE_DIAGNOSTIC_MEDIATION_V1` remains `NONCANONICAL_RESEARCH_SEED` with `NO_TRANSLATION_EARNED`.
-- Before scientific execution, evidence standing remains `EXPERIMENTAL_HYPOTHESIS` plus finite analytic consequences of the frozen design; there is no empirical V1 result.
-- V1 adds exactly one causal responsibility beyond V0: `temporary relation between retained alternatives -> information-producing action`.
-- Both conditions already retain the same live alternatives and the same per-alternative predictive signatures. V1 receives no credit for preservation.
-- Shared diagnostic menu is exactly `q0`, `q1`; no diagnostic invention or composition is allowed.
-- Positive model signatures are exactly `M00=(0,0)`, `M01=(0,1)`, `M10=(1,0)`, `M11=(1,1)`.
-- Positive live pairs are exactly the four square edges; square diagonals are outside the frozen family.
-- Each positive pair has exactly one discriminating diagnostic, and no endpoint alone determines which diagnostic is useful over all pairs containing that endpoint.
-- C0 diagnostic selection is pair-blind and fixed to `q0`; C0 contains no pre-action node with both marginal streams as causal parents.
-- C1 may compute only an intervention-local, read-only, permutation-symmetric comparison of the two marginal signatures.
-- C1 comparator output contract is exact: `(1,0)->q0`, `(0,1)->q1`, `(0,0)->NO_DISCRIMINATING_DIAGNOSTIC`, `(1,1)->OUT_OF_FROZEN_FAMILY`.
-- The mediator may not modify either alternative before external evidence, may not persist state, and may not update parameters.
-- Only the external world supplies evidence about which live alternative is true.
-- Every positive latent model has a unique terminal repair. Total budget is exactly `B=2`; every diagnostic costs `1`; every repair costs `1`.
+- Approved design commit: `1f646397d76b04c96afa22815bc78957b561c81b` on `design/live-alternative-diagnostic-mediation-v1`.
+- At implementation start, resolve and record the then-current head of `origin/design/live-alternative-diagnostic-mediation-v1` as `PLAN_BASE`; require the approved design commit to be its ancestor; create `impl/live-alternative-diagnostic-mediation-v1` from that exact resolved commit.
+- `LIVE_ALTERNATIVE_DIAGNOSTIC_MEDIATION_V1` remains `NONCANONICAL_RESEARCH_SEED` and `NO_TRANSLATION_EARNED`.
+- Before scientific execution there is no empirical V1 result. Implementation validation is not assay execution.
+- V1 receives no credit for preserving alternatives. C0 and C1 already contain the same live alternatives and the same marginal predictive signatures.
+- Diagnostic menu is exactly `{q0,q1}`. No diagnostic invention or composition is permitted.
+- Positive signatures are exactly `M00=(0,0)`, `M01=(0,1)`, `M10=(1,0)`, `M11=(1,1)`.
+- Positive live pairs are exactly the four square edges. Square diagonals are outside the frozen family.
+- Each positive pair has exactly one discriminating diagnostic. Each endpoint occurs in one `q0` edge and one `q1` edge, so no endpoint alone determines the useful diagnostic over the positive family.
+- C0 is pair-blind and precommitted to `q0`. No C0 pre-action node may receive both marginal streams as causal parents.
+- C1's only extra pre-action operation is deterministic, read-only, permutation-symmetric comparison of the two signatures.
+- Comparator contract is exact: `(1,0)->q0`, `(0,1)->q1`, `(0,0)->NO_DISCRIMINATING_DIAGNOSTIC`, `(1,1)->OUT_OF_FROZEN_FAMILY`.
+- `OUT_OF_FROZEN_FAMILY` is a protocol violation if presented to episode execution; it is not an ordinary episode outcome.
+- The mediator cannot modify alternatives, update parameters, retain state, or persist across episodes.
+- Only the external world provides evidence about which live alternative is true. The mediator never selects the true model directly.
+- Every positive latent model has a unique terminal repair. `B=2`; each diagnostic costs `1`; each repair costs `1`.
 - Under the frozen controller/resolver contract, a non-discriminating positive-family probe leaves no bounded zero-error continuation.
-- Positive-family analytic values are frozen by design: `P_disc(C0)=0.5`, `P_disc(C1)=1.0`, `P_repair(C0)=0.5`, `P_repair(C1)=1.0`.
-- Null pair is exactly two distinct latent worlds with identical signature `(0,0)` and distinct repairs; C1 must return `NO_DISCRIMINATING_DIAGNOSTIC` before acting.
-- Implementation validation must not be interpreted as assay execution or as empirical evidence.
-- Do not invoke the scientific execution mode during implementation. In particular, do not run `run_v1.py --execute ...`.
-- Do not create or commit a V1 result JSON, result summary, result ledger entry, evidence-index entry, or gate-registry entry during implementation.
-- Do not modify `docs/CANONICAL_RECORD.md`, `docs/RESULT_LEDGER.md`, `docs/EVIDENCE_INDEX.md`, `docs/protocol_foundations.md`, `ADAPTIVE_CAPACITY_MEASUREMENT_CHARTER.md`, `FIRST_ADAPTIVE_CAPACITY_CLAIM_PROFILE.md`, Gate 013, Gate 014, or `scripts/validate_frozen_record.py`.
-- Do not convert V1 into Gate 015. It remains a noncanonical research-seed assay.
+- Frozen analytic values are design consequences, not implementation discoveries: `P_disc(C0)=0.5`, `P_disc(C1)=1.0`, `P_repair(C0)=0.5`, `P_repair(C1)=1.0`.
+- Null pair consists of distinct `N0,N1` with identical signature `(0,0)` and distinct repairs. C1 must return `NO_DISCRIMINATING_DIAGNOSTIC` before world action.
+- Do not invoke `run_v1.py --execute` during implementation.
+- Do not create or commit a V1 results directory, `result.json`, scientific summary, result-ledger entry, evidence-index entry, or gate-registry entry during implementation.
+- Do not modify `docs/CANONICAL_RECORD.md`, `docs/RESULT_LEDGER.md`, `docs/EVIDENCE_INDEX.md`, `docs/protocol_foundations.md`, `ADAPTIVE_CAPACITY_MEASUREMENT_CHARTER.md`, `FIRST_ADAPTIVE_CAPACITY_CLAIM_PROFILE.md`, Gate 013, Gate 014, `scripts/validate_frozen_record.py`, or `.github/workflows/validate-frozen-record.yml`.
+- Do not turn V1 into Gate 015.
 - Use no third-party Python dependency.
 
 ---
@@ -43,50 +42,52 @@
 ## File Structure
 
 **Create:**
-- `experiments/research_seeds/live_alternative_diagnostic_mediation_v1/protocol.py` — frozen models, signatures, repairs, positive-pair family, null pair, budget/action constants, marginal projection, external world response.
-- `experiments/research_seeds/live_alternative_diagnostic_mediation_v1/mediation.py` — C0 pair-blind selector, C1 XOR comparison, exact comparator output contract. This module must not import latent-model registries or pair labels.
-- `experiments/research_seeds/live_alternative_diagnostic_mediation_v1/assay.py` — condition enum, episode execution, external-evidence resolver, resource accounting, static-contract validation, positive enumeration, aggregation, and the full assay function that remains uninvoked during implementation.
-- `experiments/research_seeds/live_alternative_diagnostic_mediation_v1/run_v1.py` — CLI with mutually exclusive `--validate-contract` and `--execute`; `--execute` requires an explicit write path.
-- `experiments/research_seeds/live_alternative_diagnostic_mediation_v1/test_protocol.py` — square, endpoint non-identifiability, pair family, repair, and null-contract tests.
-- `experiments/research_seeds/live_alternative_diagnostic_mediation_v1/test_mediation.py` — C0/C1 dependency, XOR, symmetry, null abstention, and out-of-family tests.
-- `experiments/research_seeds/live_alternative_diagnostic_mediation_v1/test_assay.py` — representative episode/resource/resolution tests plus synthetic aggregation tests; no full frozen V1 execution.
-- `experiments/research_seeds/live_alternative_diagnostic_mediation_v1/test_cli.py` — verifies validation mode cannot call the assay and execution mode requires explicit authorization flags.
-- `experiments/research_seeds/live_alternative_diagnostic_mediation_v1/README.md` — status, authority boundary, validation commands, and explicit `UNEXECUTED` state.
-- `.github/workflows/validate-v1-implementation.yml` — implementation-only CI that runs unit tests and `--validate-contract`, never `--execute`.
+- `experiments/research_seeds/live_alternative_diagnostic_mediation_v1/protocol.py` — frozen models, signatures, positive-pair family, null pair, repairs, costs, marginal projection, world response.
+- `experiments/research_seeds/live_alternative_diagnostic_mediation_v1/mediation.py` — C0 selector and C1 XOR comparator; no latent-model registry imports.
+- `experiments/research_seeds/live_alternative_diagnostic_mediation_v1/assay.py` — episode type, common resolver, resource accounting, contract validator, pure aggregator, separately gated full assay.
+- `experiments/research_seeds/live_alternative_diagnostic_mediation_v1/run_v1.py` — mutually exclusive `--validate-contract` and `--execute`; execution requires `--write`.
+- `experiments/research_seeds/live_alternative_diagnostic_mediation_v1/test_protocol.py`
+- `experiments/research_seeds/live_alternative_diagnostic_mediation_v1/test_mediation.py`
+- `experiments/research_seeds/live_alternative_diagnostic_mediation_v1/test_assay.py`
+- `experiments/research_seeds/live_alternative_diagnostic_mediation_v1/test_cli.py`
+- `experiments/research_seeds/live_alternative_diagnostic_mediation_v1/README.md`
+- `.github/workflows/validate-v1-implementation.yml`
 
-**Do not create during implementation:**
+**Do not create:**
 - `experiments/research_seeds/live_alternative_diagnostic_mediation_v1/results/`
-- any `result.json`
-- any scientific `summary.md`
-- any canonical ledger/index update
+- any V1 `result.json`
+- any V1 scientific `summary.md`
 
 ---
 
-### Task 1: Establish an isolated implementation baseline
+### Task 1: Establish the isolated implementation baseline
 
 **Files:**
 - Read: `docs/superpowers/specs/2026-09-07-live-alternative-diagnostic-mediation-v1-design.md`
-- Read: `docs/superpowers/plans/2026-09-07-live-alternative-diagnostic-mediation-v1.md`
+- Read: this plan
 - Read: `docs/research_seeds/DIAGNOSTIC_TOPOLOGY_COLLISION_V0.md`
 - Read: `scripts/validate_frozen_record.py`
 - Read: `.github/workflows/validate-frozen-record.yml`
 
 **Interfaces:**
-- Consumes: exact approved plan commit and design spec.
-- Produces: clean isolated implementation branch plus before-hashes for protected artifacts.
+- Consumes: approved design lineage and current committed implementation plan.
+- Produces: clean implementation worktree plus exact `PLAN_BASE` and protected-file hashes.
 
-- [ ] **Step 1: Create an isolated worktree from the exact approved plan commit**
+- [ ] **Step 1: Resolve the committed plan head and create an isolated worktree**
 
-After this plan is committed, replace `<PLAN_COMMIT>` below with that exact SHA and run:
+Run from a clean clone:
 
 ```bash
 git fetch origin
-git worktree add -b impl/live-alternative-diagnostic-mediation-v1 \
-  ../interface-theory-v1 <PLAN_COMMIT>
+PLAN_BASE=$(git rev-parse origin/design/live-alternative-diagnostic-mediation-v1)
+git merge-base --is-ancestor 1f646397d76b04c96afa22815bc78957b561c81b "$PLAN_BASE"
+git show "$PLAN_BASE":docs/superpowers/plans/2026-09-07-live-alternative-diagnostic-mediation-v1.md >/dev/null
+printf '%s\n' "$PLAN_BASE" > /tmp/v1-plan-base.txt
+git worktree add -b impl/live-alternative-diagnostic-mediation-v1 ../interface-theory-v1 "$PLAN_BASE"
 cd ../interface-theory-v1
 ```
 
-Expected: new branch `impl/live-alternative-diagnostic-mediation-v1` starts exactly from the committed plan and design lineage.
+Expected: all commands exit `0`; implementation branch begins exactly at the resolved committed plan head.
 
 - [ ] **Step 2: Verify ancestry and cleanliness**
 
@@ -95,18 +96,13 @@ Run:
 ```bash
 git status --short
 git merge-base --is-ancestor 1f646397d76b04c96afa22815bc78957b561c81b HEAD
-git log --oneline --decorate -5
+test "$(git rev-parse HEAD)" = "$(cat /tmp/v1-plan-base.txt)"
+git log --oneline --decorate -6
 ```
 
-Expected:
+Expected: no status output; both ancestry/equality checks exit `0`.
 
-```text
-# git status --short: no output
-# merge-base: exit 0
-# log contains the V1 design commit and V1 implementation-plan commit
-```
-
-- [ ] **Step 3: Record protected-file hashes**
+- [ ] **Step 3: Record hashes for protected artifacts**
 
 Run:
 
@@ -126,9 +122,9 @@ git ls-files '*gate_013*' '*gate_014*' | sort > /tmp/v1-gates.txt
 xargs -r sha256sum < /tmp/v1-gates.txt > /tmp/v1-gates-before.sha256
 ```
 
-Expected: both hash files are created without errors.
+Expected: both hash manifests exist and are nonempty.
 
-- [ ] **Step 4: Verify no V1 implementation/result path already exists**
+- [ ] **Step 4: Verify no implementation/result path exists yet**
 
 Run:
 
@@ -140,90 +136,70 @@ Expected: exit `0`.
 
 - [ ] **Step 5: Commit nothing**
 
-Task 1 must leave repository bytes unchanged.
+Task 1 leaves repository bytes unchanged.
 
 ---
 
-### Task 2: Encode the frozen square, repair vocabulary, and null family
+### Task 2: Encode the frozen square, repairs, and null pair
 
 **Files:**
 - Create: `experiments/research_seeds/live_alternative_diagnostic_mediation_v1/protocol.py`
 - Create: `experiments/research_seeds/live_alternative_diagnostic_mediation_v1/test_protocol.py`
 
 **Interfaces:**
-- Produces: `Signature`, `Diagnostic`, `MediationStatus`, `LatentModel`, `POSITIVE_MODELS`, `POSITIVE_PAIRS`, `NULL_PAIR`, `BUDGET`, `DIAGNOSTIC_COST`, `REPAIR_COST`, `marginal_view()`, `world_observation()`.
-- Consumed later by: `mediation.py`, `assay.py`.
+- Produces: `Signature`, `Diagnostic`, `MediationStatus`, `LatentModel`, `M00`, `M01`, `M10`, `M11`, `POSITIVE_MODELS`, `POSITIVE_PAIRS`, `NULL_PAIR`, `BUDGET`, `DIAGNOSTIC_COST`, `REPAIR_COST`, `marginal_view()`, `world_observation()`.
 
-- [ ] **Step 1: Write the failing protocol tests**
+- [ ] **Step 1: Write the RED protocol tests**
 
-Create `test_protocol.py` with these tests:
+Create `test_protocol.py`:
 
 ```python
 import unittest
 
 from protocol import (
-    BUDGET,
-    DIAGNOSTIC_COST,
-    NULL_PAIR,
-    POSITIVE_MODELS,
-    POSITIVE_PAIRS,
-    REPAIR_COST,
-    Diagnostic,
-    marginal_view,
+    BUDGET, DIAGNOSTIC_COST, NULL_PAIR, POSITIVE_MODELS, POSITIVE_PAIRS,
+    REPAIR_COST, Diagnostic, marginal_view,
 )
 
 
 class ProtocolTests(unittest.TestCase):
     def test_square_signatures_are_exact(self):
         self.assertEqual(
-            {model.key: marginal_view(model) for model in POSITIVE_MODELS},
-            {
-                "M00": (0, 0),
-                "M01": (0, 1),
-                "M10": (1, 0),
-                "M11": (1, 1),
-            },
+            {m.key: marginal_view(m) for m in POSITIVE_MODELS},
+            {"M00": (0, 0), "M01": (0, 1), "M10": (1, 0), "M11": (1, 1)},
         )
 
-    def test_positive_family_is_exactly_four_square_edges(self):
-        edges = {frozenset((left.key, right.key)) for left, right in POSITIVE_PAIRS}
-        self.assertEqual(
-            edges,
-            {
-                frozenset(("M00", "M10")),
-                frozenset(("M01", "M11")),
-                frozenset(("M00", "M01")),
-                frozenset(("M10", "M11")),
-            },
-        )
+    def test_positive_family_is_exactly_the_four_square_edges(self):
+        edges = {frozenset((a.key, b.key)) for a, b in POSITIVE_PAIRS}
+        self.assertEqual(edges, {
+            frozenset(("M00", "M10")), frozenset(("M01", "M11")),
+            frozenset(("M00", "M01")), frozenset(("M10", "M11")),
+        })
         self.assertNotIn(frozenset(("M00", "M11")), edges)
         self.assertNotIn(frozenset(("M01", "M10")), edges)
 
-    def test_every_positive_edge_differs_on_exactly_one_coordinate(self):
+    def test_each_positive_edge_differs_on_exactly_one_coordinate(self):
         for left, right in POSITIVE_PAIRS:
-            diffs = sum(a != b for a, b in zip(left.signature, right.signature))
-            self.assertEqual(diffs, 1)
+            self.assertEqual(sum(a != b for a, b in zip(left.signature, right.signature)), 1)
 
-    def test_each_endpoint_occurs_in_one_q0_edge_and_one_q1_edge(self):
-        incidence = {model.key: set() for model in POSITIVE_MODELS}
+    def test_each_endpoint_occurs_in_one_q0_and_one_q1_edge(self):
+        incidence = {m.key: set() for m in POSITIVE_MODELS}
         for left, right in POSITIVE_PAIRS:
-            differing = [index for index in (0, 1) if left.signature[index] != right.signature[index]]
-            diagnostic = Diagnostic.Q0 if differing == [0] else Diagnostic.Q1
+            diffs = [i for i in (0, 1) if left.signature[i] != right.signature[i]]
+            diagnostic = Diagnostic.Q0 if diffs == [0] else Diagnostic.Q1
             incidence[left.key].add(diagnostic)
             incidence[right.key].add(diagnostic)
-        for diagnostics in incidence.values():
-            self.assertEqual(diagnostics, {Diagnostic.Q0, Diagnostic.Q1})
+        for value in incidence.values():
+            self.assertEqual(value, {Diagnostic.Q0, Diagnostic.Q1})
 
-    def test_repairs_are_unique_and_budget_is_exact(self):
-        self.assertEqual(len({model.repair for model in POSITIVE_MODELS}), 4)
-        self.assertEqual(BUDGET, 2)
-        self.assertEqual(DIAGNOSTIC_COST, 1)
-        self.assertEqual(REPAIR_COST, 1)
+    def test_repairs_and_budget_are_exact(self):
+        self.assertEqual(len({m.repair for m in POSITIVE_MODELS}), 4)
+        self.assertEqual((BUDGET, DIAGNOSTIC_COST, REPAIR_COST), (2, 1, 1))
 
-    def test_null_pair_has_identical_signature_and_distinct_repairs(self):
+    def test_null_pair_has_same_signature_but_distinct_repairs(self):
         left, right = NULL_PAIR
+        self.assertEqual(left.signature, right.signature)
         self.assertEqual(left.signature, (0, 0))
-        self.assertEqual(right.signature, (0, 0))
         self.assertNotEqual(left.repair, right.repair)
 
 
@@ -231,41 +207,33 @@ if __name__ == "__main__":
     unittest.main()
 ```
 
-- [ ] **Step 2: Run the protocol tests and verify RED**
-
-Run:
+- [ ] **Step 2: Run RED**
 
 ```bash
-python -m unittest discover \
-  -s experiments/research_seeds/live_alternative_diagnostic_mediation_v1 \
-  -p 'test_protocol.py' -v
+python -m unittest discover -s experiments/research_seeds/live_alternative_diagnostic_mediation_v1 -p 'test_protocol.py' -v
 ```
 
 Expected: import failure because `protocol.py` does not exist.
 
-- [ ] **Step 3: Implement the minimal frozen protocol objects**
+- [ ] **Step 3: Implement the minimal protocol**
 
-Create `protocol.py` with this structure:
+Create `protocol.py`:
 
 ```python
 from __future__ import annotations
-
 from dataclasses import dataclass
 from enum import Enum
 from typing import TypeAlias
 
 Signature: TypeAlias = tuple[int, int]
 
-
 class Diagnostic(str, Enum):
     Q0 = "q0"
     Q1 = "q1"
 
-
 class MediationStatus(str, Enum):
     NO_DISCRIMINATING_DIAGNOSTIC = "NO_DISCRIMINATING_DIAGNOSTIC"
     OUT_OF_FROZEN_FAMILY = "OUT_OF_FROZEN_FAMILY"
-
 
 @dataclass(frozen=True)
 class LatentModel:
@@ -273,54 +241,37 @@ class LatentModel:
     signature: Signature
     repair: str
 
-
 M00 = LatentModel("M00", (0, 0), "r00")
 M01 = LatentModel("M01", (0, 1), "r01")
 M10 = LatentModel("M10", (1, 0), "r10")
 M11 = LatentModel("M11", (1, 1), "r11")
-
 POSITIVE_MODELS = (M00, M01, M10, M11)
-POSITIVE_PAIRS = (
-    (M00, M10),
-    (M01, M11),
-    (M00, M01),
-    (M10, M11),
-)
-
+POSITIVE_PAIRS = ((M00, M10), (M01, M11), (M00, M01), (M10, M11))
 N0 = LatentModel("N0", (0, 0), "rN0")
 N1 = LatentModel("N1", (0, 0), "rN1")
 NULL_PAIR = (N0, N1)
-
 DIAGNOSTICS = (Diagnostic.Q0, Diagnostic.Q1)
 BUDGET = 2
 DIAGNOSTIC_COST = 1
 REPAIR_COST = 1
 
-
 def marginal_view(model: LatentModel) -> Signature:
     return model.signature
 
-
 def world_observation(model: LatentModel, diagnostic: Diagnostic) -> int:
-    index = 0 if diagnostic is Diagnostic.Q0 else 1
-    return model.signature[index]
+    return model.signature[0 if diagnostic is Diagnostic.Q0 else 1]
 ```
 
-Do not add model IDs, pair IDs, or pair classes to `Signature`.
+`Signature` must contain only the two prediction bits; never add IDs, pair labels, hashes, repairs, or metadata.
 
-- [ ] **Step 4: Run the protocol tests and verify GREEN**
+- [ ] **Step 4: Run GREEN**
 
-Run the same unittest command.
+Run the Task 2 unittest command again. Expected: all Task 2 tests pass.
 
-Expected: all protocol tests pass.
-
-- [ ] **Step 5: Commit Task 2**
-
-Run:
+- [ ] **Step 5: Commit**
 
 ```bash
-git add experiments/research_seeds/live_alternative_diagnostic_mediation_v1/protocol.py \
-        experiments/research_seeds/live_alternative_diagnostic_mediation_v1/test_protocol.py
+git add experiments/research_seeds/live_alternative_diagnostic_mediation_v1/protocol.py experiments/research_seeds/live_alternative_diagnostic_mediation_v1/test_protocol.py
 git commit -m "feat: encode frozen V1 model square"
 ```
 
@@ -333,113 +284,77 @@ git commit -m "feat: encode frozen V1 model square"
 - Create: `experiments/research_seeds/live_alternative_diagnostic_mediation_v1/test_mediation.py`
 
 **Interfaces:**
-- Consumes: only `Diagnostic`, `MediationStatus`, and `Signature` from `protocol.py`.
-- Produces: `compare_signatures(left, right)`, `control_select_diagnostic()`, `treatment_select_diagnostic(left, right)`.
-- Hard boundary: `mediation.py` must not import `LatentModel`, `POSITIVE_MODELS`, `POSITIVE_PAIRS`, `NULL_PAIR`, model keys, or repair mappings.
+- Consumes only: `Diagnostic`, `MediationStatus`, `Signature`.
+- Produces: `compare_signatures(left,right)`, `control_select_diagnostic()`, `treatment_select_diagnostic(left,right)`.
+- `mediation.py` must not import `LatentModel`, model registries, model keys, pair tables, or repair mappings.
 
-- [ ] **Step 1: Write the failing mediation tests**
+- [ ] **Step 1: Write RED mediation tests**
 
 Create `test_mediation.py`:
 
 ```python
 import inspect
 import unittest
-
 import mediation
-from mediation import (
-    compare_signatures,
-    control_select_diagnostic,
-    treatment_select_diagnostic,
-)
+from mediation import compare_signatures, control_select_diagnostic, treatment_select_diagnostic
 from protocol import Diagnostic, MediationStatus
 
-
 class MediationTests(unittest.TestCase):
-    def test_xor_comparison_is_permutation_symmetric(self):
-        self.assertEqual(compare_signatures((0, 0), (1, 0)), (1, 0))
-        self.assertEqual(compare_signatures((1, 0), (0, 0)), (1, 0))
-        self.assertEqual(compare_signatures((0, 1), (0, 0)), (0, 1))
+    def test_xor_is_permutation_symmetric(self):
+        self.assertEqual(compare_signatures((0,0),(1,0)), (1,0))
+        self.assertEqual(compare_signatures((1,0),(0,0)), (1,0))
+        self.assertEqual(compare_signatures((0,1),(0,0)), (0,1))
 
-    def test_treatment_selects_unique_disagreement_coordinate(self):
-        self.assertEqual(treatment_select_diagnostic((0, 0), (1, 0)), Diagnostic.Q0)
-        self.assertEqual(treatment_select_diagnostic((0, 0), (0, 1)), Diagnostic.Q1)
+    def test_treatment_selects_the_unique_disagreement(self):
+        self.assertEqual(treatment_select_diagnostic((0,0),(1,0)), Diagnostic.Q0)
+        self.assertEqual(treatment_select_diagnostic((0,0),(0,1)), Diagnostic.Q1)
 
-    def test_treatment_abstains_on_no_disagreement(self):
-        self.assertEqual(
-            treatment_select_diagnostic((0, 0), (0, 0)),
-            MediationStatus.NO_DISCRIMINATING_DIAGNOSTIC,
-        )
+    def test_treatment_abstains_on_zero_disagreement(self):
+        self.assertEqual(treatment_select_diagnostic((0,0),(0,0)), MediationStatus.NO_DISCRIMINATING_DIAGNOSTIC)
 
-    def test_treatment_rejects_double_disagreement_as_out_of_family(self):
-        self.assertEqual(
-            treatment_select_diagnostic((0, 0), (1, 1)),
-            MediationStatus.OUT_OF_FROZEN_FAMILY,
-        )
+    def test_double_disagreement_is_outside_family(self):
+        self.assertEqual(treatment_select_diagnostic((0,0),(1,1)), MediationStatus.OUT_OF_FROZEN_FAMILY)
 
-    def test_control_selector_is_pair_blind(self):
+    def test_c0_selector_is_pair_blind(self):
         self.assertEqual(list(inspect.signature(control_select_diagnostic).parameters), [])
         self.assertEqual(control_select_diagnostic(), Diagnostic.Q0)
 
-    def test_treatment_selector_accepts_only_two_marginal_signatures(self):
-        self.assertEqual(
-            list(inspect.signature(treatment_select_diagnostic).parameters),
-            ["left", "right"],
-        )
+    def test_treatment_accepts_only_two_marginal_signatures(self):
+        self.assertEqual(list(inspect.signature(treatment_select_diagnostic).parameters), ["left", "right"])
 
-    def test_mediation_module_has_no_latent_registry_imports(self):
-        forbidden = {
-            "LatentModel",
-            "POSITIVE_MODELS",
-            "POSITIVE_PAIRS",
-            "NULL_PAIR",
-            "M00",
-            "M01",
-            "M10",
-            "M11",
-        }
+    def test_mediation_module_has_no_latent_registry_symbols(self):
+        forbidden = {"LatentModel","POSITIVE_MODELS","POSITIVE_PAIRS","NULL_PAIR","M00","M01","M10","M11"}
         self.assertTrue(forbidden.isdisjoint(mediation.__dict__))
-
 
 if __name__ == "__main__":
     unittest.main()
 ```
 
-- [ ] **Step 2: Run the mediation tests and verify RED**
-
-Run:
+- [ ] **Step 2: Run RED**
 
 ```bash
-python -m unittest discover \
-  -s experiments/research_seeds/live_alternative_diagnostic_mediation_v1 \
-  -p 'test_mediation.py' -v
+python -m unittest discover -s experiments/research_seeds/live_alternative_diagnostic_mediation_v1 -p 'test_mediation.py' -v
 ```
 
 Expected: import failure because `mediation.py` does not exist.
 
-- [ ] **Step 3: Implement the pure temporary comparator and selectors**
+- [ ] **Step 3: Implement the stateless comparator**
 
 Create `mediation.py`:
 
 ```python
 from __future__ import annotations
-
 from protocol import Diagnostic, MediationStatus, Signature
 
 MediationOutput = Diagnostic | MediationStatus
 
-
 def compare_signatures(left: Signature, right: Signature) -> Signature:
     return left[0] ^ right[0], left[1] ^ right[1]
-
 
 def control_select_diagnostic() -> Diagnostic:
     return Diagnostic.Q0
 
-
-def treatment_select_diagnostic(
-    left: Signature,
-    right: Signature,
-) -> MediationOutput:
+def treatment_select_diagnostic(left: Signature, right: Signature) -> MediationOutput:
     disagreement = compare_signatures(left, right)
     if disagreement == (1, 0):
         return Diagnostic.Q0
@@ -450,75 +365,55 @@ def treatment_select_diagnostic(
     return MediationStatus.OUT_OF_FROZEN_FAMILY
 ```
 
-Keep the module stateless. Do not create a mediator object, cache, learned parameter, or cross-episode global.
+No cache, object state, parameter, learned weight, or cross-episode global is permitted.
 
-- [ ] **Step 4: Run protocol + mediation tests**
-
-Run:
+- [ ] **Step 4: Run all current tests**
 
 ```bash
-python -m unittest discover \
-  -s experiments/research_seeds/live_alternative_diagnostic_mediation_v1 \
-  -p 'test_*.py' -v
+python -m unittest discover -s experiments/research_seeds/live_alternative_diagnostic_mediation_v1 -p 'test_*.py' -v
 ```
 
 Expected: all current tests pass.
 
-- [ ] **Step 5: Commit Task 3**
-
-Run:
+- [ ] **Step 5: Commit**
 
 ```bash
-git add experiments/research_seeds/live_alternative_diagnostic_mediation_v1/mediation.py \
-        experiments/research_seeds/live_alternative_diagnostic_mediation_v1/test_mediation.py
+git add experiments/research_seeds/live_alternative_diagnostic_mediation_v1/mediation.py experiments/research_seeds/live_alternative_diagnostic_mediation_v1/test_mediation.py
 git commit -m "feat: add ephemeral V1 comparison channel"
 ```
 
 ---
 
-### Task 4: Implement external evidence, resolution, budget, and representative episodes
+### Task 4: Implement external evidence, common resolution, budget, and representative episodes
 
 **Files:**
 - Create: `experiments/research_seeds/live_alternative_diagnostic_mediation_v1/assay.py`
 - Create: `experiments/research_seeds/live_alternative_diagnostic_mediation_v1/test_assay.py`
 
 **Interfaces:**
-- Consumes: protocol constants/models plus `control_select_diagnostic()` and `treatment_select_diagnostic()`.
-- Produces: `Condition`, `EpisodeResult`, `ProtocolViolation`, `run_episode()`, `positive_episode_specs()`, `aggregate_results()`, `validate_contract()`, `run_assay()`.
-- Scientific boundary: component tests may run representative episodes, but must not call `run_assay()` over the complete frozen V1 family.
+- Produces: `Condition`, `ProtocolViolation`, `EpisodeResult`, `resolve_pair()`, `run_episode()`, `positive_episode_specs()`, `aggregate_results()`, `validate_contract()`, `run_assay()`.
+- C0 and C1 must converge on the same `resolve_pair()` and repair code after diagnostic choice.
+- Component tests may run representative episodes. They must not call `run_assay()` over the complete frozen family.
 
-- [ ] **Step 1: Write failing representative episode tests**
+- [ ] **Step 1: Write RED assay tests**
 
-Create `test_assay.py` with:
+Create `test_assay.py`:
 
 ```python
 import unittest
-
-from assay import (
-    Condition,
-    EpisodeResult,
-    aggregate_results,
-    positive_episode_specs,
-    run_episode,
-    validate_contract,
-)
-from protocol import M00, M01, M10, NULL_PAIR, Diagnostic, MediationStatus
-
+from assay import Condition, EpisodeResult, ProtocolViolation, aggregate_results, positive_episode_specs, run_episode, validate_contract
+from protocol import M00, M01, M10, M11, NULL_PAIR, Diagnostic, MediationStatus
 
 class AssayTests(unittest.TestCase):
-    def test_control_succeeds_when_fixed_q0_discriminates(self):
-        result = run_episode(Condition.C0, (M00, M10), M10)
-        self.assertEqual(result.diagnostic, Diagnostic.Q0.value)
-        self.assertEqual(result.observation, 1)
-        self.assertEqual(result.resolved_model, "M10")
-        self.assertEqual(result.repair, "r10")
-        self.assertEqual(result.budget_remaining, 0)
+    def test_c0_succeeds_when_fixed_q0_discriminates(self):
+        result = run_episode(Condition.C0, (M00,M10), M10)
+        self.assertEqual((result.diagnostic,result.observation,result.resolved_model,result.repair,result.budget_remaining), ("q0",1,"M10","r10",0))
         self.assertTrue(result.discriminating)
         self.assertTrue(result.repair_success)
 
-    def test_control_fails_bounded_zero_error_after_nondiscriminating_q0(self):
-        result = run_episode(Condition.C0, (M00, M01), M01)
-        self.assertEqual(result.diagnostic, Diagnostic.Q0.value)
+    def test_c0_has_no_bounded_zero_error_continuation_after_nondiscriminating_q0(self):
+        result = run_episode(Condition.C0, (M00,M01), M01)
+        self.assertEqual(result.diagnostic, "q0")
         self.assertEqual(result.observation, 0)
         self.assertIsNone(result.resolved_model)
         self.assertIsNone(result.repair)
@@ -527,100 +422,94 @@ class AssayTests(unittest.TestCase):
         self.assertFalse(result.repair_success)
         self.assertEqual(result.failure, "NO_BOUNDED_ZERO_ERROR_CONTINUATION")
 
-    def test_treatment_uses_relation_then_world_evidence_to_resolve(self):
-        result = run_episode(Condition.C1, (M00, M01), M01)
-        self.assertEqual(result.diagnostic, Diagnostic.Q1.value)
-        self.assertEqual(result.observation, 1)
-        self.assertEqual(result.resolved_model, "M01")
-        self.assertEqual(result.repair, "r01")
-        self.assertEqual(result.budget_remaining, 0)
+    def test_c1_relation_selects_q1_then_world_evidence_resolves(self):
+        result = run_episode(Condition.C1, (M00,M01), M01)
+        self.assertEqual((result.diagnostic,result.observation,result.resolved_model,result.repair,result.budget_remaining), ("q1",1,"M01","r01",0))
         self.assertTrue(result.repair_success)
 
-    def test_treatment_is_pair_order_invariant(self):
-        forward = run_episode(Condition.C1, (M00, M01), M01)
-        reverse = run_episode(Condition.C1, (M01, M00), M01)
-        self.assertEqual(forward.diagnostic, reverse.diagnostic)
-        self.assertEqual(forward.resolved_model, reverse.resolved_model)
-        self.assertEqual(forward.repair_success, reverse.repair_success)
+    def test_c1_is_pair_order_invariant(self):
+        forward = run_episode(Condition.C1, (M00,M01), M01)
+        reverse = run_episode(Condition.C1, (M01,M00), M01)
+        self.assertEqual((forward.diagnostic,forward.resolved_model,forward.repair_success), (reverse.diagnostic,reverse.resolved_model,reverse.repair_success))
 
-    def test_null_treatment_abstains_before_world_action(self):
+    def test_null_abstains_before_world_action(self):
         left, right = NULL_PAIR
-        result = run_episode(Condition.C1, (left, right), left)
-        self.assertEqual(
-            result.diagnostic,
-            MediationStatus.NO_DISCRIMINATING_DIAGNOSTIC.value,
-        )
+        result = run_episode(Condition.C1, (left,right), left)
+        self.assertEqual(result.diagnostic, MediationStatus.NO_DISCRIMINATING_DIAGNOSTIC.value)
         self.assertIsNone(result.observation)
         self.assertEqual(result.budget_remaining, 2)
-        self.assertIsNone(result.resolved_model)
-        self.assertIsNone(result.repair)
 
-    def test_positive_episode_spec_count_is_exact_without_executing_them(self):
+    def test_square_diagonal_is_protocol_violation_not_episode_outcome(self):
+        with self.assertRaises(ProtocolViolation):
+            run_episode(Condition.C1, (M00,M11), M00)
+
+    def test_true_world_must_belong_to_live_pair(self):
+        with self.assertRaises(ProtocolViolation):
+            run_episode(Condition.C1, (M00,M01), M10)
+
+    def test_positive_episode_specs_only_enumerate_count(self):
         self.assertEqual(len(positive_episode_specs()), 8)
 
-    def test_aggregation_math_uses_supplied_results_only(self):
+    def test_aggregation_uses_only_supplied_synthetic_results(self):
         fake = [
-            EpisodeResult("C0", ("A", "B"), "A", "q0", 0, "A", "rA", 0, True, True, None),
-            EpisodeResult("C0", ("C", "D"), "C", "q0", 0, None, None, 1, False, False, "NO_BOUNDED_ZERO_ERROR_CONTINUATION"),
+            EpisodeResult("C0",("A","B"),"A","q0",0,"A","rA",0,True,True,None),
+            EpisodeResult("C0",("C","D"),"C","q0",0,None,None,1,False,False,"NO_BOUNDED_ZERO_ERROR_CONTINUATION"),
         ]
         aggregate = aggregate_results(fake)
-        self.assertEqual(aggregate["episode_count"], 2)
-        self.assertEqual(aggregate["discriminating_count"], 1)
-        self.assertEqual(aggregate["repair_success_count"], 1)
-        self.assertEqual(aggregate["P_disc"], 0.5)
-        self.assertEqual(aggregate["P_repair"], 0.5)
+        self.assertEqual(aggregate, {"episode_count":2,"discriminating_count":1,"repair_success_count":1,"P_disc":0.5,"P_repair":0.5})
 
-    def test_static_contract_validation_passes_without_running_full_assay(self):
+    def test_static_contract_fields_are_exact(self):
         record = validate_contract()
-        self.assertTrue(record["endpoint_nonidentifiability_verified"])
-        self.assertTrue(record["no_universal_diagnostic_verified"])
-        self.assertTrue(record["pair_order_invariance_verified"])
-        self.assertTrue(record["shared_menu_verified"])
-        self.assertEqual(record["null_disagreement_vector"], [0, 0])
-        self.assertEqual(
-            record["null_mediator_output"],
-            "NO_DISCRIMINATING_DIAGNOSTIC",
-        )
-
+        expected_true = {
+            "endpoint_nonidentifiability_verified",
+            "no_universal_diagnostic_verified",
+            "pair_order_invariance_verified",
+            "marginal_information_matched",
+            "joint_comparison_only_in_C1",
+            "read_only_mediator_verified",
+            "mediator_ephemeral_verified",
+            "shared_menu_verified",
+            "budget_matched",
+            "resolver_identity_matched",
+        }
+        for field in expected_true:
+            self.assertIs(record[field], True, field)
+        self.assertEqual(record["positive_pair_count"], 4)
+        self.assertEqual(record["positive_episode_count_per_condition"], 8)
+        self.assertEqual(record["null_disagreement_vector"], [0,0])
+        self.assertEqual(record["null_mediator_output"], "NO_DISCRIMINATING_DIAGNOSTIC")
 
 if __name__ == "__main__":
     unittest.main()
 ```
 
-- [ ] **Step 2: Run `test_assay.py` and verify RED**
-
-Run:
+- [ ] **Step 2: Run RED**
 
 ```bash
-python -m unittest discover \
-  -s experiments/research_seeds/live_alternative_diagnostic_mediation_v1 \
-  -p 'test_assay.py' -v
+python -m unittest discover -s experiments/research_seeds/live_alternative_diagnostic_mediation_v1 -p 'test_assay.py' -v
 ```
 
 Expected: import failure because `assay.py` does not exist.
 
-- [ ] **Step 3: Implement condition/result types and episode execution**
+- [ ] **Step 3: Implement exact public types and common resolver**
 
-`assay.py` must define these exact public types:
+In `assay.py` define:
 
 ```python
 from dataclasses import dataclass
 from enum import Enum
 
-
 class Condition(str, Enum):
     C0 = "C0"
     C1 = "C1"
 
-
 class ProtocolViolation(RuntimeError):
     pass
-
 
 @dataclass(frozen=True)
 class EpisodeResult:
     condition: str
-    pair: tuple[str, str]
+    pair: tuple[str,str]
     true_model: str
     diagnostic: str
     observation: int | None
@@ -632,195 +521,102 @@ class EpisodeResult:
     failure: str | None
 ```
 
-Implement `run_episode()` so that:
+Add one common resolver used by both arms:
 
 ```python
-def run_episode(
-    condition: Condition,
-    pair: tuple[LatentModel, LatentModel],
-    true_model: LatentModel,
-) -> EpisodeResult:
-    left, right = pair
-    if true_model not in pair:
-        raise ProtocolViolation("true model is not a member of the live pair")
+def resolve_pair(pair, diagnostic, observation):
+    coordinate = 0 if diagnostic is Diagnostic.Q0 else 1
+    return tuple(model for model in pair if model.signature[coordinate] == observation)
+```
 
-    left_view = marginal_view(left)
-    right_view = marginal_view(right)
+- [ ] **Step 4: Implement `run_episode()` with strict status handling**
 
-    if condition is Condition.C0:
-        decision = control_select_diagnostic()
-    else:
-        decision = treatment_select_diagnostic(left_view, right_view)
+The key branch must be exactly:
 
-    if isinstance(decision, MediationStatus):
-        return EpisodeResult(
-            condition.value,
-            (left.key, right.key),
-            true_model.key,
-            decision.value,
-            None,
-            None,
-            None,
-            BUDGET,
-            False,
-            False,
-            None,
-        )
+```python
+left_view = marginal_view(left)
+right_view = marginal_view(right)
+if condition is Condition.C0:
+    decision = control_select_diagnostic()
+else:
+    decision = treatment_select_diagnostic(left_view, right_view)
 
-    budget = BUDGET - DIAGNOSTIC_COST
-    observation = world_observation(true_model, decision)
-    coordinate = 0 if decision is Diagnostic.Q0 else 1
-    survivors = [
-        model for model in pair
-        if model.signature[coordinate] == observation
-    ]
+if decision is MediationStatus.OUT_OF_FROZEN_FAMILY:
+    raise ProtocolViolation("live pair is outside the frozen V1 family")
+if decision is MediationStatus.NO_DISCRIMINATING_DIAGNOSTIC:
+    return EpisodeResult(condition.value,(left.key,right.key),true_model.key,decision.value,None,None,None,BUDGET,False,False,None)
+```
 
-    if len(survivors) != 1:
-        return EpisodeResult(
-            condition.value,
-            (left.key, right.key),
-            true_model.key,
-            decision.value,
-            observation,
-            None,
-            None,
-            budget,
-            False,
-            False,
-            "NO_BOUNDED_ZERO_ERROR_CONTINUATION",
-        )
+Then, and only then, execute the declared diagnostic through `world_observation()`, subtract `DIAGNOSTIC_COST`, pass the observation to the shared `resolve_pair()`, and:
 
-    resolved = survivors[0]
-    if budget < REPAIR_COST:
-        raise ProtocolViolation("resolved model but repair budget is unavailable")
-    budget -= REPAIR_COST
+```python
+if len(survivors) != 1:
     return EpisodeResult(
-        condition.value,
-        (left.key, right.key),
-        true_model.key,
-        decision.value,
-        observation,
-        resolved.key,
-        resolved.repair,
-        budget,
-        True,
-        resolved is true_model,
-        None,
+        condition.value,(left.key,right.key),true_model.key,decision.value,
+        observation,None,None,budget,False,False,
+        "NO_BOUNDED_ZERO_ERROR_CONTINUATION",
     )
 ```
 
-Do not let either selector receive `left.key`, `right.key`, pair labels, or repair names.
+For a unique survivor, subtract `REPAIR_COST`, use that survivor's repair, and set `repair_success = (resolved is true_model)`. Neither selector may receive keys, repair strings, or pair labels.
 
-- [ ] **Step 4: Implement frozen enumeration, static contract validation, and aggregation**
+- [ ] **Step 5: Implement frozen enumeration, pure aggregation, and exact static validation fields**
 
-Implement:
+`positive_episode_specs()` must return exactly:
 
 ```python
-def positive_episode_specs():
-    return tuple(
-        (pair, true_model)
-        for pair in POSITIVE_PAIRS
-        for true_model in pair
-    )
-
-
-def aggregate_results(results):
-    results = tuple(results)
-    count = len(results)
-    discriminating = sum(result.discriminating for result in results)
-    repaired = sum(result.repair_success for result in results)
-    return {
-        "episode_count": count,
-        "discriminating_count": discriminating,
-        "repair_success_count": repaired,
-        "P_disc": discriminating / count,
-        "P_repair": repaired / count,
-    }
+return tuple((pair,true_model) for pair in POSITIVE_PAIRS for true_model in pair)
 ```
 
-`validate_contract()` must check all frozen structural invariants without invoking `run_assay()`:
+`aggregate_results(results)` must report exactly:
 
 ```text
-positive_pair_count == 4
-positive_episode_count_per_condition == 8
-every positive pair differs on exactly one coordinate
-each endpoint appears in one q0-edge and one q1-edge
-no single diagnostic separates all four positive pairs
-C1 output is invariant to pair order
-null disagreement vector == [0,0]
-null output == NO_DISCRIMINATING_DIAGNOSTIC
-square diagonals map to OUT_OF_FROZEN_FAMILY
-all positive repairs are unique
-null repairs differ
-BUDGET == 2
-diagnostic and repair costs == 1
+episode_count
+discriminating_count
+repair_success_count
+P_disc
+P_repair
 ```
 
-Return booleans using the field names from design section 18 where applicable.
+`validate_contract()` must compute/check the square and return at least these exact fields:
 
-- [ ] **Step 5: Define but do not invoke the full assay function**
-
-Add:
-
-```python
-def run_assay() -> dict:
-    c0_results = [
-        run_episode(Condition.C0, pair, true_model)
-        for pair, true_model in positive_episode_specs()
-    ]
-    c1_results = [
-        run_episode(Condition.C1, pair, true_model)
-        for pair, true_model in positive_episode_specs()
-    ]
-    c0 = aggregate_results(c0_results)
-    c1 = aggregate_results(c1_results)
-    contract = validate_contract()
-    null_left, null_right = NULL_PAIR
-    null_output = treatment_select_diagnostic(
-        marginal_view(null_left), marginal_view(null_right)
-    )
-    return {
-        "protocol_state": "FROZEN_PRE_EXECUTION_ASSAY",
-        "execution_state": "EXECUTED",
-        "positive_pair_count": 4,
-        "positive_episode_count_per_condition": 8,
-        "c0_discriminating_count": c0["discriminating_count"],
-        "c1_discriminating_count": c1["discriminating_count"],
-        "c0_repair_success_count": c0["repair_success_count"],
-        "c1_repair_success_count": c1["repair_success_count"],
-        "P_disc_C0": c0["P_disc"],
-        "P_disc_C1": c1["P_disc"],
-        "delta_P_disc": c1["P_disc"] - c0["P_disc"],
-        "P_repair_C0": c0["P_repair"],
-        "P_repair_C1": c1["P_repair"],
-        "delta_P_repair": c1["P_repair"] - c0["P_repair"],
-        **contract,
-        "null_disagreement_vector": [0, 0],
-        "null_mediator_output": null_output.value,
-    }
+```text
+positive_pair_count = 4
+positive_episode_count_per_condition = 8
+endpoint_nonidentifiability_verified = true
+no_universal_diagnostic_verified = true
+pair_order_invariance_verified = true
+marginal_information_matched = true
+joint_comparison_only_in_C1 = true
+read_only_mediator_verified = true
+mediator_ephemeral_verified = true
+shared_menu_verified = true
+budget_matched = true
+resolver_identity_matched = true
+null_disagreement_vector = [0,0]
+null_mediator_output = NO_DISCRIMINATING_DIAGNOSTIC
 ```
 
-Do not add a unit test that calls `run_assay()` over the frozen V1 positive family during implementation. The function exists for a separately authorized scientific execution step.
+The validator must additionally assert that both excluded diagonals return `OUT_OF_FROZEN_FAMILY`, all positive repairs are unique, null repairs differ, each positive edge differs on exactly one coordinate, and each endpoint is incident to one q0 and one q1 edge. It must not call `run_assay()`.
 
-- [ ] **Step 6: Run all component tests**
+`resolver_identity_matched` is justified operationally by the single `resolve_pair()` function called downstream of both C0 and C1 diagnostic selection; do not implement condition-specific resolvers.
 
-Run:
+- [ ] **Step 6: Define the full assay but do not invoke it**
+
+`run_assay()` may enumerate all eight positive episode specs under C0 and C1, aggregate them, attach `validate_contract()` fields, and emit the design-required result keys. It must set `execution_state="EXECUTED"` only when this function is actually called through the execution gate. No unit test in this plan may call `run_assay()`.
+
+- [ ] **Step 7: Run all component tests**
 
 ```bash
-python -m unittest discover \
-  -s experiments/research_seeds/live_alternative_diagnostic_mediation_v1 \
-  -p 'test_*.py' -v
+python -m unittest discover -s experiments/research_seeds/live_alternative_diagnostic_mediation_v1 -p 'test_*.py' -v
 ```
 
 Expected: all tests pass; no test invokes `run_assay()`.
 
-- [ ] **Step 7: Commit Task 4**
-
-Run:
+- [ ] **Step 8: Commit**
 
 ```bash
-git add experiments/research_seeds/live_alternative_diagnostic_mediation_v1/assay.py \
-        experiments/research_seeds/live_alternative_diagnostic_mediation_v1/test_assay.py
+git add experiments/research_seeds/live_alternative_diagnostic_mediation_v1/assay.py experiments/research_seeds/live_alternative_diagnostic_mediation_v1/test_assay.py
 git commit -m "feat: add bounded V1 episode machinery"
 ```
 
@@ -833,109 +629,89 @@ git commit -m "feat: add bounded V1 episode machinery"
 - Create: `experiments/research_seeds/live_alternative_diagnostic_mediation_v1/test_cli.py`
 
 **Interfaces:**
-- `--validate-contract`: allowed during implementation; prints structural validation plus `execution_state=UNEXECUTED`.
-- `--execute --write <path>`: scientific execution path; must not be invoked during implementation.
-- No default mode may call `run_assay()`.
+- `--validate-contract`: permitted during implementation; never calls `run_assay()`.
+- `--execute --write PATH`: scientific execution path; not invoked in this plan.
 
-- [ ] **Step 1: Write failing CLI safety tests**
+- [ ] **Step 1: Write RED CLI safety tests**
 
 Create `test_cli.py`:
 
 ```python
-import contextlib
-import io
-import json
-import tempfile
-import unittest
+import contextlib, io, json, tempfile, unittest
 from pathlib import Path
 from unittest.mock import patch
-
 import run_v1
 
-
 class CliTests(unittest.TestCase):
-    def test_validate_contract_does_not_call_full_assay(self):
+    def test_validate_contract_cannot_execute_assay(self):
         stdout = io.StringIO()
-        with patch.object(run_v1, "run_assay", side_effect=AssertionError("assay executed")):
+        with patch.object(run_v1,"run_assay",side_effect=AssertionError("assay executed")):
             with contextlib.redirect_stdout(stdout):
                 code = run_v1.main(["--validate-contract"])
-        self.assertEqual(code, 0)
         payload = json.loads(stdout.getvalue())
+        self.assertEqual(code, 0)
         self.assertEqual(payload["execution_state"], "UNEXECUTED")
         self.assertEqual(payload["scientific_result"], "NONE")
 
-    def test_execute_requires_explicit_write_path_before_assay_call(self):
-        with patch.object(run_v1, "run_assay", side_effect=AssertionError("assay executed")):
+    def test_execute_without_write_stops_before_assay(self):
+        with patch.object(run_v1,"run_assay",side_effect=AssertionError("assay executed")):
             with self.assertRaises(SystemExit):
                 run_v1.main(["--execute"])
 
-    def test_write_is_rejected_without_execute(self):
+    def test_write_without_execute_is_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
-            target = Path(directory) / "result.json"
+            target = Path(directory)/"result.json"
             with self.assertRaises(SystemExit):
-                run_v1.main(["--validate-contract", "--write", str(target)])
+                run_v1.main(["--validate-contract","--write",str(target)])
             self.assertFalse(target.exists())
-
 
 if __name__ == "__main__":
     unittest.main()
 ```
 
-- [ ] **Step 2: Run CLI tests and verify RED**
-
-Run:
+- [ ] **Step 2: Run RED**
 
 ```bash
-python -m unittest discover \
-  -s experiments/research_seeds/live_alternative_diagnostic_mediation_v1 \
-  -p 'test_cli.py' -v
+python -m unittest discover -s experiments/research_seeds/live_alternative_diagnostic_mediation_v1 -p 'test_cli.py' -v
 ```
 
 Expected: import failure because `run_v1.py` does not exist.
 
-- [ ] **Step 3: Implement the mutually exclusive CLI modes**
+- [ ] **Step 3: Implement the CLI gate**
 
-Create `run_v1.py` with:
+Create `run_v1.py` with this exact control structure:
 
 ```python
 #!/usr/bin/env python3
 from __future__ import annotations
-
-import argparse
-import json
+import argparse, json
 from pathlib import Path
-
 from assay import run_assay, validate_contract
 
-
-def parser() -> argparse.ArgumentParser:
-    value = argparse.ArgumentParser()
-    mode = value.add_mutually_exclusive_group(required=True)
+def build_parser():
+    parser = argparse.ArgumentParser()
+    mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--validate-contract", action="store_true")
     mode.add_argument("--execute", action="store_true")
-    value.add_argument("--write", type=Path)
-    return value
+    parser.add_argument("--write", type=Path)
+    return parser
 
-
-def main(argv: list[str] | None = None) -> int:
-    args = parser().parse_args(argv)
-
+def main(argv=None):
+    parser = build_parser()
+    args = parser.parse_args(argv)
     if args.validate_contract:
         if args.write is not None:
-            parser().error("--write is valid only with --execute")
-        payload = {
-            "protocol_state": "FROZEN_PRE_EXECUTION_ASSAY",
-            "implementation_state": "VALIDATED_NOT_EXECUTED",
-            "execution_state": "UNEXECUTED",
-            "scientific_result": "NONE",
-            "contract_validation": validate_contract(),
-        }
-        print(json.dumps(payload, indent=2, sort_keys=True))
+            parser.error("--write is valid only with --execute")
+        print(json.dumps({
+            "protocol_state":"FROZEN_PRE_EXECUTION_ASSAY",
+            "implementation_state":"VALIDATED_NOT_EXECUTED",
+            "execution_state":"UNEXECUTED",
+            "scientific_result":"NONE",
+            "contract_validation":validate_contract(),
+        }, indent=2, sort_keys=True))
         return 0
-
     if args.write is None:
-        parser().error("--execute requires --write")
-
+        parser.error("--execute requires --write")
     result = run_assay()
     rendered = json.dumps(result, indent=2, sort_keys=True) + "\n"
     args.write.parent.mkdir(parents=True, exist_ok=True)
@@ -943,62 +719,41 @@ def main(argv: list[str] | None = None) -> int:
     print(rendered, end="")
     return 0
 
-
 if __name__ == "__main__":
     raise SystemExit(main())
 ```
 
-The explicit `execution_state="EXECUTED"` exists only inside the result returned by `run_assay()` after the `--execute --write` gate is crossed.
-
-- [ ] **Step 4: Run all unit tests and structural validation only**
-
-Run:
+- [ ] **Step 4: Run unit tests and validation mode only**
 
 ```bash
-python -m unittest discover \
-  -s experiments/research_seeds/live_alternative_diagnostic_mediation_v1 \
-  -p 'test_*.py' -v
-
-python experiments/research_seeds/live_alternative_diagnostic_mediation_v1/run_v1.py \
-  --validate-contract
+python -m unittest discover -s experiments/research_seeds/live_alternative_diagnostic_mediation_v1 -p 'test_*.py' -v
+python experiments/research_seeds/live_alternative_diagnostic_mediation_v1/run_v1.py --validate-contract
 ```
 
-Expected:
+Expected: tests pass; printed state is `UNEXECUTED` with `scientific_result=NONE`. Do not invoke `--execute`.
 
-```text
-all tests pass
-execution_state = UNEXECUTED
-scientific_result = NONE
-```
-
-Do not run the CLI with `--execute`.
-
-- [ ] **Step 5: Commit Task 5**
-
-Run:
+- [ ] **Step 5: Commit**
 
 ```bash
-git add experiments/research_seeds/live_alternative_diagnostic_mediation_v1/run_v1.py \
-        experiments/research_seeds/live_alternative_diagnostic_mediation_v1/test_cli.py
+git add experiments/research_seeds/live_alternative_diagnostic_mediation_v1/run_v1.py experiments/research_seeds/live_alternative_diagnostic_mediation_v1/test_cli.py
 git commit -m "feat: gate V1 scientific execution"
 ```
 
 ---
 
-### Task 6: Document the implementation boundary and add non-executing CI
+### Task 6: Document the unexecuted implementation state and add non-executing CI
 
 **Files:**
 - Create: `experiments/research_seeds/live_alternative_diagnostic_mediation_v1/README.md`
 - Create: `.github/workflows/validate-v1-implementation.yml`
 
 **Interfaces:**
-- README distinguishes implementation validation from scientific execution.
 - CI runs unit tests and `--validate-contract` only.
-- Existing `.github/workflows/validate-frozen-record.yml` remains byte-unchanged.
+- Existing frozen-record workflow remains byte-unchanged.
 
-- [ ] **Step 1: Create the local implementation README**
+- [ ] **Step 1: Create the implementation README**
 
-The README must begin with exactly these state lines:
+Begin with:
 
 ```text
 Protocol state: FROZEN_PRE_EXECUTION_ASSAY
@@ -1009,42 +764,22 @@ Canonical standing: NONCANONICAL_RESEARCH_SEED
 Translation standing: NO_TRANSLATION_EARNED
 ```
 
-Then link:
-
-```text
-Design: docs/superpowers/specs/2026-09-07-live-alternative-diagnostic-mediation-v1-design.md
-Plan: docs/superpowers/plans/2026-09-07-live-alternative-diagnostic-mediation-v1.md
-Frozen V0: docs/research_seeds/DIAGNOSTIC_TOPOLOGY_COLLISION_V0.md
-```
-
-Document the allowed implementation-validation commands:
+Link the design, this plan, and `docs/research_seeds/DIAGNOSTIC_TOPOLOGY_COLLISION_V0.md`. Document exactly these permitted implementation-validation commands:
 
 ```bash
-python -m unittest discover \
-  -s experiments/research_seeds/live_alternative_diagnostic_mediation_v1 \
-  -p 'test_*.py' -v
-
-python experiments/research_seeds/live_alternative_diagnostic_mediation_v1/run_v1.py \
-  --validate-contract
-
+python -m unittest discover -s experiments/research_seeds/live_alternative_diagnostic_mediation_v1 -p 'test_*.py' -v
+python experiments/research_seeds/live_alternative_diagnostic_mediation_v1/run_v1.py --validate-contract
 python scripts/validate_frozen_record.py
 ```
 
-Add an explicit warning:
+State explicitly: passing tests/contract validation is not a V1 scientific result, and `--execute` requires separate explicit authorization.
 
-```text
-The scientific execution mode is intentionally not part of implementation validation.
-Do not run --execute without a separate explicit authorization to execute the frozen V1 assay.
-Passing unit tests or contract validation is not a V1 scientific result.
-```
-
-- [ ] **Step 2: Create a V1-specific implementation CI workflow**
+- [ ] **Step 2: Add implementation-only CI**
 
 Create `.github/workflows/validate-v1-implementation.yml`:
 
 ```yaml
 name: Validate V1 implementation without assay execution
-
 on:
   push:
     paths:
@@ -1054,10 +789,8 @@ on:
     paths:
       - "experiments/research_seeds/live_alternative_diagnostic_mediation_v1/**"
       - ".github/workflows/validate-v1-implementation.yml"
-
 permissions:
   contents: read
-
 jobs:
   validation:
     runs-on: ubuntu-latest
@@ -1075,36 +808,26 @@ jobs:
           --validate-contract
 ```
 
-Do not add `--execute`, a result path, or a result-upload step.
-
-- [ ] **Step 3: Verify the workflow cannot trigger scientific execution**
-
-Run:
+- [ ] **Step 3: Verify CI contains no execution path**
 
 ```bash
 if grep -n -- '--execute' .github/workflows/validate-v1-implementation.yml; then
   echo 'ERROR: V1 CI contains scientific execution command' >&2
   exit 1
 fi
-
 grep -n -- '--validate-contract' .github/workflows/validate-v1-implementation.yml
 ```
 
-Expected: first command finds nothing; second finds exactly the validation command.
+Expected: first command finds nothing; second finds the validation command.
 
-- [ ] **Step 4: Run all allowed validation commands**
+- [ ] **Step 4: Run all three permitted validation commands**
 
-Run the three commands documented in the README.
+Expected: unit tests pass; validation remains `UNEXECUTED`; existing frozen-record validator exits `0`.
 
-Expected: unit tests pass, contract validation says `UNEXECUTED`, frozen-record validation exits `0`.
-
-- [ ] **Step 5: Commit Task 6**
-
-Run:
+- [ ] **Step 5: Commit**
 
 ```bash
-git add experiments/research_seeds/live_alternative_diagnostic_mediation_v1/README.md \
-        .github/workflows/validate-v1-implementation.yml
+git add experiments/research_seeds/live_alternative_diagnostic_mediation_v1/README.md .github/workflows/validate-v1-implementation.yml
 git commit -m "docs: bind V1 implementation to unexecuted state"
 ```
 
@@ -1112,35 +835,22 @@ git commit -m "docs: bind V1 implementation to unexecuted state"
 
 ### Task 7: Final implementation verification without scientific execution
 
-**Files:**
-- Verification only.
-- No result artifact may be created.
+**Files:** verification only.
 
-**Interfaces:**
-- Consumes all implementation tasks.
-- Produces an implementation checkpoint whose legal terminal state is `IMPLEMENTED_NOT_EXECUTED / UNEXECUTED / NONE`.
+**Interfaces:** legal terminal state is `IMPLEMENTED_NOT_EXECUTED / UNEXECUTED / NONE`.
 
 - [ ] **Step 1: Run the complete unit suite**
 
-Run:
-
 ```bash
-python -m unittest discover \
-  -s experiments/research_seeds/live_alternative_diagnostic_mediation_v1 \
-  -p 'test_*.py' -v
+python -m unittest discover -s experiments/research_seeds/live_alternative_diagnostic_mediation_v1 -p 'test_*.py' -v
 ```
 
-Expected: `0` failures and `0` errors.
+Expected: zero failures and zero errors.
 
-- [ ] **Step 2: Run structural contract validation only**
-
-Run:
+- [ ] **Step 2: Run structural validation and assert terminal state**
 
 ```bash
-python experiments/research_seeds/live_alternative_diagnostic_mediation_v1/run_v1.py \
-  --validate-contract \
-  > /tmp/v1-contract-validation.json
-
+python experiments/research_seeds/live_alternative_diagnostic_mediation_v1/run_v1.py --validate-contract > /tmp/v1-contract-validation.json
 python - <<'PY'
 import json
 from pathlib import Path
@@ -1149,20 +859,21 @@ assert record['protocol_state'] == 'FROZEN_PRE_EXECUTION_ASSAY'
 assert record['execution_state'] == 'UNEXECUTED'
 assert record['scientific_result'] == 'NONE'
 contract = record['contract_validation']
-assert contract['endpoint_nonidentifiability_verified'] is True
-assert contract['no_universal_diagnostic_verified'] is True
-assert contract['pair_order_invariance_verified'] is True
-assert contract['null_disagreement_vector'] == [0, 0]
+for field in (
+    'endpoint_nonidentifiability_verified','no_universal_diagnostic_verified',
+    'pair_order_invariance_verified','marginal_information_matched',
+    'joint_comparison_only_in_C1','read_only_mediator_verified',
+    'mediator_ephemeral_verified','shared_menu_verified','budget_matched',
+    'resolver_identity_matched',
+):
+    assert contract[field] is True, field
+assert contract['null_disagreement_vector'] == [0,0]
 assert contract['null_mediator_output'] == 'NO_DISCRIMINATING_DIAGNOSTIC'
 print('V1 implementation contract validation: PASS / UNEXECUTED')
 PY
 ```
 
-Expected: final printed line exactly identifies `UNEXECUTED` state.
-
-- [ ] **Step 3: Re-run frozen canonical repository validation**
-
-Run:
+- [ ] **Step 3: Re-run canonical frozen-record validation**
 
 ```bash
 python scripts/validate_frozen_record.py
@@ -1170,9 +881,7 @@ python scripts/validate_frozen_record.py
 
 Expected: exit `0`.
 
-- [ ] **Step 4: Verify protected files and existing frozen gates are byte-unchanged**
-
-Run:
+- [ ] **Step 4: Verify protected artifacts and gates are byte-unchanged**
 
 ```bash
 sha256sum -c /tmp/v1-protected-before.sha256
@@ -1180,29 +889,25 @@ xargs -r sha256sum < /tmp/v1-gates.txt > /tmp/v1-gates-after.sha256
 diff -u /tmp/v1-gates-before.sha256 /tmp/v1-gates-after.sha256
 ```
 
-Expected: every protected hash reports `OK`; gate diff has no output.
+Expected: all protected files `OK`; gate diff has no output.
 
 - [ ] **Step 5: Verify no scientific result artifact exists**
 
-Run:
-
 ```bash
 test ! -d experiments/research_seeds/live_alternative_diagnostic_mediation_v1/results
-! find experiments/research_seeds/live_alternative_diagnostic_mediation_v1 \
-  -type f \( -name 'result.json' -o -name 'summary.md' \) -print -quit | grep -q .
+! find experiments/research_seeds/live_alternative_diagnostic_mediation_v1 -type f \( -name 'result.json' -o -name 'summary.md' \) -print -quit | grep -q .
 ```
 
 Expected: both commands exit `0`.
 
-- [ ] **Step 6: Verify no forbidden canonical file changed**
-
-Run:
+- [ ] **Step 6: Verify changed paths are implementation-only**
 
 ```bash
-git diff --name-only <PLAN_COMMIT>...HEAD | sort
+PLAN_BASE=$(cat /tmp/v1-plan-base.txt)
+git diff --name-only "$PLAN_BASE"...HEAD | sort
 ```
 
-Expected changed paths are restricted to:
+Expected paths are restricted exactly to:
 
 ```text
 .github/workflows/validate-v1-implementation.yml
@@ -1217,30 +922,21 @@ experiments/research_seeds/live_alternative_diagnostic_mediation_v1/test_mediati
 experiments/research_seeds/live_alternative_diagnostic_mediation_v1/test_protocol.py
 ```
 
-If any canonical ledger, evidence index, existing gate, existing validator, or `experiments/results/` path appears, stop and repair the implementation before proceeding.
+If a canonical ledger/index, existing gate, existing validator, or `experiments/results/` path appears, stop and repair before proceeding.
 
-- [ ] **Step 7: Verify branch state and commit history**
-
-Run:
+- [ ] **Step 7: Verify clean branch state and task-scoped history**
 
 ```bash
+PLAN_BASE=$(cat /tmp/v1-plan-base.txt)
 git status --short
-git log --oneline --decorate <PLAN_COMMIT>..HEAD
+git log --oneline --decorate "$PLAN_BASE"..HEAD
 ```
 
-Expected: clean working tree and a small sequence of task-scoped implementation commits.
+Expected: clean tree and task-scoped implementation commits only.
 
 - [ ] **Step 8: STOP before scientific execution**
 
-Do not run:
-
-```bash
-python experiments/research_seeds/live_alternative_diagnostic_mediation_v1/run_v1.py \
-  --execute \
-  --write experiments/research_seeds/live_alternative_diagnostic_mediation_v1/results/result.json
-```
-
-The legal terminal implementation state is exactly:
+Do not run the scientific execution mode. Legal terminal state is exactly:
 
 ```text
 protocol_state = FROZEN_PRE_EXECUTION_ASSAY
@@ -1249,20 +945,16 @@ execution_state = UNEXECUTED
 scientific_result = NONE
 ```
 
-A separate explicit user authorization is required before the frozen V1 scientific assay may be executed.
+A separate explicit user authorization is required before executing frozen V1.
 
 ---
 
 ## Execution Handoff Boundary
 
-The implementation plan deliberately separates three things:
-
 ```text
 implementation validation
-!=
-scientific assay execution
-!=
-scientific interpretation / promotion
+!= scientific assay execution
+!= scientific interpretation / promotion
 ```
 
-Completing Tasks 1–7 may establish only that the implementation appears to instantiate the approved finite design and that the scientific execution path remains unrun. It does not create a V1 empirical result and does not authorize V2.
+Completing Tasks 1–7 may establish only that the implementation instantiates the approved finite design and that the scientific execution path remains unrun. It does not create a V1 empirical result and does not authorize V2.
