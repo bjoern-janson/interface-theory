@@ -1,0 +1,53 @@
+name: Validate DTC V0 implementation without conformance execution
+
+on:
+  push:
+    paths:
+      - "experiments/research_seeds/diagnostic_topology_collision_v0/**"
+      - "docs/research_seeds/DIAGNOSTIC_TOPOLOGY_COLLISION_V0.md"
+      - "docs/superpowers/specs/2026-09-07-diagnostic-topology-collision-v0-preexecution-repair.md"
+      - "docs/superpowers/plans/2026-09-07-diagnostic-topology-collision-v0-conformance.md"
+      - ".github/workflows/validate-dtc-v0-implementation.yml"
+  pull_request:
+    paths:
+      - "experiments/research_seeds/diagnostic_topology_collision_v0/**"
+      - "docs/research_seeds/DIAGNOSTIC_TOPOLOGY_COLLISION_V0.md"
+      - "docs/superpowers/specs/2026-09-07-diagnostic-topology-collision-v0-preexecution-repair.md"
+      - "docs/superpowers/plans/2026-09-07-diagnostic-topology-collision-v0-conformance.md"
+      - ".github/workflows/validate-dtc-v0-implementation.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate-without-execution:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Bind implementation to refrozen source
+        shell: bash
+        run: |
+          test "$(git hash-object docs/research_seeds/DIAGNOSTIC_TOPOLOGY_COLLISION_V0.md)" = "447e5db3f15476406910a32e1d36c0e2364e1344"
+          test "$(git hash-object docs/superpowers/specs/2026-09-07-diagnostic-topology-collision-v0-preexecution-repair.md)" = "303031bdec77dfffb4a5d6c9bdd2d033f30314ac"
+      - name: Run unit tests only
+        run: |
+          cd experiments/research_seeds/diagnostic_topology_collision_v0
+          python -m unittest discover -p 'test_*.py' -v
+      - name: Validate static contract only
+        run: |
+          cd experiments/research_seeds/diagnostic_topology_collision_v0
+          python run_v0.py --validate-contract > /tmp/dtc_v0_contract.json
+          python - <<'PY'
+          import json
+          with open('/tmp/dtc_v0_contract.json', encoding='utf-8') as handle:
+              payload = json.load(handle)
+          assert payload['protocol_state'] == 'FROZEN_PRE_EXECUTION_ASSAY'
+          assert payload['execution_state'] == 'UNEXECUTED'
+          assert payload['scientific_result'] == 'NONE'
+          PY
+      - name: Refuse implementation-time result artifacts
+        shell: bash
+        run: test ! -e experiments/research_seeds/diagnostic_topology_collision_v0/results
