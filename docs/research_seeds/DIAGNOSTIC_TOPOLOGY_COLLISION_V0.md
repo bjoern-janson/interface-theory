@@ -2,11 +2,15 @@
 
 **Protocol status:** `FROZEN_PRE_EXECUTION_ASSAY`
 
-**Evidence standing:** `DERIVED_MATHEMATICAL_OBSERVATION` for the analytic ceiling; `EXPERIMENTAL_HYPOTHESIS` for the planned causal contrast.
+**Evidence standing:** `DERIVED_MATHEMATICAL_OBSERVATION` for the finite causal construction and analytic contrast.
+
+**Execution role:** `EXECUTABLE_CONFORMANCE_TEST_PENDING`
 
 **Translation standing:** `NO_TRANSLATION_EARNED`
 
 **Canonical standing:** `NONCANONICAL_RESEARCH_SEED`
+
+**Pre-execution repair lineage:** the original V0 text was frozen at `1a5eeeef68db57db31823d43a4392c35e52cb1a5` and indexed at `27255e1a61cf8c95a660051f7d971c535a06b38c`. No V0 execution occurred before the formal repair recorded in the commit containing this revision. The original freeze remains preserved in Git history; this revision is the operative pre-execution refreeze.
 
 ## 1. Identity
 
@@ -17,14 +21,14 @@ controlled representation intervention
 +
 two solvable hidden worlds
 +
-disjoint bounded viable-policy sets
+disjoint bounded viable-policy classes
 ```
 
-The assay asks exactly one causal question:
+The construction asks exactly one causal question:
 
 ```math
 \boxed{
-\text{Can preserving a policy-relevant topology distinction change bounded corrective policy availability and repair success?}
+\text{Can preserving a policy-relevant topology distinction change the controller's ability to select a bounded viable policy, and therefore repair success?}
 }
 ```
 
@@ -35,7 +39,7 @@ V0 manipulates representation;
 it does not credit an architecture for representation learning.
 ```
 
-No learned interface, persistent adaptation, reuse, held-out transfer, or general corrigibility claim is part of this assay.
+No learned interface, persistent adaptation, reuse, held-out transfer, or general corrigibility claim is part of this construction.
 
 ## 2. Self-contained finite world
 
@@ -160,9 +164,17 @@ The failure after a wrong probe is a declared resource-and-repair consequence, n
 
 ## 5. Viable-policy collision
 
-Let `\mathcal C_Q(G)` denote the set of policies that achieve valid zero-error repair in world `G` under the frozen budget and action contract.
+Let `\Pi` be the class of deterministic, history-dependent policies that map each legal finite action-observation history to a legal next action or `stop`, subject to the frozen action vocabulary and budget.
 
-Define:
+Let
+
+```math
+\mathcal C_Q(G)\subseteq\Pi
+```
+
+denote the policies that guarantee valid zero-error repair in world `G` for both possible fault values under the frozen budget and action contract.
+
+Two concrete policies witness nonemptiness:
 
 ```math
 \pi_A:
@@ -178,17 +190,41 @@ q_B\ \text{first};\
 \text{if }q_B\text{ returns }y\in\{0,1\},\text{ execute }r_y.
 ```
 
-Under the frozen zero-error contract:
-
-```math
-\mathcal C_Q(G_A)=\{\pi_A\},
-```
-
-```math
-\mathcal C_Q(G_B)=\{\pi_B\}.
-```
-
 Hence:
+
+```math
+\pi_A\in\mathcal C_Q(G_A),
+\qquad
+\pi_B\in\mathcal C_Q(G_B),
+```
+
+so both viable-policy classes are nonempty.
+
+The stronger and sufficient collision statement is about the required initial action, not singleton syntax.
+
+For every viable policy in `G_A`:
+
+```math
+\boxed{
+\forall\pi\in\mathcal C_Q(G_A),
+\qquad
+\pi(\epsilon)=q_A.
+}
+```
+
+Why: starting with `q_B` leaves no bounded zero-error continuation by Section 4; starting with `r_0`, `r_1`, or `stop` cannot guarantee valid repair for both possible faults.
+
+Similarly:
+
+```math
+\boxed{
+\forall\pi\in\mathcal C_Q(G_B),
+\qquad
+\pi(\epsilon)=q_B.
+}
+```
+
+A deterministic policy has one initial action. Since `q_A\neq q_B`, no policy can satisfy both requirements. Therefore:
 
 ```math
 \boxed{
@@ -199,6 +235,8 @@ Hence:
 \mathcal C_Q(G_A)\cap\mathcal C_Q(G_B)=\varnothing.
 }
 ```
+
+This argument does not require claiming that either viable-policy class is a syntactic singleton. Policies may differ on histories unreachable in a given world without affecting the collision proof.
 
 Both hidden worlds are individually solvable. The collision is therefore not created by an intrinsically infeasible branch.
 
@@ -239,7 +277,7 @@ For a matched pair:
 g_0(h_A)=g_0(h_B)=n.
 ```
 
-The policy-visible state therefore collapses the topology distinction.
+The controller-visible state therefore collapses the topology distinction.
 
 ### Preservation condition
 
@@ -302,9 +340,19 @@ If the diagnostic returns `\bot`, no bounded zero-error continuation exists unde
 
 The controller is not trained separately in the two arms. The only intervention is `g_0` versus `g_1`.
 
+Crucially, the representation intervention does **not** change `\mathcal C_Q(G_A)` or `\mathcal C_Q(G_B)`. Those viable-policy classes are determined by the hidden world and frozen action/resource contract. The intervention changes whether the controller-visible representation exposes enough topology information to select the required viable initial action.
+
+```math
+\boxed{
+\text{policy existence}
+\neq
+\text{policy selectability from exposed information}.
+}
+```
+
 ## 8. Finite exhaustive evaluation
 
-V0 is a deterministic finite assay, not a sampling study.
+V0 is a deterministic finite construction with a pending executable conformance test, not a sampling study.
 
 Exhaustively enumerate:
 
@@ -352,7 +400,7 @@ Equivalently, under the balanced topology prior, no randomized policy depending 
 
 ### Analytic preservation result
 
-Under `g_1`, the controller receives the topology bit and always selects the correct diagnostic. The diagnostic reveals `f`, after which `r_f` is executed.
+Under `g_1`, the controller receives the topology bit and always selects the required viable initial diagnostic. The diagnostic reveals `f`, after which `r_f` is executed.
 
 Therefore:
 
@@ -375,9 +423,19 @@ P_{\rm success}(g_1)-P_{\rm success}(g_0)
 }
 ```
 
-This `1/2` contrast is the analytic benchmark value under the frozen contract. It is not a discovery to be estimated after execution.
+This `1/2` contrast is already a derived property of the frozen finite construction. It is not a scientific effect waiting to be discovered by execution.
 
-Execution tests whether the implementation faithfully instantiates the declared finite structure.
+The legal interpretation of a future run is:
+
+```text
+analytic finite witness established
+        ->
+executable conformance test
+        ->
+exact predicted finite behavior reproduced or implementation/protocol failure
+```
+
+Do not describe exact reproduction as empirical discovery or independent confirmation of the already-derived `1/2` effect.
 
 ## 9. Required result fields for any implementation
 
@@ -393,7 +451,8 @@ wrong_probe_count_g1
 P_success_g0
 P_success_g1
 delta_P_success
-policy_collision_verified
+viable_policy_initial_action_collision_verified
+controller_selectability_effect_verified
 raw_history_equal_across_conditions
 representation_capacity_matched
 controller_identity_matched
@@ -412,7 +471,8 @@ wrong_probe_count_g1 = 0
 P_success_g0 = 0.5
 P_success_g1 = 1.0
 delta_P_success = 0.5
-policy_collision_verified = true
+viable_policy_initial_action_collision_verified = true
+controller_selectability_effect_verified = true
 raw_history_equal_across_conditions = true
 representation_capacity_matched = true
 controller_identity_matched = true
@@ -433,10 +493,10 @@ same raw history
 controlled representation intervention: g0 vs g1
         |
         v
-retained one-bit distinction
+retained one-bit topology distinction
         |
         v
-fixed controller diagnostic choice
+controller ability to select the world-viable initial diagnostic
         |
         v
 fault observation or failure to observe fault
@@ -445,13 +505,15 @@ fault observation or failure to observe fault
 bounded repair success
 ```
 
+The intervention does not create or destroy the viable policies of either hidden world. It changes whether the fixed controller can select the viable initial action from its exposed representation.
+
 The strongest admitted V0 statement is:
 
 ```text
-Under the frozen two-world contract, preserving a policy-relevant topology distinction causally changes bounded corrective policy availability and repair success.
+Under the frozen two-world contract, preserving a policy-relevant topology distinction causally changes the controller's ability to select a bounded viable diagnostic policy, and thereby repair success.
 ```
 
-This statement is conditional on faithful execution of the declared manipulation and controls.
+This statement is a property of the declared finite construction. A future faithful execution may establish implementation conformance to that construction; it does not upgrade the result into a general empirical mechanism claim.
 
 ## 11. Claim ceiling
 
@@ -479,7 +541,9 @@ In particular:
 V0:\quad
 \text{representation distinction}
 \longrightarrow
-\text{policy consequence}
+\text{viable-policy selection}
+\longrightarrow
+\text{bounded repair consequence}
 }
 ```
 
@@ -490,7 +554,7 @@ and nothing stronger.
 The conceptual downstream ladder remains separate:
 
 ```text
-V0: representation distinction -> policy consequence
+V0: representation distinction -> viable-policy selection -> bounded repair consequence
 V1: unresolved alternatives -> temporary mediation
 V2: temporary mediation -> persistent interface
 V3: persistent interface -> held-out reuse
@@ -505,6 +569,26 @@ V0 supplies no evidence for any downstream rung.
 
 The painting, generative-grammar discussion, transformer architecture hypothesis, Interface Theory, MATRIX, and prior model critique explain why this finite construction was sought.
 
-They are not premises required to derive V0's finite policy collision or analytic `1/2` contrast.
+They are not premises required to derive V0's finite viable-policy collision or analytic `1/2` contrast.
 
 The scientific object in this file is the declared finite state/action/resource construction itself.
+
+## 14. Pre-execution repair boundary
+
+The formal repair in this revision changes no world, action, cost, budget, representation, controller, or analytic count. It repairs only the scientific typing of the already-declared construction:
+
+```text
+syntactic singleton viable-policy claim
+    ->
+nonempty viable-policy classes with incompatible required initial actions
+```
+
+and:
+
+```text
+policy availability
+    ->
+controller-visible viable-policy selectability
+```
+
+No V0 implementation or execution is authorized by this repair. The execution gate remains separately controlled.

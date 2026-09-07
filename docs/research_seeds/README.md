@@ -81,7 +81,7 @@ It means that a useful common abstraction has been written down while neither so
 | `BLOCKWISE_ADEQUACY_POSET_V0.md` | candidate shared mathematical schema | `CANDIDATE_SHARED_SCHEMA` | `NO_TRANSLATION_EARNED` | `NONCANONICAL_RESEARCH_SEED` |
 | `REPAIR_AWARE_INTERFACE_BRIDGE_V0.md` | candidate repair-aware bridge | `CANDIDATE_SHARED_SCHEMA` | `NO_TRANSLATION_EARNED` | `NONCANONICAL_RESEARCH_SEED` |
 | `ADAPTIVE_INTERNAL_INTERFACES_V0.md` | architecture hypothesis | `EXPERIMENTAL_HYPOTHESIS` | `NO_TRANSLATION_EARNED` | `NONCANONICAL_RESEARCH_SEED` |
-| `DIAGNOSTIC_TOPOLOGY_COLLISION_V0.md` | frozen pre-execution two-world representation assay | `DERIVED_MATHEMATICAL_OBSERVATION` / `EXPERIMENTAL_HYPOTHESIS` | `NO_TRANSLATION_EARNED` | `NONCANONICAL_RESEARCH_SEED` |
+| `DIAGNOSTIC_TOPOLOGY_COLLISION_V0.md` | refrozen finite causal construction; executable conformance test pending | `DERIVED_MATHEMATICAL_OBSERVATION` | `NO_TRANSLATION_EARNED` | `NONCANONICAL_RESEARCH_SEED` |
 | `CONCEPTUAL_PROVENANCE_V0.md` | idea-generating lineage | `CONCEPTUAL_PROVENANCE_ONLY` / `NOT_EVIDENCE` | `NO_TRANSLATION_EARNED` | `NONCANONICAL_RESEARCH_SEED` |
 
 ## Anti-promotion rules
@@ -97,6 +97,7 @@ provenance != causal attribution
 shared abstraction != source-result identity
 source-side witness != cross-program translation proof
 implementation success != mechanism attribution
+analytic witness execution != independent discovery of the derived effect
 ```
 
 These are standing constraints, not rhetorical cautions.
@@ -118,25 +119,29 @@ Canonical standing: NONCANONICAL_RESEARCH_SEED
 
 The repair-aware bridge and adaptive-internal-interface hypothesis are recorded separately so that neither can silently upgrade the other.
 
-## First frozen finite assay seed
+## First finite causal construction
 
-`DIAGNOSTIC_TOPOLOGY_COLLISION_V0.md` freezes a deliberately minimal pre-execution assay:
+`DIAGNOSTIC_TOPOLOGY_COLLISION_V0.md` freezes a deliberately minimal finite construction:
 
 ```text
 controlled representation intervention
 +
 two individually solvable hidden worlds
 +
-disjoint bounded viable-policy sets
+nonempty viable-policy classes with incompatible required initial diagnostics
 ```
 
 Its only causal rung is:
 
 ```text
-representation distinction -> policy consequence
+representation distinction -> viable-policy selection -> bounded repair consequence
 ```
 
-The assay manipulates `g_0` versus `g_1` directly. It does not test representation learning, learned interfaces, persistence, reuse, or generalization. Its analytic `1/2` success contrast is part of the frozen finite contract rather than an empirical surprise to be discovered after execution.
+The construction manipulates `g_0` versus `g_1` directly. It does not test representation learning, learned interfaces, persistence, reuse, or generalization.
+
+Its analytic `1/2` success contrast is already derived from the finite contract. A future run may test executable conformance to that contract; it must not be described as empirical discovery or independent confirmation of the already-derived effect.
+
+The original DTC-V0 text was frozen at `1a5eeeef68db57db31823d43a4392c35e52cb1a5` and indexed at `27255e1a61cf8c95a660051f7d971c535a06b38c`. A later pre-execution formal review found two typing issues—syntactic singleton viable-policy claims and use of “policy availability” where the manipulated object is controller-visible viable-policy selectability. The commit containing the repaired DTC text and its process addendum is the operative pre-execution refreeze. No DTC-V0 execution occurred between these freezes.
 
 ## Source hierarchy
 
