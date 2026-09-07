@@ -1,0 +1,42 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+import argparse, json
+from pathlib import Path
+from assay import run_assay, validate_contract
+
+
+def build_parser():
+    parser = argparse.ArgumentParser()
+    mode = parser.add_mutually_exclusive_group(required=True)
+    mode.add_argument("--validate-contract", action="store_true")
+    mode.add_argument("--execute", action="store_true")
+    parser.add_argument("--write", type=Path)
+    return parser
+
+
+def main(argv=None):
+    parser = build_parser()
+    args = parser.parse_args(argv)
+    if args.validate_contract:
+        if args.write is not None:
+            parser.error("--write is valid only with --execute")
+        print(json.dumps({
+            "protocol_state":"FROZEN_PRE_EXECUTION_ASSAY",
+            "implementation_state":"VALIDATED_NOT_EXECUTED",
+            "execution_state":"UNEXECUTED",
+            "scientific_result":"NONE",
+            "contract_validation":validate_contract(),
+        }, indent=2, sort_keys=True))
+        return 0
+    if args.write is None:
+        parser.error("--execute requires --write")
+    result = run_assay()
+    rendered = json.dumps(result, indent=2, sort_keys=True) + "\n"
+    args.write.parent.mkdir(parents=True, exist_ok=True)
+    args.write.write_text(rendered, encoding="utf-8")
+    print(rendered, end="")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
