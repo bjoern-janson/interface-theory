@@ -81,6 +81,7 @@ It means that a useful common abstraction has been written down while neither so
 | `BLOCKWISE_ADEQUACY_POSET_V0.md` | candidate shared mathematical schema | `CANDIDATE_SHARED_SCHEMA` | `NO_TRANSLATION_EARNED` | `NONCANONICAL_RESEARCH_SEED` |
 | `REPAIR_AWARE_INTERFACE_BRIDGE_V0.md` | candidate repair-aware bridge | `CANDIDATE_SHARED_SCHEMA` | `NO_TRANSLATION_EARNED` | `NONCANONICAL_RESEARCH_SEED` |
 | `ADAPTIVE_INTERNAL_INTERFACES_V0.md` | architecture hypothesis | `EXPERIMENTAL_HYPOTHESIS` | `NO_TRANSLATION_EARNED` | `NONCANONICAL_RESEARCH_SEED` |
+| `DIAGNOSTIC_TOPOLOGY_COLLISION_V0.md` | frozen pre-execution two-world representation assay | `DERIVED_MATHEMATICAL_OBSERVATION` / `EXPERIMENTAL_HYPOTHESIS` | `NO_TRANSLATION_EARNED` | `NONCANONICAL_RESEARCH_SEED` |
 | `CONCEPTUAL_PROVENANCE_V0.md` | idea-generating lineage | `CONCEPTUAL_PROVENANCE_ONLY` / `NOT_EVIDENCE` | `NO_TRANSLATION_EARNED` | `NONCANONICAL_RESEARCH_SEED` |
 
 ## Anti-promotion rules
@@ -116,6 +117,26 @@ Canonical standing: NONCANONICAL_RESEARCH_SEED
 ```
 
 The repair-aware bridge and adaptive-internal-interface hypothesis are recorded separately so that neither can silently upgrade the other.
+
+## First frozen finite assay seed
+
+`DIAGNOSTIC_TOPOLOGY_COLLISION_V0.md` freezes a deliberately minimal pre-execution assay:
+
+```text
+controlled representation intervention
++
+two individually solvable hidden worlds
++
+disjoint bounded viable-policy sets
+```
+
+Its only causal rung is:
+
+```text
+representation distinction -> policy consequence
+```
+
+The assay manipulates `g_0` versus `g_1` directly. It does not test representation learning, learned interfaces, persistence, reuse, or generalization. Its analytic `1/2` success contrast is part of the frozen finite contract rather than an empirical surprise to be discovered after execution.
 
 ## Source hierarchy
 
