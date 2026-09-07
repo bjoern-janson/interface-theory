@@ -8,7 +8,7 @@ Repair-authority addendum blob: `303031bdec77dfffb4a5d6c9bdd2d033f30314ac`
 
 ```text
 protocol_state       = FROZEN_PRE_EXECUTION_ASSAY
-implementation_state = IMPLEMENTATION_IN_PROGRESS
+implementation_state = IMPLEMENTED_NOT_EXECUTED
 execution_state      = UNEXECUTED
 scientific_result    = NONE
 ```
