@@ -1,0 +1,27 @@
+name: Validate V1 implementation without assay execution
+on:
+  push:
+    paths:
+      - "experiments/research_seeds/live_alternative_diagnostic_mediation_v1/**"
+      - ".github/workflows/validate-v1-implementation.yml"
+  pull_request:
+    paths:
+      - "experiments/research_seeds/live_alternative_diagnostic_mediation_v1/**"
+      - ".github/workflows/validate-v1-implementation.yml"
+permissions:
+  contents: read
+jobs:
+  validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: >-
+          python -m unittest discover
+          -s experiments/research_seeds/live_alternative_diagnostic_mediation_v1
+          -p 'test_*.py' -v
+      - run: >-
+          python experiments/research_seeds/live_alternative_diagnostic_mediation_v1/run_v1.py
+          --validate-contract
